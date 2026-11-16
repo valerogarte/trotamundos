@@ -1,0 +1,95 @@
+<?php
+
+/**
+ * @file
+ * Procedural hooks for Trotamundos Assistant.
+ */
+
+use Drupal\Component\Serialization\Yaml;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\trotamundos_assistant\Form\EmbeddedAssistantFormAjax;
+
+/**
+ * Implements hook_library_info_build().
+ */
+function trotamundos_assistant_library_info_build(): array {
+  $libraries = [];
+  $module_path = \Drupal::service('extension.list.module')->getPath('trotamundos_assistant');
+  $skills_path = $module_path . '/skills';
+  if (!is_dir($skills_path)) {
+    return $libraries;
+  }
+
+  foreach (scandir($skills_path) ?: [] as $directory) {
+    if ($directory === '.' || $directory === '..') {
+      continue;
+    }
+
+    $skill_path = $skills_path . '/' . $directory;
+    $metadata_file = $skill_path . '/skill.yml';
+    if (!is_dir($skill_path) || !is_file($metadata_file)) {
+      continue;
+    }
+
+    $metadata = Yaml::decode((string) file_get_contents($metadata_file));
+    if (!is_array($metadata)) {
+      continue;
+    }
+
+    $machine_name = preg_replace('/[^a-z0-9_]+/', '_', strtolower((string) ($metadata['machine_name'] ?? ''))) ?? '';
+    if ($machine_name === '' || $machine_name !== $directory) {
+      continue;
+    }
+
+    $assets = is_array($metadata['assets'] ?? NULL) ? $metadata['assets'] : [];
+    if ($assets === []) {
+      continue;
+    }
+
+    $library = [];
+    foreach (['css', 'js'] as $asset_type) {
+      $files = is_array($assets[$asset_type] ?? NULL) ? $assets[$asset_type] : [];
+      foreach ($files as $file) {
+        $file = trim((string) $file);
+        if ($file === '') {
+          continue;
+        }
+
+        $path = $file[0] === '/' ? ltrim($file, '/') : 'skills/' . $machine_name . '/' . $file;
+        if ($asset_type === 'css') {
+          $library['css']['theme'][$path] = [];
+        }
+        else {
+          $library['js'][$path] = [];
+        }
+      }
+    }
+
+    $dependencies = is_array($assets['dependencies'] ?? NULL) ? $assets['dependencies'] : [];
+    $dependencies = array_values(array_filter(array_map('strval', $dependencies)));
+    if ($dependencies !== []) {
+      $library['dependencies'] = $dependencies;
+    }
+
+    if ($library !== []) {
+      $libraries['skill.' . $machine_name] = $library;
+    }
+  }
+
+  return $libraries;
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function trotamundos_assistant_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  $request = \Drupal::requestStack()->getCurrentRequest();
+  if ($request->query->get('trotamundos_assistant_embedded') !== '1') {
+    return;
+  }
+
+  $wrapper_id = preg_replace('/[^A-Za-z0-9_-]+/', '', (string) $request->query->get('trotamundos_assistant_wrapper')) ?: 'trotamundos-assistant-embedded-form';
+  $form_class = preg_replace('/[^A-Za-z0-9_-]+/', '', (string) $request->query->get('trotamundos_assistant_form_class')) ?: '';
+
+  EmbeddedAssistantFormAjax::prepareForm($form, $wrapper_id, $form_class);
+}

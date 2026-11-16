@@ -1,0 +1,83 @@
+trotamundos_assistant.settings:
+  type: config_object
+  label: 'Trotamundos Assistant settings'
+  mapping:
+    welcome_message:
+      type: text
+      label: 'Welcome message'
+    input_placeholder:
+      type: label
+      label: 'Input placeholder'
+    privacy_notice:
+      type: text
+      label: 'Privacy notice'
+    assistant_id:
+      type: string
+      label: 'Assistant ID'
+    login_required_message:
+      type: text
+      label: 'Anonymous panel message'
+    role_denied_chat_message:
+      type: text
+      label: 'Role denied chat message'
+    use_minsait_font:
+      type: boolean
+      label: 'Use Minsait typography'
+    result_target_selector:
+      type: string
+      label: 'Result target selector'
+    header_sticky:
+      type: string
+      label: 'Sticky header selector'
+    extra_shift_selectors:
+      type: string
+      label: 'Additional shifted content selectors'
+    desktop_always_open:
+      type: boolean
+      label: 'Show chat always open on desktop'
+    toggle_label:
+      type: label
+      label: 'Chat toggle label'
+    chat_logo_path:
+      type: string
+      label: 'Chat logo path'
+    admin_currency:
+      type: string
+      label: 'Administration currency'
+    max_message_length:
+      type: integer
+      label: 'Maximum message length'
+    rate_limit_requests:
+      type: integer
+      label: 'Maximum chat requests'
+    rate_limit_window:
+      type: integer
+      label: 'Rate limit window in seconds'
+    pricing_last_saved:
+      type: integer
+      label: 'Pricing last saved timestamp'
+    model_pricing:
+      type: sequence
+      label: 'Model pricing'
+      sequence:
+        type: mapping
+        label: 'Model price'
+        mapping:
+          model_id:
+            type: string
+            label: 'Model ID'
+          input:
+            type: float
+            label: 'Input price per million tokens'
+          cached:
+            type: float
+            label: 'Cached input price per million tokens'
+          output:
+            type: float
+            label: 'Output price per million tokens'
+    enabled_skills:
+      type: sequence
+      label: 'Enabled skills'
+      sequence:
+        type: string
+        label: 'Skill machine name'

@@ -1,0 +1,33 @@
+machine_name: content_answer
+title: 'Buscar desde contenidos'
+btn_responsive_title: 'Ver contenidos consultados'
+group: core_drupal
+theme:
+  variables:
+    found: false
+    answer: ''
+    steps: []
+    outro: ''
+    matches: []
+handler:
+  class: 'Drupal\trotamundos_assistant\SkillLocal\ContentAnswer\ContentAnswerSkillHandler'
+  file: 'src/ContentAnswerSkillHandler.php'
+assets:
+  css:
+    - css/content_answer.css
+  dependencies:
+    - trotamundos_assistant/template.base
+chat_reply_fallback: 'He revisado los contenidos publicados y te respondo con lo que he encontrado.'
+description: 'Busca en los campos de los contenidos publicados, lo interpreta como texto plano y responde a la pregunta del usuario citando los contenidos encontrados.'
+provider:
+  requires_rag: true
+  intent: 'Usar cuando el usuario haga una pregunta cuya respuesta esté en el contenido publicado del sitio (guías, ayudas, artículos con texto enriquecido), no en conocimiento general.'
+  when_to_use:
+    - 'El usuario pregunta cómo, qué, dónde, cuándo o cuál sobre temas cubiertos por guías o ayudas del sitio (compra, pagos, garantía, devoluciones, envíos, productos).'
+    - 'La respuesta debe basarse en el contenido publicado del sitio, no en conocimiento general del modelo.'
+    - 'Redacta la respuesta en `answer` (o en chat_reply) basándote solo en los contenidos encontrados; si no hay coincidencias, indícalo con claridad.'
+    - 'Deja `answer` como párrafo introductorio breve (1-2 frases). NUNCA metas enumeraciones tipo "1) ... 2) ..." dentro de `answer`.'
+    - 'Cuando la respuesta sea una secuencia de pasos, requisitos o puntos clave, devuélvelos en `steps` como lista de objetos `{title, body}`: `title` es un enunciado corto y `body` el detalle. Si no procede enumerar, deja `steps` vacío.'
+    - 'Usa `outro` solo para un matiz, aviso o condición final; déjalo vacío si no aporta.'
+    - 'Devuelve en `sources` la lista de títulos EXACTOS de los contenidos que has usado como fuente (los que citas en la respuesta), para poder enlazarlos. Si no te has basado en ningún contenido concreto, deja `sources` vacío.'
+    - 'Opcionalmente, devuelve en `query` los términos del tema por si hay que buscar fuentes cuando no aportes `sources`.'

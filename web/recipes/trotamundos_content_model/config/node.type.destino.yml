@@ -1,0 +1,10 @@
+langcode: es
+status: true
+dependencies: {  }
+name: Destino
+type: destino
+description: 'Pueblos, paisajes y zonas de Colombia que forman parte de la oferta editorial y de experiencias.'
+help: 'Añade el contexto del lugar, su municipio y departamento, y una imagen representativa.'
+new_revision: true
+preview_mode: 1
+display_submitted: false

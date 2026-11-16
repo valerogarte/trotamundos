@@ -1,0 +1,26 @@
+machine_name: product_alternatives
+title: 'Mostrar alternativas'
+btn_responsive_title: 'Ver alternativas'
+group: ecommerce
+theme:
+  variables:
+    intro: ''
+    outro: ''
+    product_items: []
+handler:
+  class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\ProductAlternatives\ProductAlternativesSkillHandler'
+  file: 'src/ProductAlternativesSkillHandler.php'
+assets:
+  dependencies:
+    - trotamundos_assistant_ecommerce/skill.product_common
+dependencies:
+  modules:
+    - commerce_product
+chat_reply_fallback: 'Te muestro alternativas en el panel.'
+description: 'Muestra productos sustitutos o similares a una opción mencionada por el usuario.'
+provider:
+  requires_rag: true
+  intent: 'Usar cuando el usuario quiera alternativas, equivalentes o productos parecidos.'
+  when_to_use:
+    - 'El usuario pregunta por opciones similares a un producto.'
+    - 'El producto buscado no encaja y conviene proponer sustitutos.'

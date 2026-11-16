@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\media\MediaInterface;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function trotamundos_assistant_documents_entity_presave(EntityInterface $entity): void {
+  \Drupal::service('trotamundos_assistant_documents.extraction_manager')
+    ->enqueueEntity($entity);
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function trotamundos_assistant_documents_entity_update(EntityInterface $entity): void {
+  if (!$entity instanceof MediaInterface) {
+    return;
+  }
+
+  \Drupal::service('trotamundos_assistant_documents.extraction_manager')
+    ->enqueueMediaUpdate($entity);
+}

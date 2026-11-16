@@ -1,0 +1,13 @@
+name: 'Trotamundos 4'
+type: theme
+description: 'Un atlas para descubrir Colombia: mapas, bitácoras y lugares fuera del camino de siempre.'
+core_version_requirement: ^11
+base theme: false
+logo: logo.svg
+libraries:
+  - trotamundos_4/global
+regions:
+  highlighted: 'Avisos y mensajes'
+  breadcrumb: 'Ruta de navegación'
+  content: 'Contenido'
+  footer: 'Contenido adicional del pie'

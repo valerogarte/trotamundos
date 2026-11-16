@@ -1,0 +1,102 @@
+TROTAMUNDOS · GUÍA DE IDENTIDAD DIGITAL
+Edición 01 · Versión 1.1 · Primera revisión
+
+IDEA CENTRAL
+Viajar bonito. Sentir de verdad.
+Frase principal de la web: «Hay un lugar para ti».
+Propósito: descubrir destinos poco conocidos de Colombia, apoyar a los
+emprendedores turísticos y generar oportunidades para las comunidades locales.
+La dimensión humana y comunitaria es el centro de la narrativa; la marca va
+más allá de «viajar despacio».
+Líneas en exploración (propuestas de trabajo, no definitivas):
+«Descubrir Colombia. Transformar realidades.»
+«Viajes que dejan algo bueno.»
+«Una Colombia por descubrir. Muchas historias por impulsar.»
+Personalidad: cercana, serena, curiosa, cuidadosa y comprometida
+con las comunidades y los emprendedores locales.
+
+FIRMA
+La firma principal combina Cormorant Garamond 600 normal en «trota» y 500
+cursiva en «mundos». Su punto terracota es un acento de calidez.
+TROTA se explorará como marca corta (futura aplicación y nuevas líneas de
+negocio). Pendiente: revisar su disponibilidad legal y comercial.
+Usar la firma selva sobre marfil, la inversa marfil sobre selva o la versión
+monocroma carbón. Los SVG incluidos tienen trazados autónomos.
+Mantener las proporciones y un espacio libre equivalente a la altura de
+una «o». En la web: 46 px de altura de texto en escritorio y 34 px en móvil.
+Mínimo absoluto: 160 px de ancho. Símbolo: 32 px.
+No estirar, girar ni colocar sobre fondos de poco contraste.
+
+PALETA PRINCIPAL
+Selva       #173D32    RGB 23, 61, 50      Identidad, títulos y acciones.
+Marfil      #F5F0E6    RGB 245, 240, 230   Lienzo principal y aire.
+Terracota   #BF6846    RGB 191, 104, 70    Titulares grandes y acentos.
+Sol         #D3A75E    RGB 211, 167, 94    Detalles luminosos y sellos.
+Carbón      #242723    RGB 36, 39, 35      Lectura y monocromía.
+
+El gran protagonismo del color viene de las fotografías y los vídeos.
+La interfaz se mantiene limpia, minimalista y con mucho espacio:
+marfil 65 %, selva 22 %, terracota 6 %, sol 4 %, carbón 3 % (orientativo).
+Texto secundario: #55584E (6,4:1 sobre marfil).
+Para texto pequeño terracota sobre marfil, usar la variante de lectura
+#984C31. El terracota original no alcanza 4,5:1 sobre marfil.
+Sol funciona sobre selva; evitarlo como texto pequeño sobre marfil.
+WhatsApp usa su propio verde (#1F7A4D) para reconocerse al instante.
+Referencia AA: 4,5:1 para texto normal; 3:1 para texto grande.
+https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html
+
+TIPOGRAFÍA
+Cormorant Garamond, variable 300–700, normal y cursiva: titulares, firma,
+citas y notas editoriales. Pesos habituales 400 y 500; 600 en la firma.
+Manrope, variable 200–800, normal: lectura, navegación, controles, precios
+y datos. Peso 400 para leer; 600–750 para señalar.
+Legibilidad: lectura a 17 px (16 px en móvil) con interlineado 1,65;
+navegación, botones y precios de 15 a 16 px; etiquetas desde 13 px.
+Ningún texto por debajo de 13 px.
+Ambas fuentes se alojan localmente y se incluyen bajo SIL OFL 1.1.
+
+COMPOSICIÓN
+Identidad limpia, minimalista y elegante, con mucho espacio visual.
+Espaciado de referencia: 4, 8, 16, 24, 32, 48, 64 y 96 px.
+Contenido centrado hasta 1280 px; una columna en móvil.
+El vídeo de portada ocupa como máximo tres cuartos de la pantalla para que
+las experiencias empiecen justo debajo.
+Los arcos enmarcan paisajes y personas; las postales aportan memoria; los
+trazos finos aportan humanidad. No llenar cada espacio con decoración.
+Una acción principal por contexto, foco visible y controles de 44 px o más.
+Respetar siempre la preferencia de movimiento reducido.
+
+FOTOGRAFÍA Y VÍDEO
+Fotos y vídeos son los grandes protagonistas: paisajes, naturaleza,
+arquitectura, gastronomía, cultura y experiencias reales.
+Las personas detrás de cada experiencia, primero, y siempre con su permiso.
+Color natural, luz del lugar, encuadres tranquilos e imágenes auténticas.
+Para cada experiencia: paisaje, personas, alojamiento, la experiencia en
+acción, la mesa y un detalle propio del lugar. 10–12 fotos de al menos
+2000 px. Vídeo de portada 16:9 (mínimo 1920 × 1080, 10–20 s, sin texto
+incrustado) y versión vertical 9:16 para móvil y reels.
+Evitar filtros extremos, imágenes genéricas y texto sobre las fotos.
+
+VOZ
+Hablar de tú, con palabras sencillas, calidez, sensibilidad y respeto.
+Claro antes que poético en todo lo que ayuda a navegar.
+Sí: «¿Qué te gustaría descubrir?». Evitar: «¿Qué te pide el cuerpo?».
+Las personas en el centro; invitar sin presionar; describir sin
+superlativos; prometer con cuidado.
+Palabras afines: descubrir, sentir, comunidad, anfitriones, historia, contigo.
+
+WEB
+Menú: Experiencias · Destinos · Nuestra esencia · Ayuda, con acceso visible
+a WhatsApp y selector español / inglés.
+Cada experiencia tiene su ficha: galería, historia del destino y de sus
+anfitriones, plan y servicios incluidos, ubicación, duración y
+recomendaciones, precios, fechas y disponibilidad, políticas de reserva y
+cancelación, reserva y consulta por WhatsApp.
+
+CONTENIDO DEL KIT
+Guía completa en PDF, firmas en SVG y PNG, símbolo, paleta GPL, tokens CSS,
+fuentes WOFF2, esta referencia de texto y licencias de fuentes.
+
+FUENTE DE LOS ESTILOS
+La página /guia-de-marca y la web usan css/tokens.css del tema.
+Las pautas editoriales viven en brand.yml.

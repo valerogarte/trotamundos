@@ -1,0 +1,15 @@
+{#
+/**
+ * @file
+ * Clarification template for Trotamundos Assistant.
+ */
+#}
+<article class="trotamundos-assistant-template trotamundos-assistant-template--clarification">
+  <header class="trotamundos-assistant-template__header">
+    <p class="trotamundos-assistant-template__eyebrow">{{ title|default('Necesito algun dato mas'|t) }}</p>
+  </header>
+
+  {% if description is defined and description %}
+    <p class="trotamundos-assistant-template__description">{{ description }}</p>
+  {% endif %}
+</article>

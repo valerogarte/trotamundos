@@ -1,0 +1,79 @@
+.trotamundos-assistant-template--default {
+  min-height: 100%;
+  max-width: 900px;
+}
+
+.minsait-default-result {
+  display: grid;
+  gap: 20px;
+  border: 1px solid var(--minsait-color-ceramica);
+  border-radius: 8px;
+  padding: 24px;
+  background: var(--minsait-color-white);
+  box-shadow: 0 8px 24px rgba(var(--minsait-rgb-pruno-dark), 0.05);
+}
+
+.minsait-default-result__header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.minsait-default-result__eyebrow {
+  margin: 0;
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: var(--minsait-color-surface-accent);
+  color: var(--minsait-color-pruno);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.minsait-default-result__title {
+  margin: 0;
+  color: var(--minsait-color-pruno);
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.minsait-default-result__description {
+  margin: 0;
+  border: 1px solid var(--minsait-color-ceramica);
+  border-left: 5px solid var(--minsait-color-pruno);
+  border-radius: 8px;
+  padding: 22px 24px;
+  background: var(--minsait-color-surface-accent);
+  color: var(--minsait-color-pruno-dark);
+  font-size: 22px;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.minsait-default-result__content {
+  color: var(--minsait-color-pruno);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.minsait-default-result__content > *:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 700px) {
+  .minsait-default-result {
+    padding: 18px;
+  }
+
+  .minsait-default-result__title {
+    font-size: 14px;
+  }
+
+  .minsait-default-result__description {
+    padding: 18px;
+    font-size: 18px;
+  }
+}

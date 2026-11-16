@@ -1,0 +1,32 @@
+{#
+/**
+ * @file
+ * Shared suggestions panel for skill templates.
+ *
+ * Available variables:
+ * - notes: Optional clarifications about the result.
+ * - outro: Optional closing suggestion offered by the assistant.
+ */
+#}
+{% set suggestion_notes = notes|default('') %}
+{% set suggestion_outro = outro|default('') %}
+{% if suggestion_notes or suggestion_outro %}
+  <aside class="trotamundos-assistant-suggestions" aria-label="{{ 'Sugerencias'|t }}">
+    <h3 class="trotamundos-assistant-suggestions__title">
+      <span class="trotamundos-assistant-suggestions__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18h6" />
+          <path d="M10 21h4" />
+          <path d="M12 3a6 6 0 0 0-3.6 10.8c.5.4.8.9.9 1.5l.1.7h5.2l.1-.7c.1-.6.4-1.1.9-1.5A6 6 0 0 0 12 3Z" />
+        </svg>
+      </span>
+      {{ 'Sugerencias'|t }}
+    </h3>
+    {% if suggestion_notes %}
+      <p class="trotamundos-assistant-suggestions__notes"><strong>{{ 'Notas'|t }}:</strong> {{ suggestion_notes }}</p>
+    {% endif %}
+    {% if suggestion_outro %}
+      <p class="trotamundos-assistant-suggestions__outro">{{ suggestion_outro }}</p>
+    {% endif %}
+  </aside>
+{% endif %}

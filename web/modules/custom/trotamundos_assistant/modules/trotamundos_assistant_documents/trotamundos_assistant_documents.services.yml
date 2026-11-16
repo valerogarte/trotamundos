@@ -1,0 +1,33 @@
+services:
+  trotamundos_assistant_documents.discovery:
+    class: Drupal\trotamundos_assistant_documents\Service\DocumentConfigurationDiscovery
+    arguments:
+      - '@entity_type.manager'
+      - '@entity_field.manager'
+      - '@entity_type.bundle.info'
+
+  trotamundos_assistant_documents.pdf_text_extractor:
+    class: Drupal\trotamundos_assistant_documents\Service\PdfTextExtractor
+    arguments:
+      - '@file_system'
+      - '@logger.channel.trotamundos_assistant_documents'
+    tags:
+      - { name: trotamundos_assistant_documents.text_extractor }
+
+  trotamundos_assistant_documents.text_extractor_registry:
+    class: Drupal\trotamundos_assistant_documents\Service\DocumentTextExtractorRegistry
+    arguments:
+      - !tagged_iterator trotamundos_assistant_documents.text_extractor
+
+  trotamundos_assistant_documents.extraction_manager:
+    class: Drupal\trotamundos_assistant_documents\Service\DocumentExtractionManager
+    arguments:
+      - '@config.factory'
+      - '@entity_type.manager'
+      - '@queue'
+      - '@trotamundos_assistant_documents.text_extractor_registry'
+      - '@logger.channel.trotamundos_assistant_documents'
+
+  logger.channel.trotamundos_assistant_documents:
+    parent: logger.channel_base
+    arguments: ['trotamundos_assistant_documents']

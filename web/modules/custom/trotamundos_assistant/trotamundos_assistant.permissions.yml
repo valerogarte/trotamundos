@@ -1,0 +1,9 @@
+administer trotamundos assistant settings:
+  title: 'Administer Trotamundos Assistant settings'
+  description: 'Configure the embedded Trotamundos Assistant assistant.'
+  restrict access: true
+
+view trotamundos assistant usage:
+  title: 'Ver uso de Trotamundos Assistant'
+  description: 'Ver el uso de tokens y los costes estimados registrados por Trotamundos Assistant.'
+  restrict access: true

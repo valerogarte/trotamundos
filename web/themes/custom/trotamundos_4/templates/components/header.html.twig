@@ -1,0 +1,8 @@
+{% import '@trotamundos_4/components/icons.html.twig' as icons %}
+<header class="tm4-header" data-tm4-header><div class="tm4-header__inner">
+  <a class="tm4-wordmark" href="{{ front_page }}" aria-label="{{ 'Trotamundos, inicio'|t }}"><img src="{{ tm4_path }}/logo.svg" alt="" width="48" height="48"><span>TROTA<br>MUNDOS</span></a>
+  <span class="tm4-header__signature">{{ 'POR JUAN TROTA MUNDOS'|t }}</span>
+  <button class="tm4-menu-toggle" type="button" data-tm4-menu-toggle aria-controls="tm4-navigation" aria-expanded="false" aria-label="{{ 'Abrir menú'|t }}"><span></span><span></span></button>
+  <nav class="tm4-navigation" id="tm4-navigation" data-tm4-menu aria-label="{{ 'Navegación principal'|t }}"><a href="{{ front_page }}#atlas"><span>01</span>{{ 'Explorar el mapa'|t }} {{ icons.icon('arrow') }}</a><a href="{{ front_page }}#experiencias"><span>02</span>{{ 'Los lugares'|t }} {{ icons.icon('arrow') }}</a><a href="{{ front_page }}#esencia"><span>03</span>{{ 'La bitácora'|t }} {{ icons.icon('arrow') }}</a><a href="{{ front_page }}#preguntas"><span>04</span>{{ 'Antes de salir'|t }} {{ icons.icon('arrow') }}</a></nav>
+  <div class="tm4-header__bottom"><span class="tm4-header__country">CO<span aria-hidden="true">↗</span></span><p>{{ 'Un país.'|t }}<br>{{ 'Mil formas de descubrirlo.'|t }}</p>{% if tm4_brand_guide_url %}<a href="{{ tm4_brand_guide_url }}">{{ 'Guía de marca'|t }} {{ icons.icon('diagonal') }}</a>{% endif %}</div>
+</div></header>

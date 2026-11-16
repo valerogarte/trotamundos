@@ -1,0 +1,27 @@
+machine_name: product_summary
+title: 'Resumir una ficha de producto'
+btn_responsive_title: 'Ver resumen'
+group: ecommerce
+theme:
+  variables:
+    outro: ''
+    product_items: []
+    summary_points: []
+handler:
+  class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\ProductSummary\ProductSummarySkillHandler'
+  file: 'src/ProductSummarySkillHandler.php'
+assets:
+  dependencies:
+    - trotamundos_assistant_ecommerce/skill.product_common
+dependencies:
+  modules:
+    - commerce_product
+chat_reply_fallback: 'Te resumo la ficha en el panel.'
+description: 'Responde detalles, atributos e información principal de un producto concreto en puntos claros.'
+provider:
+  requires_rag: true
+  intent: 'Usar cuando el usuario pregunte por detalles, atributos, características o resumen de un producto específico.'
+  when_to_use:
+    - 'El usuario pregunta por las características de un producto.'
+    - 'El usuario pregunta por colores, tallas, materiales, especificaciones, precio, disponibilidad u otros atributos de un producto concreto.'
+    - 'El usuario pide un resumen, pros, contras o datos clave de una ficha.'

@@ -1,0 +1,7 @@
+trotamundos_brand.guide:
+  path: '/guia-de-marca'
+  defaults:
+    _controller: '\Drupal\trotamundos_brand\Controller\BrandGuideController::guide'
+    _title: 'Guía de marca'
+  requirements:
+    _permission: 'access content'

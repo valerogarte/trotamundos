@@ -1,0 +1,55 @@
+{% import '@trotamundos_2/components/icons.html.twig' as icons %}
+{% include '@trotamundos_2/components/header.html.twig' %}
+<main id="main-content" tabindex="-1">
+  <section class="tm2-hero tm2-container" aria-labelledby="tm2-hero-title">
+    <div class="tm2-hero__copy">
+      <p class="tm2-eyebrow tm2-hero__eyebrow"><span class="tm2-pulse" aria-hidden="true"></span>{{ 'COLOMBIA. FUERA DE LO DE SIEMPRE.'|t }}</p>
+      <h1 id="tm2-hero-title">{{ 'QUE EL'|t }}<br>{{ 'VIAJE TE'|t }}<br><span>{{ 'MUEVA.'|t }}</span></h1>
+      <p class="tm2-hero__description">{{ 'Pueblos que sorprenden. Naturaleza que abraza. Escapadas que se quedan contigo.'|t }}<strong>{{ 'Hay otra Colombia esperándote.'|t }}</strong></p>
+      <a class="tm2-button tm2-button--primary" href="#experiencias">{{ 'Encuentra tu escapada'|t }} {{ icons.icon('diagonal') }}</a>
+      <div class="tm2-hero__footnote"><span aria-hidden="true">↳</span><p>{{ 'Con la mirada de Juan Trota Mundos.'|t }}<br><span>{{ 'Con todo por descubrir.'|t }}</span></p></div>
+    </div>
+    <div class="tm2-hero__visual">
+      <span class="tm2-hero__edition">COLOMBIA / {{ 'OTRAS FORMAS DE VIAJAR'|t }}</span>
+      <figure class="tm2-hero__photo">
+        <img src="{{ tm2_path }}/assets/images/hero-cocora.webp" alt="{{ 'Palmas de cera entre las montañas del Valle de Cocora, Quindío.'|t }}" width="1600" height="1067" fetchpriority="high" decoding="async">
+        <figcaption>{{ icons.icon('pin') }} {{ 'Valle de Cocora, Quindío'|t }} <span>CO—01</span></figcaption>
+      </figure>
+      <div class="tm2-hero__badge"><span>{{ 'MENOS'|t }}<br>{{ 'PRISA.'|t }}</span>{{ icons.icon('diagonal') }}<span>{{ 'MÁS'|t }}<br>{{ 'COLOMBIA.'|t }}</span></div>
+      <span class="tm2-hero__side">{{ 'NO TODOS LOS CAMINOS ESTÁN EN EL MAPA.'|t }}</span>
+    </div>
+  </section>
+
+  {% if page.highlighted %}<div class="tm2-container tm2-messages">{{ page.highlighted }}</div>{% endif %}
+
+  <div class="tm2-ribbon" aria-label="{{ 'El espíritu Trotamundos'|t }}"><div class="tm2-container"><span>{{ 'NO ES IR MÁS LEJOS.'|t }}</span>{{ icons.icon('sun') }}<strong>{{ 'ES SENTIR MÁS CERCA.'|t }}</strong>{{ icons.icon('sun') }}<span>100 % COLOMBIA</span></div></div>
+
+  <section class="tm2-experiences tm2-container" id="experiencias" aria-labelledby="tm2-experiences-title" data-tm2-experiences>
+    <div class="tm2-section-heading"><div><p class="tm2-eyebrow">01 / {{ 'ELIGE LO QUE TE MUEVE'|t }}</p><h2 id="tm2-experiences-title">{{ 'SAL DE'|t }}<br><span>{{ 'LO DE SIEMPRE.'|t }}</span></h2></div><p>{{ 'Un pueblo al que no has ido. Una pausa que te debes. Un paisaje que te cambia el día. Empieza por aquí.'|t }}</p></div>
+    <div class="tm2-filter-bar"><div class="tm2-filters" role="group" aria-label="{{ 'Filtrar ideas de viaje'|t }}"><button type="button" data-tm2-filter="all" aria-pressed="true">{{ 'Todo por descubrir'|t }}</button><button type="button" data-tm2-filter="pueblos" aria-pressed="false">{{ 'Pueblos'|t }}</button><button type="button" data-tm2-filter="bienestar" aria-pressed="false">{{ 'Bienestar'|t }}</button><button type="button" data-tm2-filter="naturaleza" aria-pressed="false">{{ 'Naturaleza'|t }}</button></div><span data-tm2-results>{{ '3 ideas de viaje'|t }}</span></div>
+    <p class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-tm2-status></p>
+    <div class="tm2-trip-grid" id="destinos">{% for experience in tm2_experiences %}{% include '@trotamundos_2/components/experience-card.html.twig' with {experience: experience} %}{% endfor %}</div>
+    <p class="tm2-experiences__note"><span aria-hidden="true">↗</span>{{ 'Una primera selección para inspirarte. Estamos preparando nuestras experiencias y su disponibilidad.'|t }}</p>
+  </section>
+
+  <section class="tm2-essence" id="esencia" aria-labelledby="tm2-essence-title">
+    <div class="tm2-container">
+      <div class="tm2-essence__heading"><p class="tm2-eyebrow">02 / {{ 'LA MANERA TROTAMUNDOS'|t }}</p><span aria-hidden="true">↗</span></div>
+      <h2 id="tm2-essence-title">{{ 'VOLVER CON'|t }}<br>{{ 'ALGO MÁS QUE'|t }} <span>{{ 'FOTOS.'|t }}</span></h2>
+      <div class="tm2-essence__bottom"><p class="tm2-essence__intro">{{ 'Nos mueve esa Colombia que aparece cuando te sales del camino de siempre. La de las conversaciones largas, los lugares pequeños y las ganas de quedarse un poco más.'|t }}</p><div class="tm2-values"><article><span>01</span><div><h3>{{ 'Lugares con algo que contar.'|t }}</h3><p>{{ 'Pueblos, paisajes y rincones con identidad propia.'|t }}</p></div></article><article><span>02</span><div><h3>{{ 'Una mirada cercana.'|t }}</h3><p>{{ 'La curiosidad de Juan Trota Mundos como punto de partida.'|t }}</p></div></article><article><span>03</span><div><h3>{{ 'Tiempo para estar.'|t }}</h3><p>{{ 'Menos planes por cumplir. Más espacio para disfrutar.'|t }}</p></div></article></div></div>
+    </div>
+  </section>
+
+  <section class="tm2-notebook tm2-container" aria-labelledby="tm2-notebook-title">
+    <div class="tm2-notebook__visual"><img src="{{ tm2_path }}/assets/images/pueblo.webp" alt="{{ 'Fachadas tradicionales y balcones de colores en Concepción, Antioquia.'|t }}" width="1100" height="825" loading="lazy" decoding="async"><span>CO / CONCEPCIÓN</span></div>
+    <div class="tm2-notebook__copy"><p class="tm2-eyebrow">03 / {{ 'UNA INVITACIÓN A MIRAR DISTINTO'|t }}</p><h2 id="tm2-notebook-title">{{ 'LOS MEJORES'|t }}<br>{{ 'DESVÍOS NO'|t }}<br><span>{{ 'SE PLANEAN.'|t }}</span></h2><p>{{ 'A veces basta cambiar de calle, aceptar una recomendación o preguntar qué hay después de la siguiente montaña. Por ahí empieza nuestra forma de viajar.'|t }}</p><button class="tm2-text-link" type="button" data-tm2-dialog-open="tm2-trip-concepcion">{{ 'Date una vuelta por Concepción'|t }} {{ icons.icon('diagonal') }}</button></div>
+  </section>
+
+  <section class="tm2-faq tm2-container" aria-labelledby="tm2-faq-title"><div><p class="tm2-eyebrow">{{ 'ANTES DE SALIR'|t }}</p><h2 id="tm2-faq-title">{{ 'POR SI TE'|t }}<br><span>{{ 'LO PREGUNTAS.'|t }}</span></h2></div><div class="tm2-faq__list"><details><summary>{{ '¿Qué experiencias estamos preparando?'|t }}{{ icons.icon('plus') }}</summary><p>{{ 'Nuestro primer paso está en Concepción y en los termales, con opciones de alojamiento y paquetes. Iremos compartiendo los detalles de cada propuesta.'|t }}</p></details><details><summary>{{ '¿Puedo reservar ya?'|t }}{{ icons.icon('plus') }}</summary><p>{{ 'Estamos preparando las primeras experiencias. Esta selección te permite conocer los lugares que nos inspiran; las fechas, los precios y la disponibilidad se anunciarán cuando estén confirmados.'|t }}</p></details><details><summary>{{ '¿Quién está detrás de Trotamundos?'|t }}{{ icons.icon('plus') }}</summary><p>{{ 'Juan Trota Mundos y una forma muy personal de descubrir Colombia: con curiosidad, cercanía y tiempo para disfrutar del camino.'|t }}</p></details></div></section>
+
+  <section class="tm2-closing" aria-labelledby="tm2-closing-title"><div class="tm2-container"><p class="tm2-eyebrow">{{ 'EL PAÍS ESTÁ AHÍ FUERA.'|t }}</p><h2 id="tm2-closing-title">{{ '¿Y SI NOS'|t }}<br>{{ 'VAMOS'|t }} <span>{{ 'POR AHÍ?'|t }}</span></h2><a class="tm2-button tm2-button--primary" href="#experiencias">{{ 'Vamos a descubrirlo'|t }} {{ icons.icon('diagonal') }}</a><span class="tm2-closing__arrow" aria-hidden="true">↗</span></div></section>
+
+  <div class="tm2-container tm2-front-content">{{ page.content|without('trotamundos_2_content', 'system_main') }}</div>
+  {% for experience in tm2_experiences %}{% include '@trotamundos_2/components/experience-dialog.html.twig' with {experience: experience} %}{% endfor %}
+</main>
+{% include '@trotamundos_2/components/footer.html.twig' %}

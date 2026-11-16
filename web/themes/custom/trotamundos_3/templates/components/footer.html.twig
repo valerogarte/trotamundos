@@ -1,0 +1,6 @@
+{% import '@trotamundos_3/components/icons.html.twig' as icons %}
+<footer class="tm3-footer"><div class="tm3-container">
+  <div class="tm3-footer__top"><div><a class="tm3-wordmark" href="{{ front_page }}" aria-label="{{ 'Trotamundos, inicio'|t }}"><img src="{{ tm3_path }}/logo.svg" alt="" width="40" height="40"><span>trotamundos<span class="tm3-wordmark__dot">.</span></span></a><p>{{ 'De Colombia, con ganas'|t }}<br>{{ 'de compartirla contigo.'|t }}</p></div><nav aria-label="{{ 'Navegación del pie'|t }}"><a href="{{ front_page }}#experiencias">{{ 'Lugares por descubrir'|t }}</a><a href="{{ front_page }}#esencia">{{ 'La mirada de Juan'|t }}</a><a href="{{ front_page }}#preguntas">{{ 'Antes de viajar'|t }}</a>{% if tm3_brand_guide_url %}<a href="{{ tm3_brand_guide_url }}">{{ 'Nuestra guía de marca'|t }} {{ icons.icon('diagonal') }}</a>{% endif %}</nav><a class="tm3-footer__up" href="#main-content" aria-label="{{ 'Volver al inicio del contenido'|t }}">{{ icons.icon('down') }}</a></div>
+  {% if page.footer %}<div class="tm3-footer__extra">{{ page.footer }}</div>{% endif %}
+  <div class="tm3-footer__bottom"><span>© {{ 'now'|date('Y') }} {{ 'Juan Trota Mundos'|t }}</span><span>{{ 'Hecho de lugares y de personas.'|t }}</span><a href="{{ tm3_path }}/assets/CREDITS.txt">{{ 'Fotografía y créditos'|t }}</a></div>
+</div></footer>

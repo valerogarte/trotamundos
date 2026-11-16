@@ -1,0 +1,47 @@
+{#
+/**
+ * @file
+ * Quick search on the edge of the home video: destination, style and month.
+ * Submits to the catalog, which applies the same filters.
+ */
+#}
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+<div class="discovery container">
+  <form class="discovery-bar" action="{{ tm.catalog_url }}" method="get" role="search" aria-label="{{ 'Buscar experiencias'|t }}" data-clean-query>
+    <div class="discovery-bar__field">
+      <label for="discovery-destino">{{ icons.icon('pin') }} {{ 'Destino'|t }}</label>
+      <select id="discovery-destino" name="destino">
+        <option value="">{{ 'Todos los destinos'|t }}</option>
+        {% for region in tm_discovery.destinations %}
+          <optgroup label="{{ region.label }}">
+            {% for department in region.departments %}
+              <option value="{{ department.value }}">{{ department.label }}</option>
+              {% for municipality in department.municipalities %}
+                <option value="{{ municipality.value }}">&nbsp;&nbsp;{{ municipality.label }}</option>
+              {% endfor %}
+            {% endfor %}
+          </optgroup>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="discovery-bar__field">
+      <label for="discovery-estilo">{{ icons.icon('leaf') }} {{ 'Estilo de viaje'|t }}</label>
+      <select id="discovery-estilo" name="estilo">
+        <option value="">{{ 'Todos los estilos'|t }}</option>
+        {% for style in tm_discovery.styles %}
+          <option value="{{ style.slug }}">{{ style.label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="discovery-bar__field">
+      <label for="discovery-fecha">{{ icons.icon('calendar') }} {{ 'Fecha'|t }}</label>
+      <select id="discovery-fecha" name="fecha">
+        <option value="">{{ 'Cualquier fecha'|t }}</option>
+        {% for month in tm_discovery.months %}
+          <option value="{{ month.value }}">{{ month.label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button class="button button--primary discovery-bar__submit" type="submit">{{ icons.icon('search') }} {{ 'Buscar experiencias'|t }}</button>
+  </form>
+</div>

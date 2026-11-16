@@ -1,0 +1,36 @@
+{#
+/**
+ * @file
+ * Site header: larger wordmark, four-item menu, language and WhatsApp.
+ */
+#}
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+<header class="site-header{{ header_overlay|default(false) ? ' site-header--overlay' : '' }}" data-site-header>
+  <div class="site-header__inner container">
+    <a class="wordmark" href="{{ path('<front>') }}" aria-label="{{ 'Trotamundos, inicio'|t }}">
+      <span class="wordmark__name" aria-hidden="true">trota<span class="wordmark__italic">mundos</span><span class="wordmark__dot">.</span></span>
+      <span class="wordmark__signature" aria-hidden="true">{{ 'POR JUAN TROTA MUNDOS'|t }}</span>
+    </a>
+
+    <nav class="primary-navigation" id="trotamundos-navigation" aria-label="{{ 'Navegación principal'|t }}">
+      {% for item in tm.navigation %}
+        <a class="primary-navigation__link{{ item.active ? ' is-active' : '' }}" href="{{ item.url }}"{% if item.current %} aria-current="page"{% endif %}>{{ item.label }}</a>
+      {% endfor %}
+      <div class="primary-navigation__extra">
+        {% include '@trotamundos/components/language-switch.html.twig' %}
+        <a class="button button--whatsapp" href="{{ tm.whatsapp_url }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }} {{ 'Escríbenos por WhatsApp'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+      </div>
+    </nav>
+
+    <div class="header-tools">
+      {% include '@trotamundos/components/language-switch.html.twig' %}
+      <a class="whatsapp-button" href="{{ tm.whatsapp_url }}" target="_blank" rel="noopener">
+        {{ icons.icon('whatsapp') }}<span class="whatsapp-button__label">WhatsApp</span><span class="visually-hidden"> {{ 'Escríbenos por WhatsApp'|t }} ({{ 'se abre en una pestaña nueva'|t }})</span>
+      </a>
+      <button class="menu-toggle" type="button" data-menu-toggle aria-controls="trotamundos-navigation" aria-expanded="false">
+        <span class="menu-toggle__label">{{ 'Menú'|t }}</span>
+        <span class="menu-toggle__lines" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,1400 @@
+.trotamundos-assistant-template {
+  --skill-accent: var(--minsait-color-pruno);
+  --skill-accent-soft: var(--minsait-color-surface-accent);
+  --skill-border: var(--minsait-color-ceramica);
+  --skill-text: var(--minsait-color-pruno-dark);
+  --skill-muted: var(--minsait-color-pruno);
+  --skill-surface: var(--minsait-color-white);
+
+  max-width: 1120px;
+  color: var(--skill-text);
+}
+
+.trotamundos-assistant-template--product-recommendations {
+  --skill-accent: var(--minsait-color-pruno);
+  --skill-accent-soft: var(--minsait-color-surface-accent);
+}
+
+.trotamundos-assistant-template--product-results {
+  --skill-accent: var(--minsait-color-pruno);
+  --skill-accent-soft: var(--minsait-color-surface-soft);
+}
+
+.trotamundos-assistant-template--product-alternatives {
+  --skill-accent: var(--minsait-color-pruno);
+  --skill-accent-soft: var(--minsait-color-surface-soft);
+}
+
+.trotamundos-assistant-template--product-summary {
+  --skill-accent: var(--minsait-color-pruno);
+  --skill-accent-soft: var(--minsait-color-surface-soft);
+}
+
+.trotamundos-assistant-template--product-comparison {
+  --skill-accent: var(--minsait-color-pruno);
+  --skill-accent-soft: var(--minsait-color-surface-soft);
+}
+
+.trotamundos-assistant-template--shopping-cart {
+  --skill-accent: var(--minsait-color-pruno);
+  --skill-accent-soft: var(--minsait-color-surface-soft);
+}
+
+.trotamundos-assistant-template--payment {
+  --skill-accent: var(--minsait-color-pruno);
+  --skill-accent-soft: var(--minsait-color-surface-soft);
+}
+
+.trotamundos-assistant-template--cart-panel {
+  --skill-accent: var(--minsait-color-pruno);
+  --skill-accent-soft: var(--minsait-color-surface-soft);
+}
+
+.trotamundos-assistant-template--user-profile {
+  --skill-accent: var(--minsait-color-pruno);
+  --skill-accent-soft: var(--minsait-color-surface-accent);
+}
+
+.trotamundos-assistant-template__header {
+  margin-block-end: 18px;
+}
+
+.trotamundos-assistant-template__eyebrow {
+  width: fit-content;
+  margin: 0 0 10px;
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: var(--skill-accent-soft);
+  color: var(--skill-accent);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.trotamundos-assistant-template__title {
+  max-width: 840px;
+  margin: 0;
+  color: var(--skill-text);
+  font-size: 30px;
+  font-weight: 850;
+  line-height: 1.12;
+}
+
+.trotamundos-assistant-template__description,
+.trotamundos-assistant-template__intro,
+.trotamundos-assistant-template__outro {
+  max-width: 820px;
+  margin: 0 0 18px;
+  color: var(--minsait-color-pruno);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.trotamundos-assistant-template__outro {
+  margin-block-start: 18px;
+  border-top: 1px solid var(--skill-border);
+  padding-top: 16px;
+  color: var(--skill-muted);
+}
+
+.trotamundos-assistant-template__grid {
+  display: grid;
+  /* auto-fill keeps empty tracks so a single result does not span the row. */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  margin-block: 22px;
+}
+
+.trotamundos-assistant-template__card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  padding: 18px;
+  border: 1px solid var(--skill-border);
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--skill-surface), var(--minsait-color-surface-accent));
+  box-shadow: 0 10px 28px rgba(var(--minsait-rgb-pruno-dark), 0.07);
+}
+
+.trotamundos-assistant-template__card::before {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 4px;
+  background: var(--skill-accent);
+  content: "";
+}
+
+.trotamundos-assistant-template__card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-block-end: 14px;
+}
+
+.trotamundos-assistant-template__pill {
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: var(--skill-accent-soft);
+  color: var(--skill-accent);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.trotamundos-assistant-template__card-title {
+  margin: 0 0 10px;
+  color: var(--skill-accent);
+  font-size: 17px;
+  font-weight: 850;
+  line-height: 1.28;
+}
+
+.trotamundos-assistant-template__card-body {
+  margin: 0;
+  color: var(--minsait-color-pruno);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.minsait-skill-product-card {
+  display: flex;
+  min-width: 0;
+  min-height: 100%;
+  overflow: hidden;
+  flex-direction: column;
+  border: 1px solid var(--minsait-color-ceramica);
+  border-radius: 8px;
+  background: var(--minsait-color-white);
+  color: var(--minsait-color-pruno-dark);
+  box-shadow: 0 10px 28px rgba(var(--minsait-rgb-pruno-dark), 0.06);
+}
+
+.minsait-skill-product-card__media {
+  display: grid;
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  place-items: center;
+  border-bottom: 1px solid var(--minsait-color-ceramica);
+  background: var(--minsait-color-surface-soft);
+  text-decoration: none;
+}
+
+.minsait-skill-product-card .hidden {
+  display: none;
+}
+
+.minsait-skill-product-card__media img {
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.minsait-skill-product-card:hover .minsait-skill-product-card__media img {
+  transform: scale(1.04);
+}
+
+.minsait-skill-product-card__favorite {
+  display: inline-grid;
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(var(--minsait-rgb-white), 0.92);
+  color: var(--minsait-color-pruno);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  opacity: 0;
+  box-shadow: 0 6px 18px rgba(var(--minsait-rgb-pruno-dark), 0.16);
+  transition: opacity 0.18s ease, transform 0.18s ease, background 0.15s ease;
+  transform: translateY(4px);
+}
+
+.minsait-skill-product-card:hover .minsait-skill-product-card__favorite,
+.minsait-skill-product-card__favorite:focus,
+.minsait-skill-product-card__favorite.is-favorite {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.minsait-skill-product-card__favorite:hover,
+.minsait-skill-product-card__favorite:focus {
+  background: var(--minsait-color-white);
+}
+
+.minsait-skill-product-card__favorite.is-favorite {
+  color: var(--minsait-color-fucsia);
+}
+
+.minsait-skill-product-card__favorite.is-loading,
+.minsait-skill-product-card__action.is-loading {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.minsait-skill-product-card__placeholder {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 4px solid var(--minsait-color-ceramica);
+  border-radius: 4px;
+}
+
+.minsait-skill-product-card__placeholder::before {
+  width: 18px;
+  height: 12px;
+  clip-path: polygon(0 100%, 35% 45%, 50% 70%, 68% 28%, 100% 100%);
+  background: var(--minsait-color-ceramica);
+  content: "";
+}
+
+.minsait-skill-product-card__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 14px 16px 16px;
+}
+
+.minsait-skill-product-card__meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-block-end: 8px;
+  color: var(--minsait-color-pruno);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.minsait-skill-product-card__store,
+.minsait-skill-product-card__store:hover,
+.minsait-skill-product-card__store:focus {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--minsait-color-pruno);
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.minsait-skill-product-card__store:hover,
+.minsait-skill-product-card__store:focus {
+  color: var(--minsait-color-pruno);
+  text-decoration: underline;
+}
+
+.minsait-skill-product-card__rating {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 3px;
+  color: var(--minsait-color-pruno);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.minsait-skill-product-card__title {
+  margin: 0 0 14px;
+  color: var(--minsait-color-pruno-dark);
+  font-size: 16px;
+  font-weight: 850;
+  line-height: 1.28;
+}
+
+.minsait-skill-product-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.minsait-skill-product-card:hover .minsait-skill-product-card__title a,
+.minsait-skill-product-card__title a:focus {
+  color: var(--minsait-color-pruno);
+}
+
+.minsait-skill-product-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  border-top: 1px dashed var(--minsait-color-ceramica);
+  padding-top: 14px;
+}
+
+.minsait-skill-product-card__price {
+  color: var(--minsait-color-pruno);
+  font-size: 19px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.minsait-skill-product-card__action {
+  display: inline-grid;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 8px;
+  border: 0;
+  background: var(--minsait-color-surface-accent);
+  color: var(--minsait-color-pruno);
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.minsait-skill-product-card__action:hover,
+.minsait-skill-product-card__action:focus {
+  background: var(--minsait-color-pruno);
+  color: var(--minsait-color-white);
+  text-decoration: none;
+}
+
+.trotamundos-assistant-cart {
+  display: grid;
+  gap: 14px;
+  margin-block: 22px;
+}
+
+.trotamundos-assistant-cart__notice {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  max-width: 860px;
+  margin-block: 20px 18px;
+  padding: 14px 16px;
+  border: 1px solid var(--minsait-color-ceramica);
+  border-radius: 8px;
+  background: var(--minsait-color-surface-soft);
+  color: var(--minsait-color-pruno-dark);
+  box-shadow: 0 8px 22px rgba(var(--minsait-rgb-pruno), 0.08);
+}
+
+.trotamundos-assistant-cart__notice-icon {
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--skill-accent);
+  color: var(--minsait-color-white);
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.trotamundos-assistant-cart__notice strong,
+.trotamundos-assistant-cart__notice span {
+  display: block;
+}
+
+.trotamundos-assistant-cart__notice strong {
+  margin-block-end: 3px;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.trotamundos-assistant-cart__notice span {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.minsait-skill-product-card--confirm {
+  display: grid;
+  max-width: 860px;
+  min-height: 0;
+  grid-template-columns: minmax(160px, 220px) minmax(0, 1fr);
+  border-color: var(--minsait-color-ceramica);
+  box-shadow: 0 12px 32px rgba(var(--minsait-rgb-pruno), 0.1);
+}
+
+.minsait-skill-product-card--confirm .minsait-skill-product-card__media {
+  aspect-ratio: auto;
+  min-height: 220px;
+  border-right: 1px solid var(--minsait-color-ceramica);
+  border-bottom: 0;
+}
+
+.minsait-skill-product-card--confirm .minsait-skill-product-card__media img {
+  padding: 10px;
+}
+
+.minsait-skill-product-card--confirm .minsait-skill-product-card__content {
+  min-width: 0;
+}
+
+.trotamundos-assistant-cart__status {
+  display: inline-flex;
+  width: fit-content;
+  margin-block-end: 10px;
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: var(--minsait-color-surface-soft);
+  color: var(--minsait-color-pruno-dark);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.minsait-skill-product-card__summary {
+  margin: -4px 0 14px;
+  color: var(--minsait-color-pruno);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.minsait-skill-product-card__footer--confirm {
+  align-items: stretch;
+  flex-direction: column;
+}
+
+.minsait-skill-product-card__purchase {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.minsait-skill-product-card__quantity {
+  color: var(--skill-muted);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.trotamundos-assistant-cart__button,
+.trotamundos-assistant-cart__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border: 0;
+  border-radius: 8px;
+  padding: 0 16px;
+  background: var(--skill-accent);
+  color: var(--minsait-color-white);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.trotamundos-assistant-cart__button:hover,
+.trotamundos-assistant-cart__button:focus,
+.trotamundos-assistant-cart__link:hover,
+.trotamundos-assistant-cart__link:focus {
+  background: var(--minsait-color-pruno-dark);
+  color: var(--minsait-color-white);
+  text-decoration: none;
+}
+
+.trotamundos-assistant-cart__button {
+  width: 100%;
+  min-height: 46px;
+  box-shadow: 0 10px 24px rgba(var(--minsait-rgb-pruno), 0.22);
+}
+
+.trotamundos-assistant-cart__button.is-loading,
+.trotamundos-assistant-cart__link.is-loading,
+.trotamundos-assistant-payment__link.is-loading {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.trotamundos-assistant-cart__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-block-start: 18px;
+}
+
+.trotamundos-assistant-payment {
+  display: grid;
+  gap: 18px;
+  margin-block: 22px;
+}
+
+.trotamundos-assistant-payment__panel {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--skill-border);
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--minsait-color-white), var(--skill-accent-soft));
+  box-shadow: 0 10px 28px rgba(var(--minsait-rgb-pruno-dark), 0.06);
+}
+
+.trotamundos-assistant-payment__title {
+  margin: 0;
+  color: var(--skill-text);
+  font-size: 18px;
+  font-weight: 850;
+  line-height: 1.3;
+}
+
+.trotamundos-assistant-payment__copy {
+  margin: 0;
+  color: var(--minsait-color-pruno);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.trotamundos-assistant-payment__summary-note {
+  margin: -4px 0 0;
+  color: var(--skill-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.trotamundos-assistant-payment__product {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--minsait-color-ceramica);
+  border-radius: 8px;
+  background: var(--minsait-color-white);
+}
+
+.trotamundos-assistant-payment__product-media {
+  display: grid;
+  width: 112px;
+  aspect-ratio: 1;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--skill-accent-soft);
+}
+
+.trotamundos-assistant-payment__product-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.trotamundos-assistant-payment__product-placeholder {
+  padding: 10px;
+  color: var(--skill-muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+.trotamundos-assistant-payment__product-copy {
+  min-width: 0;
+}
+
+.trotamundos-assistant-payment__product-title {
+  margin: 0;
+  color: var(--skill-text);
+  font-size: 17px;
+  font-weight: 850;
+  line-height: 1.3;
+}
+
+.trotamundos-assistant-payment__product-description {
+  margin: 8px 0 0;
+  color: var(--skill-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.trotamundos-assistant-payment__product-details {
+  display: grid;
+  gap: 9px;
+  min-width: 138px;
+  margin: 0;
+  color: var(--skill-text);
+  font-size: 13px;
+}
+
+.trotamundos-assistant-payment__product-details div {
+  display: grid;
+  gap: 2px;
+}
+
+.trotamundos-assistant-payment__product-details dt {
+  color: var(--skill-muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.trotamundos-assistant-payment__product-details dd {
+  margin: 0;
+  font-weight: 850;
+}
+
+.trotamundos-assistant-payment__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.trotamundos-assistant-payment__button,
+.trotamundos-assistant-payment__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  border-radius: 8px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 850;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.trotamundos-assistant-payment__button {
+  background: var(--skill-accent);
+  color: var(--minsait-color-white);
+}
+
+.trotamundos-assistant-payment__link {
+  border: 1px solid var(--skill-border);
+  background: var(--minsait-color-white);
+  color: var(--skill-accent);
+}
+
+.trotamundos-assistant-payment__button:hover,
+.trotamundos-assistant-payment__button:focus {
+  background: var(--minsait-color-pruno-dark);
+  color: var(--minsait-color-white);
+  text-decoration: none;
+}
+
+.trotamundos-assistant-payment__link:hover,
+.trotamundos-assistant-payment__link:focus {
+  border-color: var(--skill-accent);
+  color: var(--skill-accent);
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .trotamundos-assistant-payment__product {
+    grid-template-columns: 80px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .trotamundos-assistant-payment__product-media {
+    width: 80px;
+  }
+
+  .trotamundos-assistant-payment__product-details {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding-top: 12px;
+    border-top: 1px solid var(--minsait-color-ceramica);
+  }
+}
+
+@media (max-width: 760px) {
+  .minsait-skill-product-card--confirm {
+    grid-template-columns: 1fr;
+  }
+
+  .minsait-skill-product-card--confirm .minsait-skill-product-card__media {
+    aspect-ratio: 16 / 10;
+    min-height: 0;
+    max-height: 260px;
+    border-right: 0;
+    border-bottom: 1px solid var(--minsait-color-ceramica);
+  }
+}
+
+.trotamundos-assistant-cart-panel {
+  display: grid;
+  gap: 22px;
+  max-width: 1120px;
+  margin-block: 22px;
+}
+
+.trotamundos-assistant-cart-panel__group {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 324px);
+  column-gap: 22px;
+  row-gap: 0;
+  align-items: start;
+  border: 1px solid rgba(var(--minsait-rgb-pruno), 0.16);
+  border-radius: 8px;
+  background: rgba(var(--minsait-rgb-pruno), 0.018);
+  box-shadow: none;
+}
+
+.trotamundos-assistant-cart-panel__group-header {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 38px;
+  padding: 8px 22px;
+  border-bottom: 1px solid rgba(var(--minsait-rgb-pruno), 0.14);
+  background: rgba(var(--minsait-rgb-pruno), 0.025);
+  color: var(--skill-text);
+}
+
+.trotamundos-assistant-cart-panel__group-header h3 {
+  display: inline-flex;
+  min-width: 0;
+  margin: 0;
+  align-items: center;
+  gap: 8px;
+  color: var(--minsait-color-black);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.trotamundos-assistant-cart-panel__group-header h3::before {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  background: currentColor;
+  clip-path: polygon(12% 28%, 24% 28%, 24% 12%, 76% 12%, 76% 28%, 88% 28%, 88% 88%, 12% 88%);
+  content: "";
+}
+
+.trotamundos-assistant-cart-panel__group-header h3 span {
+  color: inherit;
+  font: inherit;
+}
+
+.trotamundos-assistant-cart-panel__group-header > span {
+  color: var(--skill-accent);
+  font-size: 14px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.trotamundos-assistant-cart-panel__item {
+  display: grid;
+  grid-column: 1;
+  grid-template-columns: 118px minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(38px, auto);
+  gap: 14px 20px;
+  align-items: start;
+  min-height: 196px;
+  padding: 18px 22px 20px;
+  border: 0;
+  border-block: 0;
+  border-inline-start: 0 !important;
+  border-inline-end: 0;
+  border-radius: 0 !important;
+  background: var(--minsait-color-white);
+  box-shadow: none;
+}
+
+.trotamundos-assistant-cart-panel__item + .trotamundos-assistant-cart-panel__item {
+  border-top: 1px solid rgba(var(--minsait-rgb-pruno), 0.12);
+}
+
+.trotamundos-assistant-cart-panel__item:first-of-type {
+  border-top: 0;
+}
+
+.trotamundos-assistant-cart-panel__item:last-of-type {
+  border-bottom: 0;
+}
+
+.trotamundos-assistant-cart-panel__media {
+  display: grid;
+  width: 118px;
+  grid-column: 1;
+  grid-row: 1;
+  aspect-ratio: 1;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 0;
+  background: var(--minsait-color-surface-soft);
+}
+
+.trotamundos-assistant-cart-panel__media img {
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  object-fit: contain;
+}
+
+.trotamundos-assistant-cart-panel__placeholder {
+  width: 44px;
+  height: 34px;
+  border: 4px solid var(--minsait-color-ceramica);
+  border-radius: 4px;
+}
+
+.trotamundos-assistant-cart-panel__copy {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  max-width: 520px;
+  padding-block-start: 2px;
+}
+
+.trotamundos-assistant-cart-panel__title {
+  margin: 0 0 7px;
+  color: var(--minsait-color-black);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.trotamundos-assistant-cart-panel__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.trotamundos-assistant-cart-panel__title a:hover,
+.trotamundos-assistant-cart-panel__title a:focus {
+  color: var(--skill-accent);
+  text-decoration: none;
+}
+
+.trotamundos-assistant-cart-panel__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0 0 15px;
+  color: var(--skill-muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.trotamundos-assistant-cart-panel__meta div {
+  display: inline-flex;
+  gap: 5px;
+}
+
+.trotamundos-assistant-cart-panel__meta dt {
+  font-weight: 800;
+}
+
+.trotamundos-assistant-cart-panel__meta dd {
+  margin: 0;
+}
+
+.trotamundos-assistant-cart-panel__seller,
+.trotamundos-assistant-cart-panel__stock {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.trotamundos-assistant-cart-panel__seller {
+  margin-block-end: 16px;
+  color: var(--skill-muted);
+}
+
+.trotamundos-assistant-cart-panel__stock {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #008f4c;
+  font-size: 14px;
+}
+
+.trotamundos-assistant-cart-panel__stock span {
+  display: inline-grid;
+  width: 13px;
+  height: 13px;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.trotamundos-assistant-cart-panel__price {
+  grid-column: 3;
+  grid-row: 1;
+  align-self: start;
+  padding-block-start: 0;
+  color: var(--minsait-color-black);
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.trotamundos-assistant-cart-panel__item-actions {
+  display: grid;
+  grid-column: 1 / 4;
+  grid-row: 2;
+  grid-template-columns: 118px minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: end;
+  margin-top: 0;
+}
+
+.trotamundos-assistant-cart-panel__quantity-form {
+  display: flex;
+  width: fit-content;
+  overflow: hidden;
+  gap: 0;
+  align-items: center;
+  border: 1px solid rgba(var(--minsait-rgb-pruno), 0.14);
+  border-radius: 6px;
+  background: var(--minsait-color-white);
+}
+
+.trotamundos-assistant-cart-panel__quantity-form label {
+  display: grid;
+  gap: 0;
+}
+
+.trotamundos-assistant-cart-panel__quantity-form label span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+.trotamundos-assistant-cart-panel__quantity-form input {
+  box-sizing: border-box;
+  width: 42px;
+  min-height: 36px;
+  border: 0;
+  padding: 6px 10px;
+  background: var(--minsait-color-white);
+  color: var(--minsait-color-black);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 850;
+  text-align: center;
+}
+
+.trotamundos-assistant-cart-panel__quantity-form button,
+.trotamundos-assistant-cart-panel__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  border: 0;
+  border-radius: 0;
+  padding: 0 14px;
+  background: var(--minsait-color-white);
+  color: var(--skill-accent);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.trotamundos-assistant-cart-panel__quantity-step {
+  width: 37px;
+}
+
+.trotamundos-assistant-cart-panel__remove {
+  grid-column: 3;
+  justify-self: end;
+  min-height: auto;
+  border-left: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--skill-muted);
+}
+
+.trotamundos-assistant-cart-panel__quantity-form button:hover,
+.trotamundos-assistant-cart-panel__quantity-form button:focus,
+.trotamundos-assistant-cart-panel__remove:hover,
+.trotamundos-assistant-cart-panel__remove:focus {
+  background: transparent;
+  color: var(--skill-accent);
+  text-decoration: underline;
+}
+
+.trotamundos-assistant-cart-panel__quantity-form.is-loading,
+.trotamundos-assistant-cart-panel__remove.is-loading {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.trotamundos-assistant-cart-panel__totals {
+  display: grid;
+  grid-column: 2;
+  grid-row: 2 / span 99;
+  gap: 8px;
+  margin: 22px 22px 22px 0;
+  padding: 24px;
+  border: 1px solid rgba(var(--minsait-rgb-pruno), 0.14);
+  border-radius: 8px;
+  background: rgba(var(--minsait-rgb-pruno), 0.055);
+  color: var(--skill-muted);
+  font-size: 14px;
+  box-shadow: 0 18px 34px rgba(var(--minsait-rgb-pruno-dark), 0.08);
+}
+
+.trotamundos-assistant-cart-panel__totals-heading {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--minsait-color-black);
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.trotamundos-assistant-cart-panel__totals div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.trotamundos-assistant-cart-panel__totals .trotamundos-assistant-cart-panel__totals-heading {
+  display: block;
+}
+
+.trotamundos-assistant-cart-panel__totals dt,
+.trotamundos-assistant-cart-panel__totals dd {
+  margin: 0;
+}
+
+.trotamundos-assistant-cart-panel__totals dt {
+  font-weight: 800;
+}
+
+.trotamundos-assistant-cart-panel__totals dd {
+  color: var(--skill-text);
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.trotamundos-assistant-cart-panel__adjustment dd {
+  color: var(--skill-accent);
+}
+
+.trotamundos-assistant-cart-panel__total-row {
+  margin-top: 10px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(var(--minsait-rgb-pruno), 0.14);
+  color: var(--skill-text);
+  font-size: 16px;
+}
+
+.trotamundos-assistant-cart-panel__total-row dd {
+  color: var(--minsait-color-black);
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.trotamundos-assistant-cart-panel__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 900px;
+  margin-block: 16px 0;
+  padding: 16px;
+  border-top: 2px solid var(--skill-accent);
+  color: var(--skill-text);
+  font-size: 18px;
+}
+
+.trotamundos-assistant-cart-panel__summary strong {
+  color: var(--skill-accent);
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.trotamundos-assistant-cart-panel__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-block-start: 18px;
+}
+
+@media (max-width: 760px) {
+  .trotamundos-assistant-cart-panel__group {
+    grid-template-columns: 1fr;
+  }
+
+  .trotamundos-assistant-cart-panel__group-header {
+    padding-inline: 16px;
+  }
+
+  .trotamundos-assistant-cart-panel__item {
+    grid-column: 1;
+    grid-template-columns: 86px minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: 14px;
+    min-height: 0;
+    padding: 16px;
+  }
+
+  .trotamundos-assistant-cart-panel__media {
+    width: 86px;
+  }
+
+  .trotamundos-assistant-cart-panel__copy {
+    grid-column: 2;
+    grid-row: 1;
+    padding-block-start: 0;
+  }
+
+  .trotamundos-assistant-cart-panel__price {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 18px;
+  }
+
+  .trotamundos-assistant-cart-panel__item-actions {
+    grid-template-columns: 86px minmax(0, 1fr) auto;
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-top: 8px;
+  }
+
+  .trotamundos-assistant-cart-panel__quantity-form input {
+    width: 38px;
+  }
+
+  .trotamundos-assistant-cart-panel__totals {
+    grid-column: 1;
+    grid-row: auto;
+    margin: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 0;
+    padding-inline: 16px;
+  }
+}
+
+.trotamundos-assistant-profile {
+  max-width: 760px;
+  margin-block: 22px;
+  padding: 22px;
+  border: 1px solid var(--skill-border);
+  border-radius: 8px;
+  background: var(--minsait-color-white);
+  box-shadow: 0 10px 28px rgba(var(--minsait-rgb-pruno-dark), 0.06);
+}
+
+.trotamundos-assistant-profile .form-item {
+  margin-block: 0 16px;
+}
+
+.trotamundos-assistant-profile label {
+  display: block;
+  margin-block-end: 6px;
+  color: var(--skill-text);
+  font-weight: 800;
+}
+
+.trotamundos-assistant-profile input,
+.trotamundos-assistant-profile textarea,
+.trotamundos-assistant-profile select {
+  box-sizing: border-box;
+  max-width: 100%;
+  border: 1px solid var(--skill-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--minsait-color-white);
+  color: var(--skill-text);
+  font: inherit;
+}
+
+.trotamundos-assistant-profile .description {
+  margin-block-start: 5px;
+  color: var(--skill-muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.trotamundos-assistant-profile .form-actions {
+  margin-block-start: 20px;
+}
+
+.trotamundos-assistant-profile .button,
+.trotamundos-assistant-profile input[type="submit"],
+.trotamundos-assistant-profile__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  border: 0;
+  border-radius: 8px;
+  padding: 0 16px;
+  background: var(--skill-accent);
+  color: var(--minsait-color-white);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 850;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.trotamundos-assistant-profile .button:hover,
+.trotamundos-assistant-profile .button:focus,
+.trotamundos-assistant-profile input[type="submit"]:hover,
+.trotamundos-assistant-profile input[type="submit"]:focus,
+.trotamundos-assistant-profile__link:hover,
+.trotamundos-assistant-profile__link:focus {
+  background: var(--minsait-color-pruno);
+  color: var(--minsait-color-white);
+  text-decoration: none;
+}
+
+.trotamundos-assistant-cart__link {
+  background: var(--skill-accent-soft);
+  color: var(--skill-accent);
+}
+
+.trotamundos-assistant-template__list {
+  display: grid;
+  gap: 12px;
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trotamundos-assistant-template__list-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 14px 16px;
+  border: 1px solid var(--skill-border);
+  border-radius: 8px;
+  background: var(--skill-accent-soft);
+  color: var(--minsait-color-pruno);
+  line-height: 1.55;
+}
+
+.trotamundos-assistant-template__list-marker {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--skill-accent);
+  color: var(--minsait-color-white);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.trotamundos-assistant-template__list-content {
+  min-width: 0;
+}
+
+.trotamundos-assistant-comparison {
+  overflow: hidden;
+  margin-block: 20px;
+  border: 1px solid var(--skill-border);
+  border-radius: 8px;
+  background: var(--skill-surface);
+}
+
+.trotamundos-assistant-comparison__head,
+.trotamundos-assistant-comparison__row {
+  display: grid;
+  grid-template-columns: minmax(180px, 260px) minmax(0, 1fr);
+  gap: 0;
+}
+
+.trotamundos-assistant-comparison__head {
+  background: var(--skill-accent);
+  color: var(--minsait-color-white);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.trotamundos-assistant-comparison__head > div,
+.trotamundos-assistant-comparison__label,
+.trotamundos-assistant-comparison__value {
+  padding: 14px 16px;
+}
+
+.trotamundos-assistant-comparison__row + .trotamundos-assistant-comparison__row {
+  border-top: 1px solid var(--skill-border);
+}
+
+.trotamundos-assistant-comparison__label {
+  background: var(--skill-accent-soft);
+  color: var(--skill-accent);
+  font-weight: 850;
+}
+
+.trotamundos-assistant-comparison__value {
+  color: var(--minsait-color-pruno);
+  line-height: 1.55;
+}
+
+.trotamundos-assistant-template__empty {
+  max-width: 620px;
+  border: 1px dashed var(--skill-border);
+  border-radius: 8px;
+  padding: 22px;
+  background: var(--minsait-color-surface-soft);
+  color: var(--skill-muted);
+}
+
+.trotamundos-assistant-template__empty p {
+  margin: 0;
+}
+
+.trotamundos-assistant-template--clarification {
+  max-width: 760px;
+  padding: 24px;
+  border: 1px solid var(--skill-border);
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--minsait-color-white), var(--minsait-color-surface-soft));
+  box-shadow: 0 10px 28px rgba(var(--minsait-rgb-pruno-dark), 0.06);
+}
+
+.trotamundos-assistant-template--clarification .trotamundos-assistant-template__description {
+  margin-block-end: 0;
+  font-size: 17px;
+}
+
+@media (max-width: 700px) {
+  .trotamundos-assistant-template__title {
+    font-size: 25px;
+  }
+
+  .trotamundos-assistant-template__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .trotamundos-assistant-cart-panel__item {
+    grid-template-columns: 1fr;
+  }
+
+  .trotamundos-assistant-cart-panel__summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .trotamundos-assistant-comparison__head {
+    display: none;
+  }
+
+  .trotamundos-assistant-comparison__row {
+    grid-template-columns: 1fr;
+  }
+}

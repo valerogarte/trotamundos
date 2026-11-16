@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * @file
+ * Registers the Trotamundos brand guide template from its owning theme.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function trotamundos_brand_theme($existing, $type, $theme, $path): array {
+  return [
+    'trotamundos_brand_guide' => [
+      'variables' => ['brand' => []],
+      'template' => 'trotamundos-brand-guide',
+      'path' => \Drupal::service('extension.list.theme')->getPath('trotamundos') . '/templates/brand',
+    ],
+  ];
+}

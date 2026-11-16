@@ -1,0 +1,48 @@
+machine_name: shopping_cart_add
+title: 'Añadir al carrito'
+btn_responsive_title: 'Ver confirmación'
+group: ecommerce
+theme:
+  variables:
+    intro: ''
+    outro: ''
+    product_items: []
+handler:
+  class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\ShoppingCartAdd\ShoppingCartAddSkillHandler'
+  file: 'src/ShoppingCartAddSkillHandler.php'
+assets:
+  dependencies:
+    - trotamundos_assistant_ecommerce/skill.shopping_cart_view
+dependencies:
+  modules:
+    - commerce_cart
+    - commerce_order
+    - commerce_product
+    - commerce_store
+chat_reply_fallback: 'He preparado la confirmación para añadir al carrito.'
+actions:
+  add_to_cart:
+    class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\ShoppingCartAdd\ShoppingCartAddActionHandler'
+    file: 'src/ShoppingCartAddActionHandler.php'
+    method: addToCart
+    http_method: POST
+    route: trotamundos_assistant.skill_action
+    csrf: true
+    arguments:
+      - entity_type.manager
+      - module_handler
+      - commerce_cart.cart_manager
+      - commerce_cart.cart_provider
+      - commerce_order.chain_order_type_resolver
+      - commerce_store.current_store
+      - plugin.manager.block
+      - renderer
+      - commerce_order.order_refresh
+description: 'Permite añadir un producto al carrito mediante una confirmación explícita.'
+provider:
+  requires_rag: true
+  intent: 'Usar cuando el usuario quiera añadir un producto concreto al carrito o comprar una opción concreta del catálogo.'
+  when_to_use:
+    - 'El usuario pide añadir un producto o variación al carrito.'
+    - 'El usuario expresa intención de compra sobre un producto recomendado o encontrado.'
+    - 'El usuario pide preparar una cesta con uno o varios productos del catálogo.'

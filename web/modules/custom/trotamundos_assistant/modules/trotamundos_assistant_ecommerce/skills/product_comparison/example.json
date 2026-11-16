@@ -1,0 +1,35 @@
+{
+  "chat_reply": "He preparado la comparativa en el panel.",
+  "result": {
+    "description": "Comparativa entre los productos solicitados.",
+    "items": [
+      {
+        "product_id": 123,
+        "variation_id": 456,
+        "title": "Producto A",
+        "body": "Resumen breve del primer producto."
+      },
+      {
+        "product_id": 789,
+        "variation_id": 987,
+        "title": "Producto B",
+        "body": "Resumen breve del segundo producto."
+      }
+    ],
+    "rows": [
+      {
+        "product_id": 123,
+        "variation_id": 456,
+        "label": "Producto A",
+        "value": "Diferencias, ventajas o datos relevantes frente al otro producto."
+      },
+      {
+        "product_id": 789,
+        "variation_id": 987,
+        "label": "Producto B",
+        "value": "Diferencias, ventajas o datos relevantes frente al otro producto."
+      }
+    ],
+    "outro": "Elige según la prioridad que más te importe."
+  }
+}

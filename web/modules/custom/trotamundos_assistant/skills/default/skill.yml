@@ -1,0 +1,25 @@
+machine_name: default
+title: 'Respuesta general'
+btn_responsive_title: 'Ver respuesta completa'
+group: general
+handler:
+  class: 'Drupal\trotamundos_assistant\SkillLocal\DefaultSkill\DefaultSkillHandler'
+  file: 'src/DefaultSkillHandler.php'
+assets:
+  css:
+    - css/default.css
+  js:
+    - js/default.js
+  dependencies:
+    - core/drupal
+    - core/once
+    - trotamundos_assistant/template.base
+chat_reply_fallback: ''
+description: 'Respuesta de reserva para consultas que no encajan en una skill especializada.'
+provider:
+  requires_rag: false
+  intent: 'Usar solo cuando ninguna otra skill activa represente mejor la intención del usuario. No usar para preguntas sobre un producto concreto ni para consultas ajenas al sitio: esas se devuelven con `out_of_scope` y `result` vacío.'
+  when_to_use:
+    - 'La pregunta trata del sitio, es informativa, general y no trata sobre un producto concreto.'
+    - 'La respuesta no necesita comparación, recomendación, búsqueda, resumen ni alternativas.'
+    - 'No usar si la consulta no trata del sitio (hora, tiempo, deportes, cultura general): en ese caso devuelve `out_of_scope` con `result` vacío.'

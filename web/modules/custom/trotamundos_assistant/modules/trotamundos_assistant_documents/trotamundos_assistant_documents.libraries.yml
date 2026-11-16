@@ -1,0 +1,13 @@
+settings_form:
+  js:
+    js/documents-settings-form.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+skill.document_lookup:
+  css:
+    theme:
+      skills/document_lookup/css/document_lookup.css: {}
+  dependencies:
+    - trotamundos_assistant/template.base

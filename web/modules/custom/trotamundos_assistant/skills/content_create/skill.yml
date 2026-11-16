@@ -1,0 +1,40 @@
+machine_name: content_create
+title: 'Crear contenido'
+btn_responsive_title: 'Abrir formulario de creación'
+group: core_drupal
+theme:
+  variables:
+    available: false
+    access_denied: false
+    ambiguous: false
+    entity_type: ''
+    entity_type_label: ''
+    bundle: ''
+    bundle_label: ''
+    content_title: ''
+    add_url: ''
+    content_form: []
+    bundle_options: []
+    entity_type_options: []
+handler:
+  class: 'Drupal\trotamundos_assistant\SkillLocal\ContentCreate\ContentCreateSkillHandler'
+  file: 'src/ContentCreateSkillHandler.php'
+assets:
+  dependencies:
+    - core/drupal.ajax
+    - core/drupal.entity-form
+    - core/drupal.form
+    - core/drupal.states
+    - trotamundos_assistant/skill.content_edit
+    - trotamundos_assistant/template.base
+chat_reply_fallback: 'Te muestro el formulario de creación en el panel.'
+description: 'Muestra un formulario de alta para crear una entidad de contenido de Drupal.'
+provider:
+  requires_rag: false
+  intent: 'Usar cuando el usuario pida crear, dar de alta, añadir o publicar un contenido nuevo en Drupal.'
+  when_to_use:
+    - 'El usuario quiere crear una página, artículo, noticia, FAQ, media, término, producto u otra entidad de contenido.'
+    - 'El usuario pide abrir el formulario de creación de un tipo de contenido.'
+    - 'Elige siempre entity_type y bundle desde creation_targets usando IDs exactos, no etiquetas.'
+    - 'Si el usuario indica un tipo de contenido Drupal, busca su correspondencia en creation_targets y devuelve su entity_type y bundle exactos.'
+    - 'Si el usuario aporta un título inicial para el nuevo contenido, devuélvelo como content_title.'

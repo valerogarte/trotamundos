@@ -1,0 +1,124 @@
+name: Trotamundos
+design_name: 'Trotamundos 3'
+edition: '03'
+version: '3.0'
+tagline: 'Hay viajes que se quedan contigo.'
+purpose: 'Invitar a descubrir Colombia desde la emoción de sus paisajes, el encuentro con sus personas y el tiempo que nos damos para sentir cada lugar.'
+personality:
+  - name: Sensible
+    description: 'La luz, un sonido o una conversación también cuentan un viaje. Prestamos atención a esos detalles.'
+  - name: Cercana
+    description: 'Hablamos de tú, con calidez y claridad. Acompañamos sin imponer una manera de viajar.'
+  - name: Curiosa
+    description: 'Nos acercamos a cada lugar con preguntas y con ganas de descubrir lo que lo hace propio.'
+  - name: Cuidadosa
+    description: 'Respetamos a las personas, el paisaje y las expectativas de quien está preparando su viaje.'
+colors:
+  - key: selva
+    name: Selva
+    role: Profundidad
+    usage: 'Atmósfera principal, fondos inmersivos, firma y acciones sobre superficies claras.'
+    foreground: marfil
+  - key: marfil
+    name: Marfil
+    role: Calma
+    usage: 'Paneles de lectura, espacios de pausa y texto sobre selva.'
+    foreground: selva
+  - key: terracota
+    name: Terracota
+    role: Cercanía
+    usage: 'Pequeños gestos gráficos y texto grande. Para lectura pequeña sobre marfil se usa su variante oscura.'
+    foreground: carbon
+  - key: sol
+    name: Sol
+    role: Luz
+    usage: 'Puntos del camino, cursivas destacadas y detalles luminosos sobre selva.'
+    foreground: carbon
+  - key: carbon
+    name: Carbón
+    role: Permanencia
+    usage: 'Pie de página, texto de lectura y versiones de una sola tinta.'
+    foreground: marfil
+contrast_pairs:
+  - foreground: marfil
+    background: selva
+    label: 'Marfil sobre selva'
+  - foreground: sol
+    background: selva
+    label: 'Sol sobre selva'
+  - foreground: selva
+    background: marfil
+    label: 'Selva sobre marfil'
+  - foreground: carbon
+    background: marfil
+    label: 'Carbón sobre marfil'
+  - foreground: terracota
+    background: marfil
+    label: 'Terracota sobre marfil'
+  - foreground: terracota-text
+    background: marfil
+    label: 'Terracota de lectura sobre marfil'
+fonts:
+  - name: Fraunces
+    role: 'La voz que nos hace sentir'
+    family: display
+    styles: 'Normal y cursiva · variable 100–900 · tamaño óptico 9–144'
+    usage: 'Titulares, firma y frases breves. Peso 500 en títulos, cursiva 400 en portada y 600 para la firma y acentos de mayor presencia.'
+    source: 'assets/fonts/fraunces-latin.woff2'
+    italic_source: 'assets/fonts/fraunces-latin-italic.woff2'
+    license: 'assets/fonts/Fraunces-OFL.txt'
+  - name: Plus Jakarta Sans
+    role: 'La voz que nos orienta'
+    family: body
+    styles: 'Normal · variable 200–800'
+    usage: 'Párrafos, navegación y controles. Peso 400 para leer y 500–700 para ordenar y señalar.'
+    source: 'assets/fonts/plus-jakarta-sans-latin.woff2'
+    license: 'assets/fonts/Plus-Jakarta-Sans-OFL.txt'
+type_scale:
+  - key: type-display
+    name: Emoción
+    sample: 'Hay viajes que se quedan.'
+    family: display
+    usage: 'Una invitación protagonista, con pausas entre las líneas.'
+  - key: type-heading
+    name: Recorrido
+    sample: 'Cada lugar tiene su tiempo.'
+    family: display
+    usage: 'Abre cada capítulo y mantiene el hilo de la historia.'
+  - key: type-card
+    name: Experiencia
+    sample: 'Volver a lo sencillo.'
+    family: display
+    usage: 'Títulos breves que sugieren una sensación concreta.'
+  - key: type-body
+    name: Lectura
+    sample: 'Un camino entre montañas. Una conversación. Una pausa que llega a tiempo.'
+    family: body
+    usage: 'Información clara con interlineado generoso y longitud contenida.'
+  - key: type-caption
+    name: Detalle
+    sample: 'Colombia · Historias por descubrir'
+    family: body
+    usage: 'Datos breves que acompañan a la imagen y ayudan a situarse.'
+spacing:
+  - space-1
+  - space-2
+  - space-4
+  - space-6
+  - space-8
+  - space-12
+  - space-16
+  - space-24
+voice:
+  - principle: 'Invitar con calma'
+    use: 'Encuentra una forma de viajar que se parezca a ti.'
+    avoid: '¡Tienes que vivir esta experiencia ahora mismo!'
+  - principle: 'Hacer sentir con detalles'
+    use: 'El sonido del agua y el verde que aparece entre la niebla.'
+    avoid: 'Una experiencia absolutamente inolvidable.'
+  - principle: 'Dar espacio al lugar'
+    use: 'Un pueblo y las historias de quienes lo habitan.'
+    avoid: 'Un rincón exótico que tienes que conquistar.'
+  - principle: 'Acompañar con claridad'
+    use: 'Consulta los detalles y la disponibilidad antes de elegir.'
+    avoid: 'Todo está confirmado aunque todavía no lo hayamos comprobado.'

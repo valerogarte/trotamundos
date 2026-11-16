@@ -1,0 +1,73 @@
+{#
+/**
+ * @file
+ * Content creation skill template for Trotamundos Assistant.
+ */
+#}
+<article class="trotamundos-assistant-template trotamundos-assistant-template--content-create">
+  <header class="trotamundos-assistant-template__header">
+    <p class="trotamundos-assistant-template__eyebrow">{{ title|default('Crear contenido'|t) }}</p>
+  </header>
+
+  {% if description is defined and description %}
+    <p class="trotamundos-assistant-template__description">{{ description }}</p>
+  {% endif %}
+
+  {% if available is defined and not available %}
+    <div class="trotamundos-assistant-template__empty">
+      <p>{{ 'No he encontrado un tipo de entidad de contenido disponible para crear.'|t }}</p>
+      {% if entity_type_options is defined and entity_type_options %}
+        <ul>
+          {% for option in entity_type_options %}
+            <li>{{ option.label }} <span>({{ option.id }})</span></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  {% elseif access_denied is defined and access_denied %}
+    <div class="trotamundos-assistant-template__empty">
+      <p>{{ 'No tienes permisos para crear este contenido.'|t }}</p>
+      {% if add_url is defined and add_url %}
+        <a class="trotamundos-assistant-profile__link" href="{{ add_url }}">{{ 'Abrir formulario'|t }}</a>
+      {% endif %}
+    </div>
+  {% elseif ambiguous is defined and ambiguous %}
+    <div class="trotamundos-assistant-template__empty">
+      <p>{{ 'Elige o indica el tipo de contenido que quieres crear.'|t }}</p>
+      {% if bundle_options is defined and bundle_options %}
+        <ul>
+          {% for option in bundle_options %}
+            <li>
+              {% if option.add_url %}
+                <a href="{{ option.add_url }}">{{ option.label }}</a>
+              {% else %}
+                {{ option.label }}
+              {% endif %}
+              <span>({{ option.id }})</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% elseif entity_type_options is defined and entity_type_options %}
+        <ul>
+          {% for option in entity_type_options %}
+            <li>{{ option.label }} <span>({{ option.id }})</span></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  {% elseif content_form is defined and content_form %}
+    <div class="trotamundos-assistant-content-edit trotamundos-assistant-content-create">
+      <h2 class="trotamundos-assistant-content-edit__title">
+        {% if bundle_label is defined and bundle_label %}
+          {{ 'Nuevo %type'|t({'%type': bundle_label}) }}
+        {% else %}
+          {{ 'Nuevo contenido'|t }}
+        {% endif %}
+      </h2>
+      {% if entity_type_label is defined and entity_type_label %}
+        <p class="trotamundos-assistant-template__intro">{{ entity_type_label }}</p>
+      {% endif %}
+      {{ content_form }}
+    </div>
+  {% endif %}
+</article>

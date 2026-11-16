@@ -1,0 +1,5 @@
+name: Trotamundos Pages
+type: module
+description: 'Páginas editoriales del menú principal: Nuestra esencia y Ayuda.'
+package: Trotamundos
+core_version_requirement: ^11

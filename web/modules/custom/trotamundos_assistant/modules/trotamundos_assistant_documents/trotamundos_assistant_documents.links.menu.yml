@@ -1,0 +1,6 @@
+trotamundos_assistant_documents.settings:
+  title: 'Documentos'
+  description: 'Configura la extracción de texto de PDFs referenciados por entidades.'
+  route_name: trotamundos_assistant_documents.settings
+  parent: trotamundos_assistant.overview
+  weight: 30

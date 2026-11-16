@@ -1,0 +1,28 @@
+{#
+/**
+ * @file
+ * Default result template for Trotamundos Assistant skills.
+ *
+ * Available variables:
+ * - title: Optional result title.
+ * - description: Optional result description.
+ * - content: Optional rendered content.
+ */
+#}
+<article class="trotamundos-assistant-template trotamundos-assistant-template--default">
+  <section class="minsait-default-result">
+    <header class="trotamundos-assistant-template__header">
+      <p class="trotamundos-assistant-template__eyebrow">{{ title|default('Respuesta general'|t) }}</p>
+    </header>
+
+    {% if description is defined and description %}
+      <p class="minsait-default-result__description">{{ description }}</p>
+    {% endif %}
+
+    {% if content is defined and content %}
+      <div class="minsait-default-result__content">
+        {{ content }}
+      </div>
+    {% endif %}
+  </section>
+</article>

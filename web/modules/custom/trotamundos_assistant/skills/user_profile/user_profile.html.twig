@@ -1,0 +1,26 @@
+{#
+/**
+ * @file
+ * User profile edit skill template for Trotamundos Assistant.
+ */
+#}
+<article class="trotamundos-assistant-template trotamundos-assistant-template--user-profile">
+  <header class="trotamundos-assistant-template__header">
+    <p class="trotamundos-assistant-template__eyebrow">{{ title|default('Editar perfil'|t) }}</p>
+  </header>
+
+  {% if description is defined and description %}
+    <p class="trotamundos-assistant-template__description">{{ description }}</p>
+  {% endif %}
+
+  {% if is_authenticated and profile_form is defined and profile_form %}
+    <div class="trotamundos-assistant-profile">
+      {{ profile_form }}
+    </div>
+  {% else %}
+    <div class="trotamundos-assistant-template__empty">
+      <p>{{ 'Inicia sesión para editar tu perfil.'|t }}</p>
+      <a class="trotamundos-assistant-profile__link" href="{{ profile_edit_url|default('/user/login') }}">{{ 'Iniciar sesión'|t }}</a>
+    </div>
+  {% endif %}
+</article>

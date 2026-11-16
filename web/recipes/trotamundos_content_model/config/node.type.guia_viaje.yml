@@ -1,0 +1,10 @@
+langcode: es
+status: true
+dependencies: {  }
+name: 'Guía de viaje'
+type: guia_viaje
+description: 'Contenido editorial para ayudar a preparar una visita a uno o varios destinos.'
+help: 'Redacta la guía y relaciónala con los destinos correspondientes.'
+new_revision: true
+preview_mode: 1
+display_submitted: false

@@ -1,0 +1,45 @@
+machine_name: event_product_selection
+title: 'Selección para evento'
+btn_responsive_title: 'Ver selección del evento'
+group: ecommerce
+theme:
+  variables:
+    intro: ''
+    event_name: ''
+    people: 0
+    vegetarian_people: 0
+    dietary_restrictions: []
+    budget: ''
+    notes: ''
+    categories: []
+    total_products: 0
+    total_amount: ''
+    has_addable_items: false
+    outro: ''
+handler:
+  class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\EventProductSelection\EventProductSelectionSkillHandler'
+  file: 'src/EventProductSelectionSkillHandler.php'
+assets:
+  css:
+    - event_product_selection.css
+  dependencies:
+    - trotamundos_assistant_ecommerce/skill.product_common
+dependencies:
+  modules:
+    - commerce_product
+chat_reply_fallback: 'Te preparo una selección de productos para el evento.'
+description: 'Crea una selección completa de productos para un evento, teniendo en cuenta asistentes, preferencias alimentarias, presupuesto y categorías necesarias. Una petición de este tipo implica varios tipos de producto a la vez, así que lanza una consulta RAG por cada categoría necesaria (proteína, alternativa vegetariana, guarnición, bebida, encendido, menaje) en vez de una sola consulta genérica. En peticiones de seguimiento, amplía o reduce la selección ya mostrada: conserva las categorías y productos previos y añade solo las categorías nuevas que pida el usuario, salvo que pida quitarlos o sustituirlos.'
+provider:
+  requires_rag: true
+  intent: |-
+    Usar cuando el usuario quiera preparar una compra completa para un evento, celebración o reunión.
+    - En chat_reply, notes y budget no incluyas totales, subtotales, sumas ni importes estimados de la selección. El panel calcula el total con los precios reales de las variaciones y sus cantidades. Responde de forma natural, por ejemplo: "La selección está preparada; puedes revisarla en el panel", sin explicar la implementación.
+    - budget puede recordar el límite indicado por el usuario y una reserva que siga siendo necesaria. Si ya añades los materiales para los que se había reservado dinero, elimina esa reserva: esos productos ya forman parte de la selección y no representan otro gasto adicional.
+    - Conserva en notes las preferencias, restricciones alimentarias y el contexto del evento, sin cálculos ni importes. Ajusta los productos y cantidades para respetar el presupuesto del usuario.
+  when_to_use:
+    - 'El usuario pide productos para una barbacoa, cumpleaños, fiesta, picnic, reunión o evento similar.'
+    - 'El usuario indica cuántas personas asistirán y espera una lista completa de compra.'
+    - 'El usuario aporta vegetarianos, alergias, restricciones alimentarias, presupuesto o preferencias para adaptar la selección.'
+    - 'El usuario quiere que se agrupen los productos necesarios por categorías.'
+    - 'La petición implica varios tipos de producto distintos, aunque el usuario no los enumere.'
+    - 'El usuario añade, quita o cambia productos de una selección de evento ya mostrada.'

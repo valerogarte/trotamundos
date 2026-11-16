@@ -1,0 +1,29 @@
+machine_name: user_profile
+title: 'Editar perfil'
+btn_responsive_title: 'Abrir mi perfil'
+group: core_drupal
+theme:
+  variables:
+    is_authenticated: false
+    profile_form: []
+    profile_edit_url: ''
+handler:
+  class: 'Drupal\trotamundos_assistant\SkillLocal\UserProfile\UserProfileSkillHandler'
+  file: 'src/UserProfileSkillHandler.php'
+assets:
+  dependencies:
+    - core/drupal.ajax
+    - core/drupal.entity-form
+    - core/drupal.form
+    - core/drupal.states
+    - trotamundos_assistant/template.base
+chat_reply_fallback: 'Te muestro el formulario de perfil en el panel.'
+description: 'Muestra el formulario de edición del perfil del usuario actual.'
+provider:
+  requires_rag: false
+  intent: 'Usar cuando el usuario pregunte por su perfil, datos personales, cuenta, email, nombre, contraseña o quiera cambiar información de usuario.'
+  when_to_use:
+    - 'El usuario pide ver, editar o actualizar su perfil.'
+    - 'El usuario pregunta dónde cambiar sus datos personales.'
+    - 'El usuario quiere cambiar nombre, email, contraseña u otra información de cuenta.'
+    - 'El usuario pide ver su perfil o la configuración de su cuenta.'

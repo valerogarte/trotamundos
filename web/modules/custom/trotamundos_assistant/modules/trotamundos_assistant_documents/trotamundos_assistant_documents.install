@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @file
+ * Install and runtime requirements for Trotamundos Assistant Documents.
+ */
+
+use Drupal\Core\Extension\Requirement\RequirementSeverity;
+
+/**
+ * Implements hook_requirements().
+ */
+function trotamundos_assistant_documents_requirements(string $phase): array {
+  $requirements = [];
+
+  if ($phase !== 'runtime') {
+    return $requirements;
+  }
+
+  $pdf_parser_available = class_exists('\Smalot\PdfParser\Parser');
+  $requirements['trotamundos_assistant_documents_pdfparser'] = [
+    'title' => t('Trotamundos Assistant Documents: PDF parser'),
+    'value' => $pdf_parser_available ? t('Disponible') : t('No disponible'),
+    'severity' => $pdf_parser_available ? RequirementSeverity::OK : RequirementSeverity::Error,
+    'description' => $pdf_parser_available
+      ? t('La librería smalot/pdfparser está disponible para extraer texto de PDFs.')
+      : t('La librería smalot/pdfparser no está disponible. Instálala con Composer para poder extraer texto de PDFs.'),
+  ];
+
+  return $requirements;
+}

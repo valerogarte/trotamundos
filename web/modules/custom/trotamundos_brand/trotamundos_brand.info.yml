@@ -1,0 +1,5 @@
+name: Trotamundos Brand
+type: module
+description: 'Guía viva de la identidad de Trotamundos, conectada con los estilos del tema.'
+package: Trotamundos
+core_version_requirement: ^11

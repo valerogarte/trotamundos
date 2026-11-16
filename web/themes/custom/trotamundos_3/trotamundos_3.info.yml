@@ -1,0 +1,13 @@
+name: 'Trotamundos 3'
+type: theme
+description: 'Una Colombia que se siente. Paisajes inmersivos, tipografía orgánica y espacio para viajar sin prisa.'
+core_version_requirement: ^11
+base theme: false
+logo: logo.svg
+libraries:
+  - trotamundos_3/global
+regions:
+  highlighted: 'Avisos y mensajes'
+  breadcrumb: 'Ruta de navegación'
+  content: 'Contenido'
+  footer: 'Contenido adicional del pie'

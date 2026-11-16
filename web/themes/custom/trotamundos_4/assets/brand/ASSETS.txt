@@ -1,0 +1,43 @@
+TROTAMUNDOS 4 / ARCHIVO DE IDENTIDAD
+Edición 04 / Versión 4.0
+
+Firma
+TROTA y MUNDOS en dos líneas, alineadas a la izquierda.
+Barlow Condensed 700, interlineado 0,85 y espaciado +0,025 em.
+Los SVG contienen contornos autónomos obtenidos de la fuente local
+con HarfBuzz y fontTools. No requieren fuentes ni servicios externos.
+
+wordmark-selva.svg: #173D32 para fondos claros.
+wordmark-marfil.svg: #F5F0E6 para fondos oscuros, preferentemente selva.
+wordmark-carbon.svg: #242723 para una sola tinta.
+Los archivos tienen fondo transparente y no incluyen el símbolo.
+
+Símbolo
+simbolo.svg: copia exacta de logo.svg del tema, 48 × 48.
+El camino se bifurca en dos flechas: selva y terracota.
+simbolo-inverso.svg: la misma geometría, en marfil y sol para fondos selva.
+Conservar proporción y trazados. No intercambiar los colores de las ramas.
+
+Color
+trotamundos-4.gpl: los cinco colores originales en sRGB, sin conversión CMYK.
+Selva #173D32, Marfil #F5F0E6, Terracota #BF6846, Sol #D3A75E, Carbón #242723.
+
+Fuentes
+Barlow Condensed normal: archivos estáticos de 600 y 700.
+IBM Plex Sans normal: archivo variable 100–700; pesos de diseño 400–700.
+IBM Plex Mono normal: archivo estático de 400.
+Los WOFF2 y los textos íntegros de SIL Open Font License 1.1 están incluidos.
+
+Datos de identidad
+identity/brand.yml: pautas editoriales.
+tokens/trotamundos-4-tokens.css: valores compartidos con la web.
+La guía calcula RGB y contraste a partir de esos tokens.
+
+Cartografía
+El kit incluye el contorno continental de Colombia de Natural Earth
+(dominio público), sus metadatos y sus créditos. No representa las islas.
+Es una referencia gráfica, no una ruta ni un mapa de navegación.
+
+Fotografía
+Las fotografías mantienen sus licencias y no se incluyen en este kit.
+Consultar assets/CREDITS.txt y assets/image-sources.json del tema.

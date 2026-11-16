@@ -1,0 +1,7 @@
+trotamundos_destinations.list:
+  path: '/destinos'
+  defaults:
+    _controller: '\Drupal\trotamundos_destinations\Controller\DestinationsController::listing'
+    _title: 'Destinos'
+  requirements:
+    _permission: 'access content'

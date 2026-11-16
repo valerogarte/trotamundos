@@ -1,0 +1,7 @@
+trotamundos_experiences.catalog:
+  path: '/experiencias'
+  defaults:
+    _controller: '\Drupal\trotamundos_experiences\Controller\CatalogController::catalog'
+    _title: 'Experiencias'
+  requirements:
+    _permission: 'access content'

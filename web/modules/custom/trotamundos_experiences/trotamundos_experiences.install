@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Installs the experience content model.
+ */
+
+use Drupal\trotamundos_experiences\Setup\ContentModel;
+
+/**
+ * Implements hook_install().
+ */
+function trotamundos_experiences_install(bool $is_syncing): void {
+  if (!$is_syncing) {
+    ContentModel::ensure();
+  }
+}

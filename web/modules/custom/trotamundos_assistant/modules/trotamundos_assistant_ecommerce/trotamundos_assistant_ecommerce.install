@@ -1,0 +1,86 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @file
+ * Runtime requirements for Trotamundos Assistant Ecommerce.
+ */
+
+use Drupal\Component\Serialization\Yaml;
+use Drupal\Core\Extension\Requirement\RequirementSeverity;
+
+/**
+ * Implements hook_requirements().
+ */
+function trotamundos_assistant_ecommerce_requirements(string $phase): array {
+  $requirements = [];
+
+  if ($phase !== 'runtime') {
+    return $requirements;
+  }
+
+  foreach (_trotamundos_assistant_ecommerce_get_skill_module_requirements() as $module => $skills) {
+    $available = \Drupal::moduleHandler()->moduleExists($module);
+    $requirements['trotamundos_assistant_ecommerce_' . $module] = [
+      'title' => t('Trotamundos Assistant Ecommerce: @module', ['@module' => $module]),
+      'value' => $available ? t('Disponible') : t('No disponible'),
+      'severity' => $available ? RequirementSeverity::OK : RequirementSeverity::Error,
+      'description' => t('Requerido por las skills: @skills.', [
+        '@skills' => implode(', ', $skills),
+      ]),
+    ];
+  }
+
+  return $requirements;
+}
+
+/**
+ * Discovers module dependencies declared by ecommerce skills.
+ *
+ * @return array<string, string[]>
+ *   Required module machine names keyed by module, with requiring skill labels.
+ */
+function _trotamundos_assistant_ecommerce_get_skill_module_requirements(): array {
+  $module_path = \Drupal::service('extension.list.module')->getPath('trotamundos_assistant_ecommerce');
+  $skills_path = $module_path . '/skills';
+  if (!is_dir($skills_path)) {
+    return [];
+  }
+
+  $requirements = [];
+  foreach (scandir($skills_path) ?: [] as $directory) {
+    if ($directory === '.' || $directory === '..') {
+      continue;
+    }
+
+    $metadata_file = $skills_path . '/' . $directory . '/skill.yml';
+    if (!is_file($metadata_file)) {
+      continue;
+    }
+
+    $metadata = Yaml::decode((string) file_get_contents($metadata_file));
+    if (!is_array($metadata)) {
+      continue;
+    }
+
+    $skill_label = trim((string) ($metadata['title'] ?? $metadata['machine_name'] ?? $directory));
+    $modules = is_array($metadata['dependencies']['modules'] ?? NULL) ? $metadata['dependencies']['modules'] : [];
+    foreach ($modules as $module) {
+      $module = trim((string) $module);
+      if ($module === '') {
+        continue;
+      }
+
+      $requirements[$module][] = $skill_label;
+    }
+  }
+
+  ksort($requirements);
+  foreach ($requirements as $module => $skills) {
+    $requirements[$module] = array_values(array_unique($skills));
+    sort($requirements[$module], SORT_NATURAL | SORT_FLAG_CASE);
+  }
+
+  return $requirements;
+}

@@ -1,0 +1,16 @@
+{% import '@trotamundos_2/components/icons.html.twig' as icons %}
+<dialog class="tm2-dialog" id="tm2-trip-{{ experience.id }}" data-tm2-dialog aria-labelledby="tm2-trip-title-{{ experience.id }}">
+  <button class="tm2-dialog__close" type="button" data-tm2-dialog-close aria-label="{{ 'Cerrar detalle'|t }}">{{ icons.icon('close') }}</button>
+  <div class="tm2-dialog__layout">
+    <img class="tm2-dialog__image" src="{{ tm2_path }}/assets/images/{{ experience.image }}" alt="{{ experience.alt }}" width="1100" height="825" loading="lazy" decoding="async">
+    <div class="tm2-dialog__copy">
+      <p class="tm2-eyebrow">{{ experience.region }} / {{ experience.label }}</p>
+      <h2 id="tm2-trip-title-{{ experience.id }}">{{ experience.name }}</h2>
+      <p class="tm2-dialog__intro">{{ experience.title }}</p>
+      <p>{{ experience.description }}</p>
+      <ul>{% for moment in experience.moments %}<li>{{ icons.icon('check') }} {{ moment }}</li>{% endfor %}</ul>
+      <div class="tm2-dialog__notice"><strong>{{ 'El viaje empieza con una idea.'|t }}</strong><p>{{ 'Esta es una selección para inspirarte. Estamos preparando nuestras primeras experiencias; las opciones, fechas y disponibilidad se anunciarán más adelante.'|t }}</p></div>
+      <button class="tm2-button tm2-button--primary" type="button" data-tm2-dialog-close>{{ 'Seguir explorando'|t }} {{ icons.icon('arrow') }}</button>
+    </div>
+  </div>
+</dialog>

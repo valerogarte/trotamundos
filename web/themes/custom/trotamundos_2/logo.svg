@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-labelledby="title desc">
+  <title id="title">Trotamundos</title>
+  <desc id="desc">Monograma TM geométrico en verde Selva y dorado Sol.</desc>
+  <rect width="80" height="80" rx="12" fill="#173D32"/>
+  <path fill="#D3A75E" d="M12 20h26v8h-9v32h-8V28h-9zM41 60V20h7l7 13 7-13h7v40h-8V37l-6 11-6-11v23z"/>
+</svg>

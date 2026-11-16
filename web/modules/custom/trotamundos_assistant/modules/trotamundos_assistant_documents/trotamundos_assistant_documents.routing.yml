@@ -1,0 +1,29 @@
+trotamundos_assistant_documents.settings:
+  path: '/admin/config/services/trotamundos-assistant/documents'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant_documents\Controller\DocumentsSettingsController::page'
+    _title: 'Documentos'
+  requirements:
+    _permission: 'administer trotamundos assistant documents'
+  options:
+    _admin_route: TRUE
+
+trotamundos_assistant_documents.rule_add:
+  path: '/admin/config/services/trotamundos-assistant/documents/add'
+  defaults:
+    _form: '\Drupal\trotamundos_assistant_documents\Form\DocumentsSettingsForm'
+    _title: 'Añadir Regla de Indexación'
+  requirements:
+    _permission: 'administer trotamundos assistant documents'
+  options:
+    _admin_route: TRUE
+
+trotamundos_assistant_documents.rule_delete:
+  path: '/admin/config/services/trotamundos-assistant/documents/rules/{rule_id}/delete'
+  defaults:
+    _form: '\Drupal\trotamundos_assistant_documents\Form\DeleteRuleConfirmForm'
+    _title: 'Borrar regla'
+  requirements:
+    _permission: 'administer trotamundos assistant documents'
+  options:
+    _admin_route: TRUE

@@ -1,0 +1,18 @@
+langcode: es
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_establishment_type
+    - node.type.establecimiento
+id: node.establecimiento.field_establishment_type
+field_name: field_establishment_type
+entity_type: node
+bundle: establecimiento
+label: 'Tipo de establecimiento'
+description: 'Clasificación editorial del establecimiento.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,10 @@
+# Demo captures and generated media.
+assets/demo/screenshot/
+assets/demo/video/*.mp4
+assets/demo/video/*.mp3
+assets/demo/video/*.kdenlive
+assets/demo/video/*:Zone.Identifier
+assets/demo/video/*.Identifier
+assets/demo/video/audio/
+assets/demo/video/fotograma/
+assets/demo/video/1779803581210/

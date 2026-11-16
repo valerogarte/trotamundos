@@ -1,0 +1,230 @@
+{#
+/**
+ * @file
+ * Shopping cart view template for Trotamundos Assistant.
+ */
+#}
+<article class="trotamundos-assistant-template trotamundos-assistant-template--shopping-cart">
+  <header class="trotamundos-assistant-template__header">
+    <p class="trotamundos-assistant-template__eyebrow">{{ title|default('Carrito de la compra'|t) }}</p>
+  </header>
+
+  {% if intro is defined and intro %}
+    <p class="trotamundos-assistant-template__intro">{{ intro }}</p>
+  {% elseif description is defined and description %}
+    <p class="trotamundos-assistant-template__description">{{ description }}</p>
+  {% endif %}
+
+  {% if cart_groups is defined and cart_groups %}
+    <div class="trotamundos-assistant-cart-panel">
+      {% for cart in cart_groups %}
+        <section class="trotamundos-assistant-cart-panel__group" aria-label="{{ cart.store_name }}">
+          <header class="trotamundos-assistant-cart-panel__group-header">
+            <h3>{{ 'Vendido por:'|t }} <span>{{ cart.store_name }}</span></h3>
+          </header>
+          {% for item in cart.items %}
+            <article class="trotamundos-assistant-cart-panel__item">
+              <div class="trotamundos-assistant-cart-panel__media">
+                {% if item.image_url is defined and item.image_url %}
+                  <img src="{{ item.image_url }}" alt="{{ item.image_alt|default(item.title) }}" loading="lazy" />
+                {% else %}
+                  <span class="trotamundos-assistant-cart-panel__placeholder" aria-hidden="true"></span>
+                {% endif %}
+              </div>
+              <div class="trotamundos-assistant-cart-panel__copy">
+                <h4 class="trotamundos-assistant-cart-panel__title">
+                  {% if item.url %}
+                    <a href="{{ item.url }}">{{ item.title }}</a>
+                  {% else %}
+                    {{ item.title }}
+                  {% endif %}
+                </h4>
+                {% if item.stock_label is defined and item.stock_label %}
+                  <p class="trotamundos-assistant-cart-panel__stock">
+                    <span aria-hidden="true">✓</span>
+                    {{ item.stock_label }}
+                  </p>
+                {% endif %}
+              </div>
+              <strong class="trotamundos-assistant-cart-panel__price">{{ item.total_price }}</strong>
+              {% if item.order_item_id is defined and item.order_item_id %}
+                <div class="trotamundos-assistant-cart-panel__item-actions">
+                  <form
+                    class="trotamundos-assistant-cart-panel__quantity-form"
+                    data-minsait-cart-update-item
+                    data-update-item-url="{{ path('trotamundos_assistant.skill_action', {'machine_name': 'shopping_cart_view', 'action': 'update_item'}) }}"
+                    data-order-item-id="{{ item.order_item_id }}"
+                  >
+                    <button
+                      class="trotamundos-assistant-cart-panel__quantity-step"
+                      type="submit"
+                      name="quantity_delta"
+                      value="-1"
+                      aria-label="{{ 'Reducir cantidad'|t }}"
+                    >−</button>
+                    <label>
+                      <span>{{ 'Cantidad'|t }}</span>
+                      <input
+                        type="number"
+                        name="quantity"
+                        min="1"
+                        step="1"
+                        value="{{ item.quantity_value|default(item.quantity) }}"
+                        inputmode="numeric"
+                        readonly
+                      />
+                    </label>
+                    <button
+                      class="trotamundos-assistant-cart-panel__quantity-step"
+                      type="submit"
+                      name="quantity_delta"
+                      value="1"
+                      aria-label="{{ 'Aumentar cantidad'|t }}"
+                    >+</button>
+                  </form>
+                  <button
+                    class="trotamundos-assistant-cart-panel__remove"
+                    type="button"
+                    data-minsait-cart-remove-item
+                    data-remove-item-url="{{ path('trotamundos_assistant.skill_action', {'machine_name': 'shopping_cart_view', 'action': 'remove_item'}) }}"
+                    data-order-item-id="{{ item.order_item_id }}"
+                  >
+                    {{ 'Eliminar'|t }}
+                  </button>
+                </div>
+              {% endif %}
+            </article>
+          {% endfor %}
+          {% if cart.summary is defined and cart.summary %}
+            <dl class="trotamundos-assistant-cart-panel__totals">
+              <div class="trotamundos-assistant-cart-panel__totals-heading">{{ 'Resumen del pedido'|t }}</div>
+              {% if cart.summary.subtotal %}
+                <div>
+                  <dt>{{ 'Subtotal'|t }}</dt>
+                  <dd>{{ cart.summary.subtotal }}</dd>
+                </div>
+              {% endif %}
+              {% for adjustment in cart.summary.adjustments %}
+                <div class="trotamundos-assistant-cart-panel__adjustment trotamundos-assistant-cart-panel__adjustment--{{ adjustment.type|clean_class }}">
+                  <dt>{{ adjustment.label }}</dt>
+                  <dd>{{ adjustment.amount }}</dd>
+                </div>
+              {% endfor %}
+              <div class="trotamundos-assistant-cart-panel__total-row">
+                <dt>{{ 'Total'|t }}</dt>
+                <dd>{{ cart.summary.total|default(cart.total) }}</dd>
+              </div>
+            </dl>
+          {% endif %}
+        </section>
+      {% endfor %}
+    </div>
+
+    {% set first_cart = cart_groups|first %}
+    {% if cart_total is defined and cart_total and not first_cart.summary|default(null) %}
+      <section class="trotamundos-assistant-cart-panel__summary" aria-label="{{ 'Total'|t }}">
+        <span>{{ 'Total'|t }}</span>
+        <strong>{{ cart_total }}</strong>
+      </section>
+    {% endif %}
+
+    <div class="trotamundos-assistant-cart-panel__actions">
+      <a class="trotamundos-assistant-payment__button" href="{{ path('commerce_checkout.checkout') }}">{{ 'Ir al pago'|t }}</a>
+      <a class="trotamundos-assistant-payment__link" href="{{ path('commerce_cart.page') }}">{{ 'Ver carrito completo'|t }}</a>
+    </div>
+  {% elseif cart_items is defined and cart_items %}
+    <div class="trotamundos-assistant-cart-panel">
+      {% for item in cart_items %}
+        <article class="trotamundos-assistant-cart-panel__item">
+          <div class="trotamundos-assistant-cart-panel__media">
+            {% if item.image_url is defined and item.image_url %}
+              <img src="{{ item.image_url }}" alt="{{ item.image_alt|default(item.title) }}" loading="lazy" />
+            {% else %}
+              <span class="trotamundos-assistant-cart-panel__placeholder" aria-hidden="true"></span>
+            {% endif %}
+          </div>
+          <div class="trotamundos-assistant-cart-panel__copy">
+            <h3 class="trotamundos-assistant-cart-panel__title">
+              {% if item.url %}
+                <a href="{{ item.url }}">{{ item.title }}</a>
+              {% else %}
+                {{ item.title }}
+              {% endif %}
+            </h3>
+            {% if item.stock_label is defined and item.stock_label %}
+              <p class="trotamundos-assistant-cart-panel__stock">
+                <span aria-hidden="true">✓</span>
+                {{ item.stock_label }}
+              </p>
+            {% endif %}
+          </div>
+          <strong class="trotamundos-assistant-cart-panel__price">{{ item.total_price }}</strong>
+          {% if item.order_item_id is defined and item.order_item_id %}
+            <div class="trotamundos-assistant-cart-panel__item-actions">
+              <form
+                class="trotamundos-assistant-cart-panel__quantity-form"
+                data-minsait-cart-update-item
+                data-update-item-url="{{ path('trotamundos_assistant.skill_action', {'machine_name': 'shopping_cart_view', 'action': 'update_item'}) }}"
+                data-order-item-id="{{ item.order_item_id }}"
+              >
+                <button
+                  class="trotamundos-assistant-cart-panel__quantity-step"
+                  type="submit"
+                  name="quantity_delta"
+                  value="-1"
+                  aria-label="{{ 'Reducir cantidad'|t }}"
+                >−</button>
+                <label>
+                  <span>{{ 'Cantidad'|t }}</span>
+                  <input
+                    type="number"
+                    name="quantity"
+                    min="1"
+                    step="1"
+                    value="{{ item.quantity_value|default(item.quantity) }}"
+                    inputmode="numeric"
+                    readonly
+                  />
+                </label>
+                <button
+                  class="trotamundos-assistant-cart-panel__quantity-step"
+                  type="submit"
+                  name="quantity_delta"
+                  value="1"
+                  aria-label="{{ 'Aumentar cantidad'|t }}"
+                >+</button>
+              </form>
+              <button
+                class="trotamundos-assistant-cart-panel__remove"
+                type="button"
+                data-minsait-cart-remove-item
+                data-remove-item-url="{{ path('trotamundos_assistant.skill_action', {'machine_name': 'shopping_cart_view', 'action': 'remove_item'}) }}"
+                data-order-item-id="{{ item.order_item_id }}"
+              >
+                {{ 'Eliminar'|t }}
+              </button>
+            </div>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+
+    {% if cart_total is defined and cart_total %}
+      <section class="trotamundos-assistant-cart-panel__summary" aria-label="{{ 'Total'|t }}">
+        <span>{{ 'Total'|t }}</span>
+        <strong>{{ cart_total }}</strong>
+      </section>
+    {% endif %}
+
+    <div class="trotamundos-assistant-cart-panel__actions">
+      <a class="trotamundos-assistant-payment__button" href="{{ path('commerce_checkout.checkout') }}">{{ 'Ir al pago'|t }}</a>
+      <a class="trotamundos-assistant-payment__link" href="{{ path('commerce_cart.page') }}">{{ 'Ver carrito completo'|t }}</a>
+    </div>
+  {% else %}
+    <div class="trotamundos-assistant-template__empty">
+      <p>{{ 'Todavía no hay productos en el carrito.'|t }}</p>
+    </div>
+  {% endif %}
+
+  {% include '@trotamundos_assistant/trotamundos-assistant-suggestions.html.twig' with { notes: notes|default(''), outro: outro|default('') } only %}
+</article>

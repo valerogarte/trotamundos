@@ -1,0 +1,146 @@
+/**
+ * Home video banner. It keeps the video as protagonist but leaves room for
+ * the quick search and the experiences right below it.
+ */
+.front-messages {
+  padding-top: 0;
+}
+
+.front-messages:has(.messages) {
+  padding-block: 16px;
+}
+
+.immersive-hero {
+  position: relative;
+  isolation: isolate;
+  height: clamp(560px, 72svh, 780px);
+  overflow: hidden;
+  color: var(--marfil);
+  background: var(--selva);
+}
+
+.immersive-hero__media,
+.immersive-hero::after {
+  position: absolute;
+  inset: 0;
+}
+
+.immersive-hero__media {
+  z-index: -2;
+}
+
+.immersive-hero__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.immersive-hero::after {
+  z-index: -1;
+  content: "";
+  background:
+    linear-gradient(90deg, rgb(8 24 20 / 62%), rgb(8 24 20 / 18%) 70%),
+    linear-gradient(180deg, rgb(8 24 20 / 30%), transparent 30%, transparent 62%, rgb(8 24 20 / 55%));
+}
+
+.immersive-hero__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding-block: calc(var(--header-height) + 24px) 88px;
+}
+
+.immersive-hero__copy {
+  max-width: 760px;
+}
+
+.immersive-hero__eyebrow {
+  margin-bottom: 18px;
+  color: var(--sol);
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-shadow: 0 1px 10px rgb(8 24 20 / 35%);
+}
+
+.immersive-hero h1 {
+  margin-left: -4px;
+  color: inherit;
+  font-size: var(--type-display);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  text-shadow: 0 2px 24px rgb(8 24 20 / 20%);
+}
+
+.immersive-hero__description {
+  max-width: 560px;
+  margin-top: 22px;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.55;
+  text-shadow: 0 1px 12px rgb(8 24 20 / 40%);
+}
+
+.immersive-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.immersive-hero :focus-visible {
+  outline-color: var(--marfil);
+}
+
+@media (max-width: 1023px) {
+  .immersive-hero__inner {
+    padding-bottom: 104px;
+  }
+}
+
+@media (max-width: 639px) {
+  .immersive-hero {
+    height: clamp(520px, 76svh, 680px);
+  }
+
+  .immersive-hero::after {
+    background: linear-gradient(180deg, rgb(8 24 20 / 50%), rgb(8 24 20 / 30%) 30%, rgb(8 24 20 / 45%) 60%, rgb(8 24 20 / 82%));
+  }
+
+  .immersive-hero__inner {
+    justify-content: flex-end;
+    padding-block: calc(var(--header-height) + 24px) 84px;
+  }
+
+  .immersive-hero__eyebrow {
+    margin-bottom: 14px;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+  }
+
+  .immersive-hero h1 {
+    margin-left: -2px;
+    font-size: clamp(56px, 16vw, 76px);
+  }
+
+  .immersive-hero__description {
+    margin-top: 16px;
+    font-size: 17px;
+  }
+
+  .immersive-hero__actions {
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .immersive-hero__actions .button {
+    flex: 1 1 100%;
+  }
+
+  .immersive-hero__actions .button--ghost-light {
+    display: none;
+  }
+}

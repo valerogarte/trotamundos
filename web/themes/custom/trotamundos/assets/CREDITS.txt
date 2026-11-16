@@ -1,0 +1,84 @@
+Recursos visuales del tema trotamundos
+
+Fotografías: archivos originales de Wikimedia Commons. No implica relación comercial con los lugares o fotógrafos.
+Se han redimensionado y convertido a WebP. Las fotografías bajo CC BY-SA conservan esa licencia.
+
+hero-cocora.webp
+Fotografía: Wax Palms in the Cocora Valley, 2025.jpg
+Autor: Mottenpriesterin
+Origen: https://commons.wikimedia.org/wiki/File:Wax_Palms_in_the_Cocora_Valley,_2025.jpg
+Licencia: CC BY-SA 4.0 — https://creativecommons.org/licenses/by-sa/4.0
+Cambios: Redimensionada y convertida a WebP para la web.
+
+concepcion.webp
+Fotografía: Calle de Concepción, Antioquia.jpg
+Autor: XalD
+Origen: https://commons.wikimedia.org/wiki/File:Calle_de_Concepci%C3%B3n,_Antioquia.jpg
+Licencia: CC BY-SA 4.0 — https://creativecommons.org/licenses/by-sa/4.0
+Cambios: Redimensionada y convertida a WebP para la web.
+
+termales.webp
+Fotografía: Termales de Santa Rosa de Cabal.jpg
+Autor: Juan Sebastian Aparicio
+Origen: https://commons.wikimedia.org/wiki/File:Termales_de_Santa_Rosa_de_Cabal.jpg
+Licencia: CC BY-SA 4.0 — https://creativecommons.org/licenses/by-sa/4.0
+Cambios: Redimensionada y convertida a WebP para la web.
+
+pueblo.webp
+Fotografía: Concepción - calle.jpg
+Autor: Luis Pérez
+Origen: https://commons.wikimedia.org/wiki/File:Concepci%C3%B3n_-_calle.jpg
+Licencia: CC BY 2.0 — https://creativecommons.org/licenses/by/2.0
+Cambios: Redimensionada y convertida a WebP para la web.
+
+hero-caribe.webp
+Fotografía: 20251217 Islas del Rosario Comunidad Energetica - 7777.jpg
+Lugar: Islas del Rosario, Colombia
+Autor: Ovidio Gonzalez S / REPÚBLICA DE COLOMBIA
+Origen: https://commons.wikimedia.org/wiki/File:20251217_Islas_del_Rosario_Comunidad_Energetica_-_7777.jpg
+Publicación original: https://www.flickr.com/photos/197399771@N06/54990775801/
+Licencia: Dominio público (Public Domain Mark, publicación del autor en Flickr verificada por Wikimedia Commons) — https://creativecommons.org/publicdomain/mark/1.0/
+Cambios: Redimensionada a 2560 × 1707 y convertida a WebP para la web. Sin cambios de color.
+
+hero-caribe-mobile.webp
+Fotografía: 20251217 Islas del Rosario Comunidad Energetica - 7777.jpg
+Lugar: Islas del Rosario, Colombia
+Autor: Ovidio Gonzalez S / REPÚBLICA DE COLOMBIA
+Origen: https://commons.wikimedia.org/wiki/File:20251217_Islas_del_Rosario_Comunidad_Energetica_-_7777.jpg
+Publicación original: https://www.flickr.com/photos/197399771@N06/54990775801/
+Licencia: Dominio público (Public Domain Mark, publicación del autor en Flickr verificada por Wikimedia Commons) — https://creativecommons.org/publicdomain/mark/1.0/
+Cambios: Recorte vertical desde el original, redimensionado a 1080 × 1920 y convertido a WebP. Sin cambios de color.
+
+Vídeo del banner principal
+
+hero-naturaleza.mp4 y hero-naturaleza-mobile.mp4
+Montaje de tres vídeos de Pexels, con recortes para escritorio y móvil y transiciones entre escenas:
+- “Slow motion footage of a hummingbird's wings flapping while feeding”, autor 8 K: https://www.pexels.com/video/slow-motion-footage-of-a-hummingbird-s-wings-flapping-while-feeding-2402369/
+- “A waterfall in the jungle surrounded by trees”, autor Davis Arenas: https://www.pexels.com/video/a-waterfall-in-the-jungle-surrounded-by-trees-17039829/
+- “Horses on the ocean beach at sunset”, autora Jessi X: https://www.pexels.com/video/horses-on-the-ocean-beach-at-sunset-20030101/
+Licencia: Pexels License, permite usar y editar vídeos en sitios web sin atribución obligatoria: https://www.pexels.com/legal-pages/license/
+Cambios: Recortados, unidos con transiciones y convertidos a MP4 H.264 para la web. El montaje se reproduce siempre silenciado.
+
+hero-naturaleza-poster.webp y hero-naturaleza-mobile-poster.webp
+Fotogramas del montaje anterior, redimensionados y convertidos a WebP para usarse como carteles del vídeo.
+
+Fuentes alojadas localmente
+Cormorant Garamond variable 300–700, normal y cursiva; subconjunto latino.
+Origen: https://fonts.google.com/specimen/Cormorant+Garamond
+SIL Open Font License 1.1. Texto completo: fonts/Cormorant-Garamond-OFL.txt
+Manrope variable 200–800, normal; subconjunto latino.
+Origen: https://fonts.google.com/specimen/Manrope
+SIL Open Font License 1.1. Texto completo: fonts/Manrope-OFL.txt
+Los archivos de fuentes no se han modificado.
+
+Fotografías propias (archivo de Juan Trotamundos)
+Origen: drive-download-20261108T201330Z-1-001.zip, aportado por Juan Trotamundos para el proyecto.
+Uso cedido para Trotamundos. Se han redimensionado, convertido a WebP y se han eliminado los metadatos EXIF, incluida la ubicación GPS.
+En el tema (assets/images): comunidad-concepcion.webp, juan-trotamundos.webp, juan-concepcion-noche.webp,
+concepcion-panoramica.webp, mesa-concepcion.webp, termales-aerea.webp, termales-cascada.webp, termales-manantial.webp.
+En las fichas de experiencia (sites/default/files/experiencias): 40 fotografías de Termales Espíritu Santo (Nariño, Antioquia)
+y de Concepción (Antioquia). La asignación a cada lugar se ha hecho con la ubicación GPS y la fecha de cada archivo.
+Galería anterior de destinos: ocho imágenes del mismo archivo en modules/custom/trotamundos_destinations/assets/images/termales.
+
+Mapa de Colombia
+Contorno continental de Natural Earth 1:50m, dominio público. Detalles en assets/maps/CREDITS.txt.

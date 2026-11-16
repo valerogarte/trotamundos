@@ -1,0 +1,37 @@
+machine_name: content_edit
+title: 'Editar contenido'
+btn_responsive_title: 'Abrir formulario de edición'
+group: core_drupal
+theme:
+  variables:
+    found: false
+    access_denied: false
+    ambiguous: false
+    content_title: ''
+    content_type: ''
+    edit_url: ''
+    content_form: []
+    matches: []
+handler:
+  class: 'Drupal\trotamundos_assistant\SkillLocal\ContentEdit\ContentEditSkillHandler'
+  file: 'src/ContentEditSkillHandler.php'
+assets:
+  css:
+    - css/content_edit.css
+  dependencies:
+    - core/drupal.ajax
+    - core/drupal.entity-form
+    - core/drupal.form
+    - core/drupal.states
+    - trotamundos_assistant/template.base
+chat_reply_fallback: 'Te muestro el formulario de edición en el panel.'
+description: 'Busca una entidad de contenido por nombre o ID y muestra su formulario de edición si el usuario tiene permisos.'
+provider:
+  requires_rag: false
+  intent: 'Usar cuando el usuario pida editar, modificar, actualizar o abrir el formulario de edición de cualquier entidad de contenido Drupal por nombre. Las peticiones explícitas de edición tienen prioridad sobre consultas, resúmenes y búsquedas documentales: muestra el formulario de edición. Para productos del catálogo usa entity_type=commerce_product y content_title con el nombre solicitado si no conoces su ID. Una consulta previa sobre el PDF de un producto no cambia el objeto que se pide editar; usa media solo cuando se pida editar explícitamente el documento o archivo.'
+  when_to_use:
+    - 'El usuario dice que quiere editar un contenido, producto, media, término u otra entidad llamada, titulada o con nombre concreto.'
+    - 'El usuario pide modificar una página, artículo, noticia, producto u otro contenido de Drupal.'
+    - 'El usuario aporta un título de contenido y espera ver el formulario de edición.'
+    - 'Si conoces el tipo de entidad, devuélvelo como entity_type; por ejemplo node, commerce_product, media o taxonomy_term.'
+    - 'Si conoces el ID de entidad, devuélvelo como entity_id; si no, devuelve content_title con el nombre pedido.'

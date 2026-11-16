@@ -1,0 +1,37 @@
+Trotamundos 3 · Recursos de identidad
+Edición 03 · Versión 3.0
+
+La firma
+«trotamundos.» en Fraunces 600 normal, tamaño óptico 28,
+espaciado −0,035 em. El punto sol es un acento de luz.
+Los SVG contienen trazados autónomos obtenidos de la fuente local con
+HarfBuzz y fontTools; no necesitan fuentes instaladas ni servicios externos.
+
+wordmark-marfil.svg: nombre #F5F0E6 y punto #D3A75E, para fondos selva.
+wordmark-selva.svg: nombre #173D32 y punto #D3A75E, para fondos claros.
+wordmark-carbon.svg: nombre y punto #242723, para una sola tinta.
+Las firmas son transparentes. No incluyen símbolo ni descriptor secundario.
+Conservar las proporciones, el espaciado y los colores de cada variante.
+
+El símbolo
+simbolo.svg es una copia exacta de logo.svg del tema.
+Un camino continuo en marfil conecta un punto sol con un destino circular.
+Formato 64 × 64, fondo transparente; usar preferentemente sobre selva.
+
+El color
+trotamundos-3.gpl: cinco colores sRGB, sin conversiones CMYK.
+Selva #173D32, Marfil #F5F0E6, Terracota #BF6846, Sol #D3A75E, Carbón #242723.
+
+Las fuentes
+Fraunces normal y cursiva: variable 100–900, tamaño óptico 9–144.
+Plus Jakarta Sans normal: variable 200–800.
+Archivos locales WOFF2 y licencias SIL Open Font License 1.1 incluidas.
+
+La fuente de la identidad
+identity/brand.yml: pautas editoriales de esta edición.
+tokens/trotamundos-3-tokens.css: valores compartidos con la web.
+La guía /guia-de-marca calcula RGB y contrastes a partir de esos tokens.
+
+Las imágenes
+Las fotografías no se incluyen en este kit. Mantienen sus propias licencias
+y autorías, recogidas en assets/CREDITS.txt y assets/image-sources.json.

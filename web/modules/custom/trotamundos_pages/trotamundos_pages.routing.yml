@@ -1,0 +1,15 @@
+trotamundos_pages.esencia:
+  path: '/nuestra-esencia'
+  defaults:
+    _controller: '\Drupal\trotamundos_pages\Controller\PagesController::esencia'
+    _title: 'Nuestra esencia'
+  requirements:
+    _permission: 'access content'
+
+trotamundos_pages.ayuda:
+  path: '/ayuda'
+  defaults:
+    _controller: '\Drupal\trotamundos_pages\Controller\PagesController::ayuda'
+    _title: 'Ayuda'
+  requirements:
+    _permission: 'access content'

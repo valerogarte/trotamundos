@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html{{ html_attributes }}>
+  <head>
+    <head-placeholder token="{{ placeholder_token }}">
+    <title>{{ head_title|safe_join(' | ') }}</title>
+    <meta name="theme-color" content="#F5F0E6">
+    {% if is_front %}<meta name="description" content="Abre el atlas y encuentra tu próximo desvío. Pueblos, naturaleza y pequeñas pausas por Colombia con Juan Trota Mundos.">{% endif %}
+    <link rel="preload" as="font" href="{{ tm4_path }}/assets/fonts/barlow-condensed-bold-latin.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="{{ tm4_path }}/assets/fonts/ibm-plex-sans-latin.woff2" type="font/woff2" crossorigin>
+    <css-placeholder token="{{ placeholder_token }}">
+    <js-placeholder token="{{ placeholder_token }}">
+  </head>
+  <body{{ attributes }}>
+    <a class="skip-link" href="#main-content">{{ 'Saltar al contenido'|t }}</a>
+    {{ page_top }}{{ page }}{{ page_bottom }}
+    <js-bottom-placeholder token="{{ placeholder_token }}">
+  </body>
+</html>

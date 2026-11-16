@@ -1,0 +1,17 @@
+{% macro icon(name, class = '') %}
+  <svg class="tm3-icon {{ class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    {% if name == 'arrow' %}<path d="M4 12h16m-7-7 7 7-7 7"/>
+    {% elseif name == 'diagonal' %}<path d="M5 19 19 5M5 5h14v14"/>
+    {% elseif name == 'down' %}<path d="M12 3v18m-7-7 7 7 7-7"/>
+    {% elseif name == 'pin' %}<path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.4"/>
+    {% elseif name == 'leaf' %}<path d="M20 4C8 2 2 8 5 15s16 5 15-11ZM4 21 16 8"/>
+    {% elseif name == 'sun' %}<path d="M12 2v20M2 12h20M5 5l14 14M5 19 19 5"/>
+    {% elseif name == 'village' %}<path d="m2 11 7-7 7 7M4 9v12h10V9m2 2 3-4 4 4M16 21h5V10M8 21v-7h3v7"/>
+    {% elseif name == 'close' %}<path d="m5 5 14 14M5 19 19 5"/>
+    {% elseif name == 'plus' %}<path d="M12 4v16M4 12h16"/>
+    {% elseif name == 'water' %}<path d="M3 8c3-4 6 4 9 0s6 4 9 0M3 14c3-4 6 4 9 0s6 4 9 0M3 20c3-4 6 4 9 0s6 4 9 0"/>
+    {% elseif name == 'route' %}<circle cx="5" cy="18" r="3"/><circle cx="19" cy="6" r="3"/><path d="M8 18h7a4 4 0 0 0 0-8h-5a4 4 0 0 1 0-8h5"/>
+    {% elseif name == 'check' %}<path d="m4 12 5 5L20 6"/>
+    {% endif %}
+  </svg>
+{% endmacro %}

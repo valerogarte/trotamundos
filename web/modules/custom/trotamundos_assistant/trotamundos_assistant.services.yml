@@ -1,0 +1,112 @@
+services:
+  trotamundos_assistant.defaults:
+    class: Drupal\trotamundos_assistant\Config\TrotamundosAssistantDefaults
+    arguments:
+      - '@extension.list.module'
+
+  trotamundos_assistant.access_manager:
+    class: Drupal\trotamundos_assistant\Access\AssistantAccessManager
+    arguments:
+      - '@config.factory'
+      - '@entity_type.manager'
+      - '@trotamundos_assistant.defaults'
+
+  trotamundos_assistant.skill_discovery:
+    class: Drupal\trotamundos_assistant\Skill\SkillDiscovery
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+
+  Drupal\trotamundos_assistant\Skill\SkillDiscovery:
+    alias: trotamundos_assistant.skill_discovery
+
+  trotamundos_assistant.skill_matcher:
+    class: Drupal\trotamundos_assistant\Skill\SkillMatcher
+    arguments:
+      - '@trotamundos_assistant.skill_discovery'
+      - '@config.factory'
+      - '@cache.default'
+      - '@trotamundos_assistant.defaults'
+
+  trotamundos_assistant.skill_template_renderer:
+    class: Drupal\trotamundos_assistant\Skill\SkillTemplateRenderer
+    arguments:
+      - '@extension.list.module'
+      - '@renderer'
+      - '@trotamundos_assistant.skill_handler_resolver'
+      - '@ajax_response.attachments_processor'
+      - '@trotamundos_assistant.skill_runtime'
+
+  trotamundos_assistant.skill_runtime:
+    class: Drupal\trotamundos_assistant\Skill\SkillRuntime
+    arguments:
+      - '@entity_type.manager'
+      - '@file_url_generator'
+      - '@current_user'
+      - '@csrf_token'
+      - '@module_handler'
+      - '@entity.form_builder'
+      - '@entity_field.manager'
+      - '@?commerce_cart.cart_provider'
+      - '@?commerce_order.order_total_summary'
+
+  trotamundos_assistant.skill_class_loader:
+    class: Drupal\trotamundos_assistant\Skill\SkillClassLoader
+
+  trotamundos_assistant.skill_handler_resolver:
+    class: Drupal\trotamundos_assistant\Skill\SkillHandlerResolver
+    arguments:
+      - '@trotamundos_assistant.skill_runtime'
+      - '@trotamundos_assistant.skill_class_loader'
+
+  trotamundos_assistant.usage_logger:
+    class: Drupal\trotamundos_assistant\Usage\UsageLogger
+    arguments:
+      - '@database'
+      - '@current_user'
+      - '@datetime.time'
+      - '@config.factory'
+      - '@trotamundos_assistant.defaults'
+
+  trotamundos_assistant.usage_repository:
+    class: Drupal\trotamundos_assistant\Usage\UsageRepository
+    arguments:
+      - '@database'
+
+  trotamundos_assistant.usage_report_builder:
+    class: Drupal\trotamundos_assistant\Usage\UsageReportBuilder
+
+  trotamundos_assistant.usage_chart_builder:
+    class: Drupal\trotamundos_assistant\Usage\UsageChartBuilder
+    arguments:
+      - '@string_translation'
+
+  trotamundos_assistant.dependency_status_builder:
+    class: Drupal\trotamundos_assistant\Admin\DependencyStatusBuilder
+    arguments:
+      - '@module_handler'
+      - '@config.factory'
+      - '@key.repository'
+      - '@database'
+      - '@string_translation'
+
+  trotamundos_assistant.ai_usage_subscriber:
+    class: Drupal\trotamundos_assistant\EventSubscriber\AiUsageSubscriber
+    arguments:
+      - '@trotamundos_assistant.usage_logger'
+    tags:
+      - { name: event_subscriber }
+
+  trotamundos_assistant.openai_luna_tool_compatibility_subscriber:
+    class: Drupal\trotamundos_assistant\EventSubscriber\OpenAiLunaToolCompatibilitySubscriber
+    tags:
+      - { name: event_subscriber }
+
+  trotamundos_assistant.skill_prompt_subscriber:
+    class: Drupal\trotamundos_assistant\EventSubscriber\SkillPromptSubscriber
+    arguments:
+      - '@request_stack'
+      - '@trotamundos_assistant.skill_matcher'
+      - '@trotamundos_assistant.skill_template_renderer'
+    tags:
+      - { name: event_subscriber }

@@ -1,0 +1,27 @@
+machine_name: product_results
+title: 'Buscar productos'
+btn_responsive_title: 'Ver resultados'
+group: ecommerce
+theme:
+  variables:
+    intro: ''
+    outro: ''
+    product_items: []
+handler:
+  class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\ProductResults\ProductResultsSkillHandler'
+  file: 'src/ProductResultsSkillHandler.php'
+assets:
+  dependencies:
+    - trotamundos_assistant_ecommerce/skill.product_common
+dependencies:
+  modules:
+    - commerce_product
+chat_reply_fallback: 'He preparado los resultados en el panel.'
+description: 'Lista productos encontrados en catálogo a partir de una búsqueda o filtro pedido por el usuario. En peticiones de seguimiento que añadan complementos o condiciones, trata los resultados previos como una colección activa: conserva sus productos y añade los nuevos, salvo que el usuario pida quitarlos, sustituirlos o una restricción nueva los descarte. Devuelve siempre en result.items la colección completa resultante con IDs reales recuperados por RAG.'
+provider:
+  requires_rag: true
+  intent: 'Usar cuando el usuario quiera encontrar productos que cumplan una búsqueda concreta.'
+  when_to_use:
+    - 'El usuario busca productos por categoría, marca, precio o característica.'
+    - 'El usuario pide ver resultados disponibles.'
+    - 'El usuario amplía, reduce o modifica una lista de productos mostrada antes.'

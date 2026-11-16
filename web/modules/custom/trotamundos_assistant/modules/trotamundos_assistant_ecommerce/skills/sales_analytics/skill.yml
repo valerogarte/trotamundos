@@ -1,0 +1,66 @@
+machine_name: sales_analytics
+title: 'Analítica de ventas'
+btn_responsive_title: 'Ver informe de ventas'
+group: ecommerce
+theme:
+  variables:
+    intro: ''
+    report: []
+    focus: 'overview'
+    sections: {}
+    denied: false
+handler:
+  class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\SalesAnalytics\SalesAnalyticsSkillHandler'
+  file: 'src/SalesAnalyticsSkillHandler.php'
+assets:
+  css:
+    - css/sales_analytics.css
+  js:
+    - js/echarts.min.js
+    - js/sales_analytics.js
+  dependencies:
+    - core/drupal
+    - core/once
+    - core/drupalSettings
+    - trotamundos_assistant/template.base
+dependencies:
+  modules:
+    - commerce_order
+    - commerce_product
+    - commerce_store
+chat_reply_fallback: 'Te muestro el informe de ventas en el panel.'
+actions:
+  report:
+    class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\SalesAnalytics\SalesAnalyticsActionHandler'
+    file: 'src/SalesAnalyticsActionHandler.php'
+    method: report
+    http_method: GET
+    route: trotamundos_assistant.skill_action
+    csrf: false
+    arguments:
+      - trotamundos_assistant_ecommerce.sales_stats_builder
+description: 'Informe de ventas del comercio: facturación, pedidos, ticket medio, evolución mensual, comparativa con el año anterior y reparto por categoría, producto y tienda, con descarga de la factura de cada pedido. Solo para administración.'
+provider:
+  requires_rag: false
+  intent: >-
+    Usar cuando alguien del equipo de administración pregunte por ventas, facturación,
+    ingresos, resultados del negocio o comparativas de periodo.
+    En `result` devuelve siempre dos campos.
+    `range` es el periodo: month (este mes), quarter (últimos 3 meses), year (año en
+    curso, por defecto), all (histórico completo) o custom (y entonces añade `from` y
+    `to` en formato AAAA-MM-DD).
+    `focus` es la parte del informe que interesa, para no abrumar con datos que nadie
+    ha pedido: revenue (solo facturación y evolución mensual), categories (reparto por
+    categoría), products (productos más vendidos), stores (ventas por tienda), orders
+    (lista de pedidos con enlace a su factura) u overview (informe completo).
+    Usa overview solo si piden un resumen general o varias cosas a la vez; si preguntan
+    algo concreto, elige el focus concreto.
+  when_to_use:
+    - 'Preguntan cuánto se ha vendido o facturado en un periodo: focus revenue.'
+    - 'Piden comparar las ventas con el año pasado o con el periodo anterior: focus revenue.'
+    - 'Preguntan por el ticket medio, el número de pedidos o las unidades vendidas: focus revenue.'
+    - 'Preguntan qué categorías venden más: focus categories.'
+    - 'Preguntan qué productos venden más: focus products.'
+    - 'Preguntan qué tienda o vendedor vende más: focus stores.'
+    - 'Piden ver los pedidos recientes o descargar facturas: focus orders.'
+    - 'Piden un resumen, informe o cuadro de mando general: focus overview.'

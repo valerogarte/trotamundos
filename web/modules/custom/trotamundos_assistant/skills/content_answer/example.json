@@ -1,0 +1,26 @@
+{
+  "chat_reply": "Sí, puedes pagar un pedido con varios vendedores en un solo checkout.",
+  "result": {
+    "answer": "En un marketplace multivendedor pagas todo en un único checkout y el importe se reparte automáticamente entre los vendedores del pedido.",
+    "steps": [
+      {
+        "title": "Añade los productos al carrito",
+        "body": "Puedes mezclar artículos de varios vendedores en el mismo carrito."
+      },
+      {
+        "title": "Elige el método de pago",
+        "body": "Tarjeta o depósito; el reparto entre vendedores es automático."
+      },
+      {
+        "title": "Introduce tu NIF/CIF",
+        "body": "Añádelo antes de finalizar si quieres factura con datos fiscales."
+      }
+    ],
+    "outro": "Cada vendedor gestiona su propio envío, así que puedes recibir varios paquetes.",
+    "sources": [
+      "Guía de pagos, depósitos y facturación",
+      "Cómo comprar en el marketplace"
+    ],
+    "query": "pago varios vendedores checkout"
+  }
+}

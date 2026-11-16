@@ -1,0 +1,10 @@
+services:
+  trotamundos_assistant_ecommerce.sales_stats_builder:
+    class: Drupal\trotamundos_assistant_ecommerce\SkillLocal\SalesAnalytics\SalesStatsBuilder
+    arguments:
+      - '@entity_type.manager'
+      - '@commerce_price.currency_formatter'
+      - '@date.formatter'
+      - '@current_user'
+      - '@module_handler'
+      - '@string_translation'

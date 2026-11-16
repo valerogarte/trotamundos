@@ -1,0 +1,140 @@
+{#
+/**
+ * @file
+ * Home: video, quick search, experiences first, then purpose, destinations,
+ * the people behind the trips and an easy way to ask.
+ */
+#}
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+{{ attach_library('trotamundos/front') }}
+{% include '@trotamundos/components/header.html.twig' with {header_overlay: true} %}
+<main id="main-content" tabindex="-1">
+  {% include '@trotamundos/components/immersive-hero.html.twig' %}
+  {% include '@trotamundos/components/discovery-bar.html.twig' %}
+
+  {% if page.highlighted %}<div class="container site-messages front-messages">{{ page.highlighted }}</div>{% endif %}
+
+  <section class="home-experiences container" id="experiencias" aria-labelledby="experiences-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">{{ 'Experiencias'|t }}</p>
+        <h2 id="experiences-title">{{ '¿Qué te gustaría'|t }} <em>{{ 'descubrir?'|t }}</em></h2>
+      </div>
+      <p class="section-heading__description">{{ 'Planes con anfitriones locales en destinos poco conocidos de Colombia: alojamientos con encanto y paquetes listos para reservar.'|t }}</p>
+    </div>
+    {% if tm_styles %}
+      <div class="experience-toolbar">
+        <div class="experience-filters" role="group" aria-label="{{ 'Filtrar experiencias por estilo de viaje'|t }}">
+          <button class="filter-button" type="button" data-experience-filter="all" aria-pressed="true">{{ 'Todas'|t }}</button>
+          {% for style in tm_styles %}
+            <button class="filter-button" type="button" data-experience-filter="{{ style.slug }}" aria-pressed="false">{{ icons.icon(style.icon) }} {{ style.label }}</button>
+          {% endfor %}
+        </div>
+        <a class="text-link" href="{{ tm.catalog_url }}">{{ 'Ver el catálogo completo'|t }} {{ icons.icon('arrow') }}</a>
+      </div>
+      <p class="visually-hidden" data-results-status role="status" aria-live="polite" aria-atomic="true"></p>
+    {% endif %}
+    {% if tm_featured %}
+      <div class="experience-grid{{ tm_featured|length % 4 == 0 ? ' experience-grid--four' : '' }}">
+        {% for card in tm_featured %}
+          {% include '@trotamundos/components/experience-card.html.twig' with {card: card} %}
+        {% endfor %}
+      </div>
+      {% if tm_has_examples %}
+        <p class="footnote home-experiences__note">{{ icons.icon('info') }} {{ 'Fichas de ejemplo: los precios y las fechas son provisionales mientras cerramos los detalles con nuestros aliados.'|t }}</p>
+      {% endif %}
+    {% else %}
+      <div class="empty-state">
+        <h3>{{ 'Estamos preparando las primeras experiencias'|t }}</h3>
+        <p>{{ 'Escríbenos y te contamos qué destinos están por llegar.'|t }}</p>
+        <a class="button button--whatsapp" href="{{ tm.whatsapp_url }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }} {{ 'Escríbenos por WhatsApp'|t }}</a>
+      </div>
+    {% endif %}
+  </section>
+
+  <section class="purpose" id="esencia" aria-labelledby="purpose-title">
+    <div class="container purpose__inner">
+      <div class="purpose__visual" data-reveal>
+        <figure class="purpose__arch">
+          <img src="{{ trotamundos_path }}/assets/images/comunidad-concepcion.webp" alt="{{ 'Una vecina de Concepción en el corredor de su casa, entre geranios.'|t }}" width="825" height="1100" loading="lazy" decoding="async">
+        </figure>
+        <figure class="purpose__postcard">
+          <img src="{{ trotamundos_path }}/assets/images/termales-manantial.webp" alt="" width="480" height="640" loading="lazy" decoding="async">
+          <figcaption>{{ 'Nariño, Antioquia'|t }}</figcaption>
+        </figure>
+      </div>
+      <div class="purpose__copy" data-reveal>
+        <p class="eyebrow">{{ 'Nuestra esencia'|t }}</p>
+        <h2 id="purpose-title">{{ 'Viajar bonito.'|t }}<br><em>{{ 'Sentir de verdad.'|t }}</em></h2>
+        <p class="lead">{{ 'Descubrimos destinos poco conocidos de Colombia junto a quienes los cuidan. Cada viaje apoya a emprendedores turísticos y genera oportunidades para las comunidades locales.'|t }}</p>
+        <ul class="purpose__pillars">
+          <li>{{ icons.icon('map') }}<div><h3>{{ 'Destinos por descubrir'|t }}</h3><p>{{ 'Pueblos, ríos y montañas que todavía no aparecen en todas las guías.'|t }}</p></div></li>
+          <li>{{ icons.icon('heart') }}<div><h3>{{ 'Emprendedores locales'|t }}</h3><p>{{ 'Trabajamos directamente con las familias y los negocios que reciben a los viajeros.'|t }}</p></div></li>
+          <li>{{ icons.icon('sprout') }}<div><h3>{{ 'Viajes que dejan algo bueno'|t }}</h3><p>{{ 'Tu reserva genera ingresos y oportunidades en las comunidades que visitas.'|t }}</p></div></li>
+        </ul>
+        <a class="button button--secondary" href="{{ tm.esencia_url }}">{{ 'Conoce nuestra esencia'|t }} {{ icons.icon('arrow') }}</a>
+      </div>
+    </div>
+  </section>
+
+  {% if tm_destinations %}
+    <section class="home-destinations container" aria-labelledby="destinations-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">{{ 'Destinos'|t }}</p>
+          <h2 id="destinations-title">{{ 'Explora Colombia'|t }} <em>{{ 'por destino'|t }}</em></h2>
+        </div>
+        <a class="text-link" href="{{ tm.destinations_url }}">{{ 'Ver todos los destinos'|t }} {{ icons.icon('arrow') }}</a>
+      </div>
+      <ul class="destination-strip">
+        {% for destination in tm_destinations %}
+          <li>
+            <a class="destination-chip{{ destination.count ? '' : ' destination-chip--soon' }}" href="{{ destination.url }}">
+              {% if destination.image %}<img src="{{ destination.image.src }}" alt="" width="{{ destination.image.width }}" height="{{ destination.image.height }}" loading="lazy" decoding="async">{% endif %}
+              <span class="destination-chip__copy">
+                <span class="destination-chip__name">{{ destination.place }}</span>
+                <span class="destination-chip__department">{{ destination.department }}</span>
+                <span class="destination-chip__count">
+                  {% if destination.count %}
+                    {% set count = destination.count %}
+                    {% trans %}1 experiencia{% plural count %}{{ count }} experiencias{% endtrans %}
+                  {% else %}
+                    {{ 'Próximamente'|t }}
+                  {% endif %}
+                </span>
+              </span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+
+  <section class="home-people" aria-labelledby="people-title">
+    <div class="container home-people__inner">
+      <figure class="home-people__photo" data-reveal>
+        <img src="{{ trotamundos_path }}/assets/images/juan-trotamundos.webp" alt="{{ 'Juan Trotamundos sentado a la puerta de una casa campesina en Concepción.'|t }}" width="825" height="1100" loading="lazy" decoding="async">
+      </figure>
+      <div class="home-people__copy" data-reveal>
+        <p class="eyebrow">{{ 'Quién te acompaña'|t }}</p>
+        <h2 id="people-title">{{ 'Hola, soy Juan.'|t }}</h2>
+        <p class="lead">{{ 'Llevo más de nueve años recorriendo Colombia y compartiendo lo que vivo con una comunidad de más de 347.000 trotamundos. Ahora quiero que esos lugares también se puedan reservar: con anfitriones locales, información clara y alguien que te acompaña antes y durante el viaje.'|t }}</p>
+        <a class="text-link" href="{{ tm.instagram_url }}" target="_blank" rel="noopener">{{ icons.icon('instagram') }} @{{ tm.instagram }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+      </div>
+    </div>
+    <div class="container">
+      {% include '@trotamundos/components/trust-strip.html.twig' %}
+    </div>
+  </section>
+
+  <section class="closing container" aria-labelledby="closing-title" data-reveal>
+    <h2 id="closing-title">{{ 'Una Colombia por descubrir.'|t }}<br><em>{{ 'Muchas historias por impulsar.'|t }}</em></h2>
+    <p class="lead">{{ '¿Tienes dudas o buscas algo especial? Escríbenos y te ayudamos a elegir.'|t }}</p>
+    <div class="closing__actions">
+      <a class="button button--primary" href="{{ tm.catalog_url }}">{{ 'Ver experiencias'|t }} {{ icons.icon('arrow') }}</a>
+      <a class="button button--whatsapp" href="{{ tm.whatsapp_url }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }} {{ 'Escríbenos por WhatsApp'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+    </div>
+    <svg class="closing__flower" viewBox="0 0 120 180" fill="none" aria-hidden="true"><path d="M59 174V89c-1-18 9-19 3-38M59 153c-28-3-39-18-39-30 24-2 37 11 39 30Zm0-21c30-5 44-22 42-37-28 0-41 17-42 37Z"/><path d="M61 66C34 87 26 65 43 51c-28-7-19-31 5-22C44 2 70 1 73 27c22-14 39 9 15 23 26 14 11 37-13 23-4 27-31 22-27-1"/><circle cx="62" cy="49" r="9"/></svg>
+  </section>
+</main>
+{% include '@trotamundos/components/footer.html.twig' %}

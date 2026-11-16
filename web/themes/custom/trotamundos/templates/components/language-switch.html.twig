@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * Spanish / English switch for the current page.
+ */
+#}
+{% if tm.languages|length > 1 %}
+  <div class="language-switch" role="group" aria-label="{{ 'Idioma'|t }}">
+    {% for language in tm.languages %}
+      {% if language.current %}
+        <span aria-current="true" lang="{{ language.code }}" title="{{ language.name }}">{{ language.code|upper }}</span>
+      {% else %}
+        <a href="{{ language.url }}" hreflang="{{ language.code }}" lang="{{ language.code }}" aria-label="{{ language.name }}">{{ language.code|upper }}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}

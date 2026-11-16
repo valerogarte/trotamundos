@@ -1,0 +1,123 @@
+name: Trotamundos
+design_name: 'Trotamundos 2'
+edition: '02'
+version: '2.0'
+tagline: 'Que el viaje te mueva.'
+purpose: 'Conectar a las personas con una Colombia viva: sus paisajes, sus pueblos y las historias que se encuentran por el camino.'
+personality:
+  - name: Viva
+    description: 'Energía, color y curiosidad. Invitamos a salir y mirar el lugar con otros ojos.'
+  - name: Cercana
+    description: 'Hablamos de tú. Acompañamos con información clara y una voz humana.'
+  - name: Consciente
+    description: 'Mostramos los lugares con respeto y damos espacio a quienes los habitan.'
+  - name: Auténtica
+    description: 'Contamos cosas concretas. La experiencia real vale más que una promesa enorme.'
+colors:
+  - key: selva
+    name: Selva
+    role: Identidad
+    usage: 'Firma, titulares, acciones principales y superficies con carácter.'
+    foreground: marfil
+  - key: marfil
+    name: Marfil
+    role: Respiro
+    usage: 'Fondo cálido, zonas de lectura y contraste sobre selva.'
+    foreground: selva
+  - key: terracota
+    name: Terracota
+    role: Impulso
+    usage: 'Acentos gráficos y palabras grandes. Para texto pequeño se usa la variante de lectura.'
+    foreground: carbon
+  - key: sol
+    name: Sol
+    role: Energía
+    usage: 'Bloques gráficos, señales y detalles luminosos. Texto oscuro sobre sus superficies.'
+    foreground: carbon
+  - key: carbon
+    name: Carbón
+    role: Claridad
+    usage: 'Texto continuo, información práctica y versión monocroma de la firma.'
+    foreground: marfil
+contrast_pairs:
+  - foreground: selva
+    background: marfil
+    label: 'Selva / marfil'
+  - foreground: carbon
+    background: marfil
+    label: 'Carbón / marfil'
+  - foreground: marfil
+    background: selva
+    label: 'Marfil / selva'
+  - foreground: sol
+    background: selva
+    label: 'Sol / selva'
+  - foreground: terracota
+    background: marfil
+    label: 'Terracota / marfil'
+  - foreground: terracota-text
+    background: marfil
+    label: 'Terracota de lectura / marfil'
+fonts:
+  - name: Bricolage Grotesque
+    role: 'La voz que mueve'
+    family: display
+    styles: 'Normal · variable 200–800 · tamaño óptico 12–96'
+    usage: 'Titulares y firma. Pesos 700–800, líneas cortas y espaciado compacto. La voz gráfica de la marca.'
+    source: 'assets/fonts/bricolage-grotesque-latin.woff2'
+    license: 'assets/fonts/Bricolage-Grotesque-OFL.txt'
+  - name: DM Sans
+    role: 'La voz que acompaña'
+    family: body
+    styles: 'Normal · variable 100–1000 · tamaño óptico 9–40'
+    usage: 'Párrafos, menús y controles. Peso 400 para leer y 500–700 para dar jerarquía. Información fácil de recorrer.'
+    source: 'assets/fonts/dm-sans-latin.woff2'
+    license: 'assets/fonts/DM-Sans-OFL.txt'
+type_scale:
+  - key: type-display
+    name: Impacto
+    sample: 'QUE EL VIAJE TE MUEVA.'
+    family: display
+    usage: 'Un mensaje protagonista, con saltos de línea intencionados.'
+  - key: type-heading
+    name: Capítulo
+    sample: 'Un lugar. Otra forma de mirar.'
+    family: display
+    usage: 'Abre cada sección y ayuda a entender el recorrido.'
+  - key: type-card
+    name: Experiencia
+    sample: 'El camino también cuenta.'
+    family: display
+    usage: 'Títulos breves y reconocibles en fichas y piezas pequeñas.'
+  - key: type-body
+    name: Lectura
+    sample: 'Colombia se descubre en los detalles y en las personas que encuentras.'
+    family: body
+    usage: 'Texto claro con interlineado cómodo y longitud contenida.'
+  - key: type-caption
+    name: Señal
+    sample: 'COLOMBIA · HISTORIAS POR DESCUBRIR'
+    family: body
+    usage: 'Etiquetas breves. El tamaño pequeño acompaña, nunca esconde información esencial.'
+spacing:
+  - space-1
+  - space-2
+  - space-4
+  - space-6
+  - space-8
+  - space-12
+  - space-16
+  - space-24
+voice:
+  - principle: 'Invitar con energía'
+    use: 'Sal a encontrar tu próxima historia.'
+    avoid: '¡Reserva ahora o te quedarás fuera!'
+  - principle: 'Hablar de lugares reales'
+    use: 'Montañas, calles de color y una pausa en el camino.'
+    avoid: 'El destino más increíble del mundo.'
+  - principle: 'Acercarse con respeto'
+    use: 'Conoce el pueblo y las historias de quienes lo habitan.'
+    avoid: 'Conquista un destino exótico.'
+  - principle: 'Prometer lo que podemos ofrecer'
+    use: 'Consulta los detalles y la disponibilidad de la experiencia.'
+    avoid: 'Tu viaje está confirmado antes de consultar disponibilidad.'

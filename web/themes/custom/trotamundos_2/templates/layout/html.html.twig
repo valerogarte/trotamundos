@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html{{ html_attributes }}>
+  <head>
+    <head-placeholder token="{{ placeholder_token }}">
+    <title>{{ head_title|safe_join(' | ') }}</title>
+    <meta name="theme-color" content="#F5F0E6">
+    {% if is_front %}
+      <meta name="description" content="Pueblos con alma, naturaleza y buenas pausas. Descubre una Colombia que te mueve con Juan Trota Mundos.">
+      <link rel="preload" as="image" href="{{ tm2_path }}/assets/images/hero-cocora.webp" fetchpriority="high">
+    {% endif %}
+    <link rel="preload" as="font" href="{{ tm2_path }}/assets/fonts/bricolage-grotesque-latin.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="{{ tm2_path }}/assets/fonts/dm-sans-latin.woff2" type="font/woff2" crossorigin>
+    <css-placeholder token="{{ placeholder_token }}">
+    <js-placeholder token="{{ placeholder_token }}">
+  </head>
+  <body{{ attributes }}>
+    <a class="skip-link" href="#main-content">{{ 'Saltar al contenido'|t }}</a>
+    {{ page_top }}
+    {{ page }}
+    {{ page_bottom }}
+    <js-bottom-placeholder token="{{ placeholder_token }}">
+  </body>
+</html>

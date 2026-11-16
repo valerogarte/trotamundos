@@ -1,0 +1,131 @@
+name: Trotamundos
+design_name: 'Trotamundos 4'
+edition: '04'
+version: '4.0'
+tagline: 'Cada viaje empieza por mirar.'
+purpose: 'Orientar a quienes quieren descubrir Colombia: sus territorios, sus paisajes y las historias que dan sentido a cada parada.'
+personality:
+  - name: Exploradora
+    description: 'Invitamos a mirar el territorio con curiosidad y a abrir espacio a lo que aparece en el camino.'
+  - name: Clara
+    description: 'Ordenamos la información para que sea fácil situarse, comparar y elegir.'
+  - name: Cercana
+    description: 'Acompañamos con palabras sencillas y detalles concretos; hablamos de tú.'
+  - name: Respetuosa
+    description: 'El territorio tiene personas e historias propias. Nos acercamos a ellas sin convertirlas en un decorado.'
+colors:
+  - key: selva
+    name: Selva
+    role: Orientación
+    usage: 'Firma, navegación, titulares y acciones principales. La tinta que organiza la bitácora.'
+    foreground: marfil
+  - key: marfil
+    name: Marfil
+    role: Papel
+    usage: 'Fondo principal, áreas de lectura y espacio entre las fichas.'
+    foreground: selva
+  - key: terracota
+    name: Terracota
+    role: Desvío
+    usage: 'Señales, acentos gráficos y texto grande. Para lectura pequeña se usa la variante oscura.'
+    foreground: carbon
+  - key: sol
+    name: Sol
+    role: Hallazgo
+    usage: 'Puntos destacados, detalles y pequeñas superficies de énfasis.'
+    foreground: carbon
+  - key: carbon
+    name: Carbón
+    role: Información
+    usage: 'Texto continuo, información práctica y firma monocroma.'
+    foreground: marfil
+contrast_pairs:
+  - foreground: selva
+    background: marfil
+    label: 'Selva sobre marfil'
+  - foreground: carbon
+    background: marfil
+    label: 'Carbón sobre marfil'
+  - foreground: marfil
+    background: selva
+    label: 'Marfil sobre selva'
+  - foreground: sol
+    background: selva
+    label: 'Sol sobre selva'
+  - foreground: terracota
+    background: marfil
+    label: 'Terracota sobre marfil'
+  - foreground: terracota-text
+    background: marfil
+    label: 'Terracota de lectura sobre marfil'
+fonts:
+  - name: Barlow Condensed
+    role: 'Titulares y firma'
+    family: display
+    styles: 'Normal · pesos estáticos 600 y 700'
+    usage: 'Titulares condensados y firma en mayúsculas. Peso 600 para el recorrido y 700 para la firma o los mensajes protagonistas.'
+    source: 'assets/fonts/barlow-condensed-bold-latin.woff2'
+    secondary_source: 'assets/fonts/barlow-condensed-semibold-latin.woff2'
+    license: 'assets/fonts/Barlow-Condensed-OFL.txt'
+  - name: IBM Plex Sans
+    role: 'Lectura y controles'
+    family: body
+    styles: 'Normal · pesos 400–700'
+    usage: 'Texto de lectura, navegación y controles. Peso 400 para leer; 500–700 para ordenar y señalar.'
+    source: 'assets/fonts/ibm-plex-sans-latin.woff2'
+    license: 'assets/fonts/IBM-Plex-Sans-OFL.txt'
+  - name: IBM Plex Mono
+    role: 'Datos de la bitácora'
+    family: mono
+    styles: 'Normal · peso estático 400'
+    usage: 'Etiquetas, números de ficha, regiones y metadatos. Una voz técnica en fragmentos breves; nunca para párrafos largos.'
+    source: 'assets/fonts/ibm-plex-mono-latin.woff2'
+    license: 'assets/fonts/IBM-Plex-Mono-OFL.txt'
+type_scale:
+  - key: type-display
+    name: Apertura
+    sample: 'COLOMBIA, POR DESCUBRIR.'
+    family: display
+    usage: 'Un mensaje principal, condensado y con saltos de línea deliberados.'
+  - key: type-heading
+    name: Capítulo
+    sample: 'OTRA PARADA EN EL CAMINO.'
+    family: display
+    usage: 'Ordena el recorrido como las secciones de un atlas.'
+  - key: type-card
+    name: Experiencia
+    sample: 'UN PUEBLO, MUCHAS HISTORIAS.'
+    family: display
+    usage: 'Títulos claros, breves y fáciles de comparar en el catálogo.'
+  - key: type-body
+    name: Lectura
+    sample: 'Un lugar, un contexto y la información necesaria para empezar a imaginar el viaje.'
+    family: body
+    usage: 'Texto continuo con interlineado cómodo y longitud contenida.'
+  - key: type-caption
+    name: Registro
+    sample: 'FICHA 01 / COLOMBIA / PUEBLOS'
+    family: mono
+    usage: 'Datos de apoyo y referencias; el tamaño pequeño no debe esconder información esencial.'
+spacing:
+  - space-1
+  - space-2
+  - space-4
+  - space-6
+  - space-8
+  - space-12
+  - space-16
+  - space-24
+voice:
+  - principle: 'Orientar sin imponer'
+    use: 'Encuentra una próxima parada que se parezca a ti.'
+    avoid: 'Esta es la única ruta que merece la pena.'
+  - principle: 'Dar contexto concreto'
+    use: 'Un pueblo de Antioquia para recorrer a pie y mirar con calma.'
+    avoid: 'El destino más espectacular que existe.'
+  - principle: 'Mirar con respeto'
+    use: 'Acércate a las historias de quienes habitan el lugar.'
+    avoid: 'Conquista un territorio exótico.'
+  - principle: 'Distinguir inspiración y oferta'
+    use: 'Consulta los detalles y la disponibilidad antes de reservar.'
+    avoid: 'Tu plaza está confirmada sin haber comprobado disponibilidad.'

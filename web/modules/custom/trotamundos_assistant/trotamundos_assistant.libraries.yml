@@ -1,0 +1,47 @@
+brand:
+  version: 1.0.1
+  css:
+    theme:
+      assets/css/trotamundos-assistant-brand.css: {}
+
+font:
+  version: 1.0.1
+  css:
+    theme:
+      assets/css/trotamundos-assistant-font.css: {}
+
+assistant:
+  version: 1.0.2
+  js:
+    assets/js/trotamundos-assistant.js: {}
+  css:
+    theme:
+      assets/css/trotamundos-assistant.css: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupal.message
+    - core/drupalSettings
+    - core/internal.jquery.form
+    - core/once
+    - trotamundos_assistant/brand
+
+template.base:
+  version: 1.0.1
+  css:
+    theme:
+      skills/default/css/template_base.css: {}
+  dependencies:
+    - trotamundos_assistant/brand
+
+usage_admin:
+  version: 1.0.2
+  js:
+    assets/js/trotamundos-assistant-usage.js: {}
+  css:
+    theme:
+      assets/css/trotamundos-assistant-usage.css: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - trotamundos_assistant/brand

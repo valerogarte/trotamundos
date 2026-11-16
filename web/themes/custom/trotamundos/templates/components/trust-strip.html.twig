@@ -1,0 +1,13 @@
+{#
+/**
+ * @file
+ * Why book with Trotamundos: trust, closeness and an easy purchase.
+ */
+#}
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+<ul class="trust-strip" aria-label="{{ 'Por qué reservar con Trotamundos'|t }}">
+  <li class="trust-strip__item">{{ icons.icon('heart') }}<div><strong>{{ 'Anfitriones locales'|t }}</strong><span>{{ 'Cada experiencia la preparamos con quienes viven en el destino.'|t }}</span></div></li>
+  <li class="trust-strip__item">{{ icons.icon('calendar') }}<div><strong>{{ 'Reserva sencilla'|t }}</strong><span>{{ 'Eliges fecha y viajeros, y te confirmamos la disponibilidad.'|t }}</span></div></li>
+  <li class="trust-strip__item">{{ icons.icon('shield') }}<div><strong>{{ 'Pago seguro'|t }}</strong><span>{{ 'Pagas con un enlace de pago seguro. Nunca pedimos datos de tarjeta por chat.'|t }}</span></div></li>
+  <li class="trust-strip__item">{{ icons.icon('whatsapp') }}<div><strong>{{ 'Te acompañamos'|t }}</strong><span>{{ 'Por WhatsApp, antes y durante el viaje.'|t }}</span></div></li>
+</ul>

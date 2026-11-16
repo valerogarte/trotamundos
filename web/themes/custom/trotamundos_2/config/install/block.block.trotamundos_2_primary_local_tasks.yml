@@ -1,0 +1,19 @@
+langcode: es
+status: true
+dependencies:
+  theme:
+    - trotamundos_2
+id: trotamundos_2_primary_local_tasks
+theme: trotamundos_2
+region: content
+weight: -5
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: 'Solapas de la página'
+  label_display: '0'
+  provider: core
+  primary: true
+  secondary: true
+visibility: { }

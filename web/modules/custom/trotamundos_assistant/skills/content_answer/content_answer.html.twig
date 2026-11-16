@@ -1,0 +1,61 @@
+{#
+/**
+ * @file
+ * Content answer skill template for Trotamundos Assistant.
+ */
+#}
+<article class="trotamundos-assistant-template trotamundos-assistant-template--content-answer">
+  <header class="trotamundos-assistant-template__header">
+    <p class="trotamundos-assistant-template__eyebrow">{{ 'Respuesta basada en contenidos'|t }}</p>
+  </header>
+
+  {% if answer is defined and answer %}
+    <p class="trotamundos-assistant-template__description">{{ answer }}</p>
+  {% endif %}
+
+  {% if steps is defined and steps %}
+    <ol class="trotamundos-assistant-content-answer__steps">
+      {% for step in steps %}
+        <li class="trotamundos-assistant-content-answer__step">
+          <span class="trotamundos-assistant-content-answer__step-marker" aria-hidden="true">{{ loop.index }}</span>
+          <span class="trotamundos-assistant-content-answer__step-content">
+            {% if step.title %}
+              <span class="trotamundos-assistant-content-answer__step-title">{{ step.title }}</span>
+            {% endif %}
+            {% if step.body %}
+              <span class="trotamundos-assistant-content-answer__step-body">{{ step.body }}</span>
+            {% endif %}
+          </span>
+        </li>
+      {% endfor %}
+    </ol>
+  {% endif %}
+
+  {% if found is defined and found and matches %}
+    <div class="trotamundos-assistant-content-answer">
+      <p class="trotamundos-assistant-content-answer__label">{{ 'Fuentes'|t }}</p>
+      <div class="trotamundos-assistant-content-answer__sources">
+        {% for match in matches %}
+          <a class="trotamundos-assistant-content-answer__source" href="{{ match.url }}">
+            <span class="trotamundos-assistant-content-answer__source-icon" aria-hidden="true">↗</span>
+            <span class="trotamundos-assistant-content-answer__source-content">
+              <span class="trotamundos-assistant-content-answer__source-title">{{ match.title }}</span>
+              {% if match.type %}
+                <span class="trotamundos-assistant-content-answer__source-type">{{ match.type }}</span>
+              {% endif %}
+              {% if match.snippet %}
+                <span class="trotamundos-assistant-content-answer__source-snippet">{{ match.snippet }}</span>
+              {% endif %}
+            </span>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  {% elseif answer is not defined or not answer %}
+    <div class="trotamundos-assistant-template__empty">
+      <p>{{ 'No he encontrado contenidos publicados que respondan a esa pregunta.'|t }}</p>
+    </div>
+  {% endif %}
+
+  {% include '@trotamundos_assistant/trotamundos-assistant-suggestions.html.twig' with { notes: notes|default(''), outro: outro|default('') } only %}
+</article>

@@ -1,0 +1,28 @@
+machine_name: product_recommendations
+title: 'Recomendar productos'
+btn_responsive_title: 'Ver recomendaciones'
+group: ecommerce
+theme:
+  variables:
+    intro: ''
+    outro: ''
+    product_items: []
+handler:
+  class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\ProductRecommendations\ProductRecommendationsSkillHandler'
+  file: 'src/ProductRecommendationsSkillHandler.php'
+assets:
+  dependencies:
+    - trotamundos_assistant_ecommerce/skill.product_common
+dependencies:
+  modules:
+    - commerce_product
+chat_reply_fallback: 'Te dejo recomendaciones en el panel.'
+description: 'Recomienda productos en función de necesidades, presupuesto, preferencias o contexto del usuario. En peticiones de seguimiento, trata los productos recomendados antes como una colección activa: añade complementos solicitados y conserva los productos previos, salvo que el usuario pida quitarlos, sustituirlos o una nueva restricción los descarte. Devuelve siempre en result.items la colección completa resultante con IDs reales recuperados por RAG.'
+provider:
+  requires_rag: true
+  intent: 'Usar cuando el usuario pida consejo o recomendaciones sin buscar una lista literal.'
+  when_to_use:
+    - 'El usuario pide qué comprar.'
+    - 'El usuario describe necesidades y espera una selección razonada.'
+    - 'El usuario añade, elimina o modifica elementos de una recomendación anterior.'
+    - 'No usar si el usuario describe un evento o reunión con número de asistentes, restricciones alimentarias o presupuesto global: en ese caso usa `event_product_selection`.'

@@ -1,0 +1,35 @@
+machine_name: document_lookup
+title: 'Buscar en documentos'
+btn_responsive_title: 'Ver fuentes encontradas'
+group:
+  id: documents
+  label: 'Documentos'
+theme:
+  variables:
+    answer: ''
+    summary: ''
+    citations: []
+    documents: []
+    references: []
+handler:
+  class: 'Drupal\trotamundos_assistant_documents\SkillLocal\DocumentLookup\DocumentLookupSkillHandler'
+  file: 'src/DocumentLookupSkillHandler.php'
+assets:
+  css:
+    - css/document_lookup.css
+  dependencies:
+    - trotamundos_assistant/template.base
+dependencies:
+  modules:
+    - file
+    - media
+chat_reply_fallback: 'He buscado en los documentos y dejo las fuentes en el panel.'
+description: 'Responde preguntas usando texto extraído de documentos, citando el fragmento utilizado y enlazando el documento y la entidad donde está referenciado.'
+provider:
+  requires_rag: true
+  intent: 'Usar cuando el usuario pida buscar, comprobar, encontrar o responder algo dentro de un documento, PDF, ficha técnica, manual, contrato, adjunto o archivo indexado.'
+  when_to_use:
+    - 'El usuario pregunta por información contenida en un documento o PDF.'
+    - 'El usuario pide localizar dónde se dice algo en una ficha técnica, manual, contrato o adjunto.'
+    - 'La respuesta debe incluir evidencia: fragmento citado, ubicación dentro del documento y enlace al archivo.'
+    - 'Hay resultados RAG procedentes de campos de texto extraído de Media documental.'

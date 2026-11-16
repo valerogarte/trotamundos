@@ -1,0 +1,10 @@
+{% import '@trotamundos_3/components/icons.html.twig' as icons %}
+<header class="tm3-header" data-tm3-header>
+  <div class="tm3-header__inner">
+    <a class="tm3-wordmark" href="{{ front_page }}" aria-label="{{ 'Trotamundos, inicio'|t }}"><img src="{{ tm3_path }}/logo.svg" width="40" height="40" alt=""><span>trotamundos<span class="tm3-wordmark__dot">.</span></span></a>
+    <button class="tm3-menu-toggle" type="button" data-tm3-menu-toggle aria-controls="tm3-navigation" aria-expanded="false" aria-label="{{ 'Abrir menú'|t }}"><span></span><span></span></button>
+    <nav class="tm3-navigation" id="tm3-navigation" data-tm3-menu aria-label="{{ 'Navegación principal'|t }}">
+      <a href="{{ front_page }}#experiencias">{{ 'Los lugares'|t }}</a><a href="{{ front_page }}#esencia">{{ 'Nuestra mirada'|t }}</a><a href="{{ front_page }}#preguntas">{{ 'Antes de viajar'|t }}</a><a class="tm3-navigation__cta" href="{{ front_page }}#experiencias">{{ 'Encuentra tu pausa'|t }} {{ icons.icon('diagonal') }}</a>
+    </nav>
+  </div>
+</header>

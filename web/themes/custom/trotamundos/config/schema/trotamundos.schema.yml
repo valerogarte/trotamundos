@@ -1,0 +1,13 @@
+trotamundos.settings:
+  type: theme_settings
+  label: 'Trotamundos settings'
+  mapping:
+    whatsapp_number:
+      type: string
+      label: 'WhatsApp number with country code'
+    contact_email:
+      type: email
+      label: 'Contact email'
+    instagram:
+      type: string
+      label: 'Instagram user'

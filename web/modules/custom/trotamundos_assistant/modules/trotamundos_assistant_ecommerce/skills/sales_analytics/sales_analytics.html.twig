@@ -1,0 +1,149 @@
+{#
+/**
+ * @file
+ * Sales analytics dashboard for Trotamundos Assistant.
+ *
+ * Every figure comes from SalesStatsBuilder; the template only lays them out.
+ * The report is handed to JavaScript through a data attribute because the
+ * panel arrives over AJAX, after drupalSettings has already been processed.
+ *
+ * Available variables:
+ * - intro: Optional lead-in written by the assistant.
+ * - report: Aggregated figures, charts data and order rows.
+ * - focus: Which part of the report was asked about.
+ * - sections: Section keys to render, derived from the focus.
+ * - denied: TRUE when the viewer may not see shop-wide figures.
+ */
+#}
+<article class="trotamundos-assistant-template trotamundos-assistant-template--sales">
+  <header class="trotamundos-assistant-template__header">
+    <p class="trotamundos-assistant-template__eyebrow">{{ 'Analítica de ventas'|t }}</p>
+  </header>
+
+  {% if denied %}
+    <p class="trotamundos-assistant-template__intro">{{ intro }}</p>
+  {% elseif not report.has_data %}
+    {% if intro %}<p class="trotamundos-assistant-template__intro">{{ intro }}</p>{% endif %}
+    <p class="wa-sales__empty">
+      {{ 'No hay ventas registradas en @period.'|t({'@period': report.period_label}) }}
+    </p>
+  {% else %}
+    {% if intro %}<p class="trotamundos-assistant-template__intro">{{ intro }}</p>{% endif %}
+
+    <div class="wa-sales" data-wa-sales data-report="{{ report|json_encode }}">
+      <div class="wa-sales__toolbar">
+        <span class="wa-sales__period" data-wa-sales-period>{{ report.period_label }}</span>
+        <div class="wa-sales__ranges">
+          {% set ranges = {
+            'month': 'Este mes'|t,
+            'quarter': '3 meses'|t,
+            'year': 'Este año'|t,
+            'all': 'Histórico'|t
+          } %}
+          {% for key, label in ranges %}
+            <button type="button"
+                    class="wa-sales__range{{ report.range == key ? ' is-active' : '' }}"
+                    data-wa-sales-range="{{ key }}">{{ label }}</button>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="wa-sales__kpis" data-wa-sales-kpis>
+        {% for kpi in report.kpis %}
+          <div class="wa-sales__kpi">
+            <span class="wa-sales__kpi-label">{{ kpi.label }}</span>
+            <strong class="wa-sales__kpi-value">{{ kpi.value }}</strong>
+            {% if kpi.delta %}
+              <span class="wa-sales__kpi-delta wa-sales__kpi-delta--{{ kpi.delta.direction }}">
+                {{ kpi.delta.formatted }}
+              </span>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if report.has_previous %}
+        <p class="wa-sales__baseline">
+          {{ 'Comparado con: @label'|t({'@label': report.previous_label}) }}
+        </p>
+      {% else %}
+        <p class="wa-sales__baseline wa-sales__baseline--empty">
+          {{ 'Sin datos del año anterior para comparar.'|t }}
+        </p>
+      {% endif %}
+
+      {% if sections.monthly %}
+        <section class="wa-sales__chart-block">
+          <h3 class="wa-sales__chart-title">{{ 'Facturación por mes'|t }}</h3>
+          <div class="wa-sales__chart wa-sales__chart--tall" data-wa-chart="monthly"></div>
+        </section>
+      {% endif %}
+
+      {% if sections.categories or sections.stores %}
+        <div class="wa-sales__chart-grid">
+          {% if sections.categories %}
+            <section class="wa-sales__chart-block">
+              <h3 class="wa-sales__chart-title">{{ 'Por categoría'|t }}</h3>
+              <div class="wa-sales__chart" data-wa-chart="categories"></div>
+            </section>
+          {% endif %}
+          {% if sections.stores %}
+            <section class="wa-sales__chart-block">
+              <h3 class="wa-sales__chart-title">{{ 'Por tienda'|t }}</h3>
+              <div class="wa-sales__chart" data-wa-chart="stores"></div>
+            </section>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if sections.products %}
+        <section class="wa-sales__chart-block">
+          <h3 class="wa-sales__chart-title">{{ 'Productos más vendidos'|t }}</h3>
+          <div class="wa-sales__chart" data-wa-chart="products"></div>
+        </section>
+      {% endif %}
+
+      {% if sections.orders %}
+        <section class="wa-sales__orders">
+          <h3 class="wa-sales__chart-title">{{ 'Últimos pedidos'|t }}</h3>
+          <table class="wa-sales__table">
+            <thead>
+              <tr>
+                <th>{{ 'Pedido'|t }}</th>
+                <th>{{ 'Fecha'|t }}</th>
+                <th>{{ 'Cliente'|t }}</th>
+                <th>{{ 'Tienda'|t }}</th>
+                <th class="is-numeric">{{ 'Total'|t }}</th>
+                <th>{{ 'Factura'|t }}</th>
+              </tr>
+            </thead>
+            <tbody data-wa-sales-rows>
+              {% for row in report.orders %}
+                <tr>
+                  <td>{{ row.number }}</td>
+                  <td>{{ row.date }}</td>
+                  <td>{{ row.customer }}</td>
+                  <td>{{ row.store }}</td>
+                  <td class="is-numeric">{{ row.total }}</td>
+                  <td>
+                    {% if row.pdf_url %}
+                      <a class="wa-sales__invoice" href="{{ row.pdf_url }}">{{ 'Descargar'|t }}</a>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </section>
+      {% endif %}
+
+      <p class="wa-sales__notice" data-wa-sales-error hidden></p>
+
+      {% if report.truncated %}
+        <p class="wa-sales__notice">
+          {{ 'El periodo supera el máximo de pedidos analizados; las cifras son parciales.'|t }}
+        </p>
+      {% endif %}
+    </div>
+  {% endif %}
+</article>

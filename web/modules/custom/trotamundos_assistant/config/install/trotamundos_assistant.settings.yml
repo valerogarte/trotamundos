@@ -1,0 +1,416 @@
+welcome_message: 'Bienvenido a tu nueva manera de navegar. ¿Qué necesitas?'
+input_placeholder: 'Escribe tu consulta...'
+privacy_notice: 'Al enviar una consulta aceptas que se procese para generar la respuesta del asistente. No incluyas datos personales, confidenciales o de pago.'
+assistant_id: minsait_buscador_nodes
+login_required_message: 'Para usar el asistente de catálogo debes estar logado.'
+role_denied_chat_message: 'No tienes permisos para usar este asistente.'
+use_minsait_font: true
+result_target_selector: '#trotamundos-assistant-result-panel'
+header_sticky: header
+extra_shift_selectors: footer
+desktop_always_open: false
+toggle_label: 'Trotamundos Assistant'
+chat_logo_path: '/modules/custom/trotamundos_assistant/assets/images/minsait-chatbot-logo-head.png'
+admin_currency: USD
+enabled_skills:
+  - default
+max_message_length: 800
+rate_limit_requests: 20
+rate_limit_window: 3600
+pricing_last_saved: 1779789600
+model_pricing:
+  -
+    model_id: gpt-5.6
+    input: 5.0
+    cached: 0.5
+    output: 30.0
+  -
+    model_id: gpt-5.6-sol
+    input: 5.0
+    cached: 0.5
+    output: 30.0
+  -
+    model_id: gpt-5.6-terra
+    input: 2.5
+    cached: 0.25
+    output: 15.0
+  -
+    model_id: gpt-6-luna
+    input: 0.1
+    cached: 0.01
+    output: 0.5
+  -
+    model_id: gpt-5.5
+    input: 5.0
+    cached: 0.5
+    output: 30.0
+  -
+    model_id: gpt-5.5-2026-04-23
+    input: 5.0
+    cached: 0.5
+    output: 30.0
+  -
+    model_id: gpt-5.5-pro
+    input: 30.0
+    cached: 0.0
+    output: 180.0
+  -
+    model_id: gpt-5.5-pro-2026-04-23
+    input: 30.0
+    cached: 0.0
+    output: 180.0
+  -
+    model_id: gpt-5.4
+    input: 2.5
+    cached: 0.25
+    output: 15.0
+  -
+    model_id: gpt-5.4-2026-03-05
+    input: 2.5
+    cached: 0.25
+    output: 15.0
+  -
+    model_id: gpt-5.4-mini
+    input: 0.75
+    cached: 0.075
+    output: 4.5
+  -
+    model_id: gpt-5.4-mini-2026-03-17
+    input: 0.75
+    cached: 0.075
+    output: 4.5
+  -
+    model_id: gpt-5.4-nano
+    input: 0.2
+    cached: 0.02
+    output: 1.25
+  -
+    model_id: gpt-5.4-nano-2026-03-17
+    input: 0.2
+    cached: 0.02
+    output: 1.25
+  -
+    model_id: gpt-5.4-pro
+    input: 30.0
+    cached: 0.0
+    output: 180.0
+  -
+    model_id: gpt-5.4-pro-2026-03-05
+    input: 30.0
+    cached: 0.0
+    output: 180.0
+  -
+    model_id: gpt-5.3-codex
+    input: 1.75
+    cached: 0.175
+    output: 14.0
+  -
+    model_id: gpt-5.3-chat-latest
+    input: 1.75
+    cached: 0.175
+    output: 14.0
+  -
+    model_id: gpt-5.2
+    input: 1.75
+    cached: 0.175
+    output: 14.0
+  -
+    model_id: gpt-5.2-2025-12-11
+    input: 1.75
+    cached: 0.175
+    output: 14.0
+  -
+    model_id: gpt-5.2-chat-latest
+    input: 1.75
+    cached: 0.175
+    output: 14.0
+  -
+    model_id: gpt-5.2-codex
+    input: 1.75
+    cached: 0.175
+    output: 14.0
+  -
+    model_id: gpt-5.2-pro
+    input: 21.0
+    cached: 0.0
+    output: 168.0
+  -
+    model_id: gpt-5.2-pro-2025-12-11
+    input: 21.0
+    cached: 0.0
+    output: 168.0
+  -
+    model_id: gpt-5.1
+    input: 1.25
+    cached: 0.125
+    output: 10.0
+  -
+    model_id: gpt-5.1-chat-latest
+    input: 1.25
+    cached: 0.125
+    output: 10.0
+  -
+    model_id: gpt-5.1-codex
+    input: 1.25
+    cached: 0.125
+    output: 10.0
+  -
+    model_id: gpt-5.1-codex-mini
+    input: 0.25
+    cached: 0.025
+    output: 2.0
+  -
+    model_id: gpt-5
+    input: 1.25
+    cached: 0.125
+    output: 10.0
+  -
+    model_id: gpt-5-mini
+    input: 0.25
+    cached: 0.025
+    output: 2.0
+  -
+    model_id: gpt-5-nano
+    input: 0.05
+    cached: 0.005
+    output: 0.4
+  -
+    model_id: gpt-5-pro
+    input: 15.0
+    cached: 0.0
+    output: 120.0
+  -
+    model_id: gpt-5-search-api
+    input: 1.25
+    cached: 0.125
+    output: 10.0
+  -
+    model_id: chat-latest
+    input: 5.0
+    cached: 0.5
+    output: 30.0
+  -
+    model_id: gpt-4.1
+    input: 2.0
+    cached: 0.5
+    output: 8.0
+  -
+    model_id: gpt-4.1-2025-04-14
+    input: 2.0
+    cached: 0.5
+    output: 8.0
+  -
+    model_id: gpt-4.1-mini
+    input: 0.4
+    cached: 0.1
+    output: 1.6
+  -
+    model_id: gpt-4.1-mini-2025-04-14
+    input: 0.4
+    cached: 0.1
+    output: 1.6
+  -
+    model_id: gpt-4.1-nano
+    input: 0.1
+    cached: 0.025
+    output: 0.4
+  -
+    model_id: gpt-4.1-nano-2025-04-14
+    input: 0.1
+    cached: 0.025
+    output: 0.4
+  -
+    model_id: gpt-4o
+    input: 2.5
+    cached: 1.25
+    output: 10.0
+  -
+    model_id: gpt-4o-2024-08-06
+    input: 2.5
+    cached: 1.25
+    output: 10.0
+  -
+    model_id: gpt-4o-mini
+    input: 0.15
+    cached: 0.075
+    output: 0.6
+  -
+    model_id: gpt-4o-mini-2024-07-18
+    input: 0.15
+    cached: 0.075
+    output: 0.6
+  -
+    model_id: gpt-4o-search-preview
+    input: 2.5
+    cached: 0.0
+    output: 10.0
+  -
+    model_id: gpt-4o-mini-search-preview
+    input: 0.15
+    cached: 0.0
+    output: 0.6
+  -
+    model_id: o1
+    input: 15.0
+    cached: 7.5
+    output: 60.0
+  -
+    model_id: o1-mini
+    input: 1.1
+    cached: 0.55
+    output: 4.4
+  -
+    model_id: o1-pro
+    input: 150.0
+    cached: 0.0
+    output: 600.0
+  -
+    model_id: o3
+    input: 2.0
+    cached: 0.5
+    output: 8.0
+  -
+    model_id: o3-mini
+    input: 1.1
+    cached: 0.55
+    output: 4.4
+  -
+    model_id: o3-pro
+    input: 20.0
+    cached: 0.0
+    output: 80.0
+  -
+    model_id: o3-deep-research
+    input: 10.0
+    cached: 2.5
+    output: 40.0
+  -
+    model_id: o4-mini
+    input: 1.1
+    cached: 0.275
+    output: 4.4
+  -
+    model_id: o4-mini-deep-research
+    input: 2.0
+    cached: 0.5
+    output: 8.0
+  -
+    model_id: computer-use-preview
+    input: 3.0
+    cached: 0.0
+    output: 12.0
+  -
+    model_id: codex-mini-latest
+    input: 1.5
+    cached: 0.375
+    output: 6.0
+  -
+    model_id: gpt-realtime-2.1
+    input: 4.0
+    cached: 0.4
+    output: 24.0
+  -
+    model_id: gpt-realtime-2.1-mini
+    input: 0.6
+    cached: 0.06
+    output: 2.4
+  -
+    model_id: gpt-realtime-2
+    input: 4.0
+    cached: 0.4
+    output: 24.0
+  -
+    model_id: gpt-realtime-1.5
+    input: 4.0
+    cached: 0.4
+    output: 16.0
+  -
+    model_id: gpt-realtime-mini
+    input: 0.6
+    cached: 0.06
+    output: 2.4
+  -
+    model_id: gpt-audio-1.5
+    input: 2.5
+    cached: 0.0
+    output: 10.0
+  -
+    model_id: gpt-audio
+    input: 2.5
+    cached: 0.0
+    output: 10.0
+  -
+    model_id: gpt-audio-mini
+    input: 0.6
+    cached: 0.0
+    output: 2.4
+  -
+    model_id: gpt-4o-audio-preview
+    input: 2.5
+    cached: 0.0
+    output: 10.0
+  -
+    model_id: gpt-4o-mini-audio-preview
+    input: 0.15
+    cached: 0.0
+    output: 0.6
+  -
+    model_id: gpt-4o-transcribe
+    input: 2.5
+    cached: 0.0
+    output: 10.0
+  -
+    model_id: gpt-4o-mini-transcribe
+    input: 1.25
+    cached: 0.0
+    output: 5.0
+  -
+    model_id: gpt-4o-transcribe-diarize
+    input: 2.5
+    cached: 0.0
+    output: 10.0
+  -
+    model_id: gpt-image-2
+    input: 5.0
+    cached: 1.25
+    output: 0.0
+  -
+    model_id: gpt-image-2-2026-04-21
+    input: 5.0
+    cached: 1.25
+    output: 0.0
+  -
+    model_id: gpt-image-1.5
+    input: 5.0
+    cached: 1.25
+    output: 10.0
+  -
+    model_id: chatgpt-image-latest
+    input: 5.0
+    cached: 1.25
+    output: 10.0
+  -
+    model_id: gpt-image-1
+    input: 5.0
+    cached: 1.25
+    output: 0.0
+  -
+    model_id: gpt-image-1-mini
+    input: 2.0
+    cached: 0.2
+    output: 0.0
+  -
+    model_id: text-embedding-3-large
+    input: 0.13
+    cached: 0.0
+    output: 0.0
+  -
+    model_id: text-embedding-3-small
+    input: 0.02
+    cached: 0.0
+    output: 0.0
+  -
+    model_id: text-embedding-ada-002
+    input: 0.1
+    cached: 0.0
+    output: 0.0

@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Editorial pages of the main menu. Templates live in the Trotamundos theme.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function trotamundos_pages_theme($existing, $type, $theme, $path): array {
+  $theme_path = \Drupal::service('extension.list.theme')->getPath('trotamundos') . '/templates/pages';
+  return [
+    'trotamundos_esencia' => [
+      'variables' => ['partner_whatsapp_url' => NULL],
+      'template' => 'trotamundos-esencia',
+      'path' => $theme_path,
+    ],
+    'trotamundos_ayuda' => [
+      'variables' => [],
+      'template' => 'trotamundos-ayuda',
+      'path' => $theme_path,
+    ],
+  ];
+}

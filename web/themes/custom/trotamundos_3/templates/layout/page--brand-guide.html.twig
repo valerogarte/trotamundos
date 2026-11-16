@@ -1,0 +1,6 @@
+{% include '@trotamundos_3/components/header.html.twig' %}
+<main id="main-content" class="tm3-brand-page" tabindex="-1">
+  {% if page.highlighted %}<div class="tm3-container">{{ page.highlighted }}</div>{% endif %}
+  {{ page.content|without('trotamundos_page_title', 'trotamundos_2_page_title', 'trotamundos_3_page_title') }}
+</main>
+{% include '@trotamundos_3/components/footer.html.twig' %}

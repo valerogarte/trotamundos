@@ -1,0 +1,38 @@
+trotamundos_assistant_documents.settings:
+  type: config_object
+  label: 'Trotamundos Assistant Documents settings'
+  mapping:
+    rules:
+      type: sequence
+      label: 'Extraction rules'
+      sequence:
+        type: mapping
+        label: 'Extraction rule'
+        mapping:
+          enabled:
+            type: boolean
+            label: 'Enabled'
+          media_type:
+            type: string
+            label: 'Media type'
+          media_file_field:
+            type: string
+            label: 'Media file field'
+          extension_process:
+            type: string
+            label: 'Extension process'
+          source_entity_type:
+            type: string
+            label: 'Source entity type'
+          source_bundle:
+            type: string
+            label: 'Source bundle'
+          source_media_field:
+            type: string
+            label: 'Source media reference field'
+          destination_field:
+            type: string
+            label: 'Destination text field'
+          max_text_length:
+            type: integer
+            label: 'Maximum extracted text length'

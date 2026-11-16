@@ -1,0 +1,181 @@
+name: Trotamundos
+short_name: TROTA
+edition: '01'
+version: '1.1'
+tagline: 'Viajar bonito. Sentir de verdad.'
+main_phrase: 'Hay un lugar para ti'
+purpose: 'Descubrir destinos poco conocidos de Colombia, apoyar a los emprendedores turísticos y generar oportunidades para las comunidades locales.'
+pillars:
+  - title: 'Descubrir destinos poco conocidos'
+    description: 'Pueblos, ríos, montañas y paisajes que todavía no aparecen en todas las guías.'
+  - title: 'Impulsar a los emprendedores turísticos'
+    description: 'Hospedajes familiares, guías y pequeños negocios que reciben a los viajeros.'
+  - title: 'Generar oportunidades locales'
+    description: 'Cada reserva deja ingresos y oportunidades en las comunidades.'
+explorations:
+  - 'Descubrir Colombia. Transformar realidades.'
+  - 'Viajes que dejan algo bueno.'
+  - 'Una Colombia por descubrir. Muchas historias por impulsar.'
+personality:
+  - name: Cercana
+    description: 'Hablamos de tú, con palabras sencillas y la calidez de alguien que te acompaña.'
+  - name: Serena
+    description: 'Dejamos espacio para mirar, respirar y elegir sin presiones.'
+  - name: Curiosa
+    description: 'Nos interesan los detalles y las historias de cada lugar. Invitamos a descubrirlos.'
+  - name: Cuidadosa
+    description: 'Cuidamos cómo mostramos los lugares, cómo hablamos de las personas y qué prometemos.'
+  - name: Comprometida
+    description: 'Con las comunidades y los emprendedores locales. Su bienestar forma parte de cada viaje y de cada decisión.'
+colors:
+  - key: selva
+    name: Selva
+    role: Identidad
+    usage: 'Firma, titulares, botones principales y fondos de profundidad.'
+    foreground: marfil
+  - key: marfil
+    name: Marfil
+    role: Atmósfera
+    usage: 'Lienzo principal y aire entre elementos. Deja que las fotografías pongan el color.'
+    foreground: selva
+  - key: terracota
+    name: Terracota
+    role: Carácter
+    usage: 'Palabras destacadas en titulares grandes, ilustraciones y pequeños acentos.'
+    foreground: carbon
+  - key: sol
+    name: Sol
+    role: Calidez
+    usage: 'Detalles luminosos, sellos y acentos sobre fondo selva.'
+    foreground: carbon
+  - key: carbon
+    name: Carbón
+    role: Lectura
+    usage: 'Texto de lectura, información práctica y versiones monocromas.'
+    foreground: marfil
+contrast_pairs:
+  - foreground: selva
+    background: marfil
+    label: 'Selva sobre marfil'
+  - foreground: carbon
+    background: marfil
+    label: 'Carbón sobre marfil'
+  - foreground: muted
+    background: marfil
+    label: 'Texto secundario sobre marfil'
+  - foreground: marfil
+    background: selva
+    label: 'Marfil sobre selva'
+  - foreground: sol
+    background: selva
+    label: 'Sol sobre selva'
+  - foreground: terracota
+    background: marfil
+    label: 'Terracota sobre marfil'
+  - foreground: terracota-text
+    background: marfil
+    label: 'Terracota de lectura sobre marfil'
+fonts:
+  - name: Cormorant Garamond
+    role: 'La voz editorial'
+    family: display
+    styles: 'Normal y cursiva · variable 300–700'
+    usage: 'Titulares, firma, citas y pequeñas notas con carácter. Pesos habituales: 400 y 500; 600 en la firma.'
+    source: 'assets/fonts/cormorant-garamond-latin.woff2'
+    license: 'assets/fonts/Cormorant-Garamond-OFL.txt'
+  - name: Manrope
+    role: 'La voz que acompaña'
+    family: body
+    styles: 'Normal · variable 200–800'
+    usage: 'Párrafos, navegación, botones, etiquetas, precios e información práctica. Peso 400 para leer; 600–750 para señalar.'
+    source: 'assets/fonts/manrope-latin.woff2'
+    license: 'assets/fonts/Manrope-OFL.txt'
+type_scale:
+  - key: type-display
+    name: Portada
+    sample: 'Hay un lugar para ti.'
+    family: display
+    usage: 'La primera invitación. Un único protagonista por pantalla.'
+  - key: type-heading
+    name: Sección
+    sample: '¿Qué te gustaría descubrir?'
+    family: display
+    usage: 'Ordena la página en capítulos claros.'
+  - key: type-card
+    name: Experiencia
+    sample: 'Noche en Termales Espíritu Santo'
+    family: display
+    usage: 'Títulos de fichas: claros, con el lugar y el plan.'
+  - key: type-lead
+    name: Entradilla
+    sample: 'Destinos poco conocidos y anfitriones locales.'
+    family: body
+    usage: 'Introduce una sección o una ficha.'
+  - key: type-body
+    name: Lectura
+    sample: 'Descubre destinos poco conocidos de Colombia junto a quienes los cuidan.'
+    family: body
+    usage: 'Cuenta los detalles con claridad. 16 px en móvil.'
+  - key: type-small
+    name: Apoyo
+    sample: 'Desde $290.000 COP por persona'
+    family: body
+    usage: 'Navegación, botones, precios y datos prácticos.'
+  - key: type-caption
+    name: Detalle
+    sample: 'CONCEPCIÓN · ANTIOQUIA'
+    family: body
+    usage: 'Etiquetas y metadatos breves. Es el tamaño mínimo: nunca información esencial por debajo.'
+spacing:
+  - space-1
+  - space-2
+  - space-4
+  - space-6
+  - space-8
+  - space-12
+  - space-16
+  - space-24
+voice:
+  - principle: 'Claro antes que poético'
+    use: '¿Qué te gustaría descubrir?'
+    avoid: '¿Qué te pide el cuerpo?'
+    explanation: 'Las frases que guían la navegación se entienden a la primera. La poesía se reserva para los titulares.'
+  - principle: 'Las personas en el centro'
+    use: 'Te recibe una familia del pueblo y te cuenta su historia.'
+    avoid: 'Un destino exótico que tienes que conquistar.'
+    explanation: 'Hablamos de comunidades y anfitriones, no de escenarios. Nos acercamos a ellos con respeto.'
+  - principle: 'Invitar, sin empujar'
+    use: 'Encuentra tu próxima experiencia.'
+    avoid: '¡Reserva ya antes de que sea demasiado tarde!'
+    explanation: 'Preferimos la curiosidad a la urgencia comercial.'
+  - principle: 'Concreto, sin exagerar'
+    use: 'Pozas termales junto al río y desayuno típico.'
+    avoid: 'La experiencia más increíble de tu vida.'
+    explanation: 'Los detalles reales tienen más fuerza que los superlativos.'
+  - principle: 'Prometer con cuidado'
+    use: 'Te confirmamos la disponibilidad con los anfitriones.'
+    avoid: 'Reserva confirmada, aunque todavía no haya disponibilidad.'
+    explanation: 'Lo que contamos siempre debe corresponder con lo que podemos ofrecer.'
+words: 'Descubrir. Sentir. Comunidad. Anfitriones. Historia. Contigo.'
+audiovisual:
+  principles:
+    - title: 'Las personas, primero'
+      description: 'Cada experiencia muestra a quienes la hacen posible: anfitriones, guías, cocineras, vecinos. Siempre con su permiso.'
+    - title: 'Color natural'
+      description: 'Luz del lugar y tonos reales. Sin filtros extremos ni saturación: el color de Colombia ya es suficiente.'
+    - title: 'Una misma mirada'
+      description: 'Encuadres tranquilos, un protagonista claro y aire alrededor, en todas las fichas, para que el catálogo crezca con coherencia.'
+    - title: 'Imágenes auténticas'
+      description: 'Lugares, comidas y momentos reales de cada experiencia. Nada de imágenes genéricas que podrían ser cualquier destino.'
+  shot_list:
+    - 'El paisaje: un plano general del lugar.'
+    - 'Las personas: anfitriones y comunidad, en su entorno.'
+    - 'El alojamiento y sus detalles.'
+    - 'La experiencia en acción: el baño, la caminata, el recorrido.'
+    - 'La mesa: comida y bebida del lugar.'
+    - 'Un detalle que solo existe allí.'
+  formats:
+    - 'Vídeo de portada: horizontal 16:9, mínimo 1920 × 1080, entre 10 y 20 segundos, sin texto incrustado y con una versión vertical para móvil.'
+    - 'Reels e historias: vertical 9:16.'
+    - 'Fichas del catálogo: 10–12 fotos por experiencia, de al menos 2000 px en el lado mayor, horizontales y verticales.'
+    - 'Tarjetas: encuadre 4:5 con el motivo centrado.'

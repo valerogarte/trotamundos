@@ -1,0 +1,57 @@
+TROTAMUNDOS 4 / GUÍA DE IDENTIDAD
+Edición 04 / Versión 4.0
+
+Punto de partida
+Cada viaje empieza por mirar.
+Orientar a quienes quieren descubrir Colombia: sus territorios,
+paisajes y las historias que dan sentido a cada parada.
+Personalidad exploradora, clara, cercana y respetuosa.
+
+Firma
+TROTA / MUNDOS en dos líneas. Barlow Condensed 700, mayúsculas,
+espaciado +0,025 em e interlineado 0,85.
+Un símbolo bifurcado acompaña al nombre; sus dos ramas señalan un desvío.
+Zona libre equivalente a la altura de una «O».
+Referencia digital mínima: firma 90 px de ancho; símbolo 32 px.
+No estirar, inclinar ni reorganizar la firma.
+
+Paleta
+Selva #173D32 / RGB 23, 61, 50: orientación y estructura.
+Marfil #F5F0E6 / RGB 245, 240, 230: papel y lectura.
+Terracota #BF6846 / RGB 191, 104, 70: desvíos y acentos.
+Sol #D3A75E / RGB 211, 167, 94: hallazgos y detalles.
+Carbón #242723 / RGB 36, 39, 35: información y monocromía.
+Para terracota pequeño sobre marfil: variante #984C31.
+Contraste AA: 4,5:1 normal; 3:1 grande (24 px o 18,7 px en negrita).
+https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html
+
+Tipografía
+Barlow Condensed 600–700 para titulares cortos y firma.
+IBM Plex Sans 400–700 para lectura, navegación y controles.
+IBM Plex Mono 400 para números, regiones y metadatos breves.
+Las mayúsculas pertenecen a los mensajes cortos; los párrafos conservan
+una lectura natural y un interlineado cómodo.
+
+Sistema
+Papel marfil, tinta selva, retículas y líneas finas.
+Navegación lateral de 208 px en escritorio; cabecera superior en móvil.
+Contenido hasta 1160 px, catálogo en filas y esquinas rectas.
+Espaciado: 4, 8, 16, 24, 32, 48, 64 y 96 px.
+Foco visible, etiquetas y errores con texto. Movimiento breve y reducido
+cuando lo solicite la preferencia de la persona.
+
+Mirada
+Fotografías reales con contexto, localización y procedencia documentada.
+Mapas orientativos; no simular precisión o rutas que no se hayan comprobado.
+Conservar créditos y licencias. Evitar filtros extremos y escenas genéricas.
+
+Voz
+Orientar sin imponer, dar contexto y acompañar con claridad.
+Sí: «Encuentra una próxima parada que se parezca a ti».
+Evitar: «Esta es la única ruta que merece la pena».
+Distinguir inspiración y oferta; comprobar disponibilidad antes de confirmar.
+
+Archivo
+Guía PDF, firmas y símbolos SVG, paleta GPL, tokens CSS,
+pautas YAML, fuentes WOFF2 con licencias y cartografía con créditos.
+Las fotografías conservan condiciones propias y no se incluyen en el kit.

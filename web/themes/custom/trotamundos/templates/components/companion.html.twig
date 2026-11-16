@@ -1,0 +1,16 @@
+{#
+/**
+ * @file
+ * "Te acompaña Juan": the brand's companion before and during the trip.
+ */
+#}
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+<aside class="companion" aria-labelledby="companion-title">
+  <img src="{{ trotamundos_path }}/assets/images/juan-trotamundos.webp" alt="" width="112" height="112" loading="lazy" decoding="async">
+  <div>
+    <p class="eyebrow">{{ 'Te acompaña'|t }}</p>
+    <h3 id="companion-title">Juan Trotamundos</h3>
+    <p>{{ 'Antes de viajar te enviamos un vídeo de bienvenida y una guía práctica. Durante el viaje seguimos contigo por WhatsApp.'|t }}</p>
+    <a class="text-link" href="{{ whatsapp_url|default(tm.whatsapp_url) }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }} {{ 'Escríbenos por WhatsApp'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+  </div>
+</aside>

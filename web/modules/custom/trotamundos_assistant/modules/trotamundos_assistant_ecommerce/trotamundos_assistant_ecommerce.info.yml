@@ -1,0 +1,7 @@
+name: 'Trotamundos Assistant Ecommerce'
+type: module
+description: 'Provides ecommerce skills for Trotamundos Assistant.'
+package: Minsait
+core_version_requirement: ^10 || ^11
+dependencies:
+  - trotamundos_assistant:trotamundos_assistant

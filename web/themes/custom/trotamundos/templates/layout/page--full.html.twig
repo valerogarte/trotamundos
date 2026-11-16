@@ -1,0 +1,14 @@
+{#
+/**
+ * @file
+ * Full-width shell for the catalog, destinations, editorial pages and the
+ * experience and destination pages. Each one renders its own H1.
+ */
+#}
+{% include '@trotamundos/components/header.html.twig' %}
+<main id="main-content" class="page-shell" tabindex="-1">
+  {% if page.highlighted %}<div class="container site-messages">{{ page.highlighted }}</div>{% endif %}
+  <div class="container admin-tabs">{{ page.content.trotamundos_primary_local_tasks }}</div>
+  {{ page.content|without('trotamundos_page_title', 'trotamundos_primary_local_tasks') }}
+</main>
+{% include '@trotamundos/components/footer.html.twig' %}

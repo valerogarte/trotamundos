@@ -1,0 +1,9 @@
+{
+  "chat_reply": "Te muestro el formulario para crear el contenido.",
+  "result": {
+    "entity_type": "node",
+    "bundle": "page",
+    "content_title": "Nueva página",
+    "description": "Completa los campos y guarda el contenido cuando lo tengas listo."
+  }
+}

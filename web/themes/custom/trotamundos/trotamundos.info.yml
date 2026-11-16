@@ -1,0 +1,13 @@
+name: Trotamundos
+type: theme
+description: 'Una mirada cálida y editorial a los viajes y experiencias de Colombia.'
+core_version_requirement: ^11
+base theme: false
+logo: logo.svg
+libraries:
+  - trotamundos/global
+regions:
+  highlighted: 'Avisos y mensajes'
+  breadcrumb: 'Ruta de navegación'
+  content: 'Contenido'
+  footer: 'Contenido adicional del pie'

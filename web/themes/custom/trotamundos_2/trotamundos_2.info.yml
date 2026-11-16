@@ -1,0 +1,13 @@
+name: 'Trotamundos 2'
+type: theme
+description: 'Una Colombia que te mueve. Identidad gráfica, fotografía y nuevas formas de descubrir el viaje.'
+core_version_requirement: ^11
+base theme: false
+logo: logo.svg
+libraries:
+  - trotamundos_2/global
+regions:
+  highlighted: 'Avisos y mensajes'
+  breadcrumb: 'Ruta de navegación'
+  content: 'Contenido'
+  footer: 'Contenido adicional del pie'

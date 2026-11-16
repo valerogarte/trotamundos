@@ -1,0 +1,77 @@
+{#
+/**
+ * @file
+ * Product recommendations template for Trotamundos Assistant.
+ */
+#}
+<article class="trotamundos-assistant-template trotamundos-assistant-template--product-recommendations">
+  <header class="trotamundos-assistant-template__header">
+    <p class="trotamundos-assistant-template__eyebrow">{{ title|default('Recomendaciones'|t) }}</p>
+  </header>
+
+  {% if intro is defined and intro %}
+    <p class="trotamundos-assistant-template__intro">{{ intro }}</p>
+  {% endif %}
+
+  {% if product_items is defined and product_items %}
+    <div class="trotamundos-assistant-template__grid">
+      {% for item in product_items %}
+        <article class="product-card minsait-skill-product-card">
+          <div class="minsait-skill-product-card__media">
+            {% if item.product_id is defined and item.product_id %}
+              <button
+                type="button"
+                class="minsait-skill-product-card__favorite{{ item.is_favorite ? ' is-favorite' }}"
+                aria-label="{{ item.is_favorite ? 'Quitar de favoritos'|t : 'Añadir a favoritos'|t }}"
+                aria-pressed="{{ item.is_favorite ? 'true' : 'false' }}"
+                data-minsait-skill-favorite-toggle
+                data-favorite-url="{{ item.favorite_toggle_url|default('') }}"
+                data-favorite-login-url="{{ item.favorite_login_url|default('/user/login') }}"
+                data-is-favorite="{{ item.is_favorite ? '1' : '0' }}"
+              >
+                <span aria-hidden="true">{{ item.is_favorite ? '♥' : '♡' }}</span>
+              </button>
+            {% endif %}
+            {% if item.image_url is defined and item.image_url %}
+              <img src="{{ item.image_url }}" alt="{{ item.image_alt|default(item.title) }}" loading="lazy" />
+            {% else %}
+              <span class="minsait-skill-product-card__placeholder" aria-hidden="true"></span>
+            {% endif %}
+          </div>
+          <div class="minsait-skill-product-card__content">
+            <div class="minsait-skill-product-card__meta">
+              {% if item.store_name is defined and item.store_name %}
+                <a class="minsait-skill-product-card__store" href="{{ item.store_url|default('#') }}">{{ item.store_name }}</a>
+              {% else %}
+                <span class="minsait-skill-product-card__store">{{ 'Producto'|t }}</span>
+              {% endif %}
+              <span class="minsait-skill-product-card__rating">
+                <span aria-hidden="true">☆</span>
+                {% if item.rating is defined and item.rating > 0 %}
+                  {{ item.rating|number_format(1, ',', '.') }}
+                {% else %}
+                  {{ 'Sin valorar'|t }}
+                {% endif %}
+              </span>
+            </div>
+            {% if item.title %}
+              <h3 class="minsait-skill-product-card__title">
+                <a href="{{ item.product_url|default('#') }}">{{ item.title }}</a>
+              </h3>
+            {% endif %}
+            <div class="minsait-skill-product-card__footer">
+              <span class="minsait-skill-product-card__price">{{ item.price|default('Consultar'|t) }}</span>
+              {% if item.add_to_cart_url is defined and item.add_to_cart_url and item.variation_id is defined and item.variation_id %}
+                <button class="minsait-skill-product-card__action" type="button" aria-label="{{ 'Añadir al carrito'|t }}" data-minsait-skill-add-to-cart data-add-to-cart-url="{{ item.add_to_cart_url }}" data-variation-id="{{ item.variation_id }}">+</button>
+              {% else %}
+                <a class="minsait-skill-product-card__action" href="{{ item.product_url|default('#') }}" aria-label="{{ 'Ver producto'|t }}">+</a>
+              {% endif %}
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% include '@trotamundos_assistant/trotamundos-assistant-suggestions.html.twig' with { notes: notes|default(''), outro: outro|default('') } only %}
+</article>

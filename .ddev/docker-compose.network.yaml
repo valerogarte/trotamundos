@@ -1,0 +1,7 @@
+# Docker's automatic address pools are exhausted on this machine.
+# Keep this project's network in an unused, explicit private subnet.
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 10.254.240.0/24

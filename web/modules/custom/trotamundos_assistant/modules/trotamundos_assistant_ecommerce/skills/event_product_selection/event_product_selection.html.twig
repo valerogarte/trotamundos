@@ -1,0 +1,129 @@
+{#
+/**
+ * @file
+ * Event product selection template for Trotamundos Assistant.
+ */
+#}
+<article class="trotamundos-assistant-template trotamundos-assistant-template--event-product-selection">
+  <header class="trotamundos-assistant-template__header">
+    <p class="trotamundos-assistant-template__eyebrow">{{ title|default('Selección para evento'|t) }}</p>
+    {% if event_name %}
+      <h2 class="minsait-event-selection__name">{{ event_name }}</h2>
+    {% endif %}
+  </header>
+
+  {% if intro %}
+    <p class="trotamundos-assistant-template__intro">{{ intro }}</p>
+  {% endif %}
+
+  {% if people or vegetarian_people or budget or dietary_restrictions %}
+    <section class="minsait-event-selection__summary" aria-label="{{ 'Datos del evento'|t }}">
+      {% if people %}
+        <div class="minsait-event-selection__fact">
+          <span class="minsait-event-selection__fact-label">{{ 'Personas'|t }}</span>
+          <strong>{{ people }}</strong>
+        </div>
+      {% endif %}
+      {% if vegetarian_people %}
+        <div class="minsait-event-selection__fact">
+          <span class="minsait-event-selection__fact-label">{{ 'Opciones vegetarianas'|t }}</span>
+          <strong>{{ vegetarian_people }}</strong>
+        </div>
+      {% endif %}
+      {% if budget %}
+        <div class="minsait-event-selection__fact">
+          <span class="minsait-event-selection__fact-label">{{ 'Presupuesto'|t }}</span>
+          <strong>{{ budget }}</strong>
+        </div>
+      {% endif %}
+      {% if dietary_restrictions %}
+        <div class="minsait-event-selection__fact minsait-event-selection__fact--wide">
+          <span class="minsait-event-selection__fact-label">{{ 'Preferencias y restricciones'|t }}</span>
+          <strong>{{ dietary_restrictions|join(', ') }}</strong>
+        </div>
+      {% endif %}
+    </section>
+  {% endif %}
+
+  {% if categories %}
+    <div class="minsait-event-selection__layout">
+      <div class="minsait-event-selection__categories" data-event-selection-products>
+        {% for category in categories %}
+          <section class="minsait-event-selection__category" aria-label="{{ category.name }}">
+            <div class="minsait-event-selection__category-header">
+              <h3>{{ category.name }}</h3>
+              {% if category.description %}
+                <p>{{ category.description }}</p>
+              {% endif %}
+            </div>
+
+            <div class="minsait-event-selection__products">
+              {% for item in category.items %}
+                <article class="minsait-event-selection__product">
+                  <div class="minsait-event-selection__product-media">
+                    {% if item.image_url %}
+                      <img src="{{ item.image_url }}" alt="{{ item.image_alt|default(item.title) }}" loading="lazy" />
+                    {% else %}
+                      <span aria-hidden="true"></span>
+                    {% endif %}
+                  </div>
+                  <div class="minsait-event-selection__product-content">
+                    {% if item.title %}
+                      <h4><a href="{{ item.product_url|default('#') }}">{{ item.title }}</a></h4>
+                    {% endif %}
+                    {% if item.body %}
+                      <p>{{ item.body }}</p>
+                    {% endif %}
+                    <div class="minsait-event-selection__product-footer">
+                      <span class="minsait-event-selection__product-price">{{ item.price|default('Consultar'|t) }}</span>
+                      <span class="minsait-event-selection__product-quantity">{{ 'Cantidad: @quantity'|t({ '@quantity': item.quantity|default(1) }) }}</span>
+                      {% if item.add_to_cart_url and item.variation_id %}
+                        <button
+                          type="button"
+                          class="minsait-skill-product-card__action"
+                          aria-label="{{ 'Añadir al carrito'|t }}"
+                          data-minsait-skill-add-to-cart
+                          data-add-to-cart-url="{{ item.add_to_cart_url }}"
+                          data-variation-id="{{ item.variation_id }}"
+                          data-quantity="{{ item.quantity|default(1) }}"
+                        >+</button>
+                      {% endif %}
+                    </div>
+                  </div>
+                </article>
+              {% endfor %}
+            </div>
+          </section>
+        {% endfor %}
+      </div>
+
+      <aside class="minsait-event-selection__cart-summary" aria-label="{{ 'Resumen de la selección'|t }}">
+        <div class="minsait-event-selection__cart-icon" aria-hidden="true">🛒</div>
+        <strong class="minsait-event-selection__cart-count">{{ '@count productos'|t({ '@count': total_products }) }}</strong>
+        <div class="minsait-event-selection__cart-divider"></div>
+        <span class="minsait-event-selection__cart-label">{{ 'Total'|t }}</span>
+        <strong class="minsait-event-selection__cart-total">{{ total_amount }}</strong>
+        <button
+          type="button"
+          class="minsait-event-selection__add-all"
+          data-event-selection-add-all
+          {% if not has_addable_items %}disabled{% endif %}
+        >
+          <span>{{ 'Añadir todo al carrito'|t }}</span>
+          <span aria-hidden="true">›</span>
+        </button>
+        <button type="button" class="minsait-event-selection__review" data-event-selection-review>
+          {{ 'Revisar productos'|t }}
+        </button>
+        <p class="minsait-event-selection__cart-status" data-event-selection-status role="status" aria-live="polite"></p>
+      </aside>
+    </div>
+  {% else %}
+    <div class="trotamundos-assistant-template__empty">
+      <p>{{ 'No he podido encontrar productos de catálogo suficientes para preparar esta selección.'|t }}</p>
+    </div>
+  {% endif %}
+
+  {% include '@trotamundos_assistant/trotamundos-assistant-suggestions.html.twig' with { notes: notes|default(''), outro: outro|default('') } only %}
+
+</article>

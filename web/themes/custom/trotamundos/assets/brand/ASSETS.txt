@@ -1,0 +1,42 @@
+RECURSOS DE MARCA — TROTAMUNDOS
+
+FIRMA TIPOGRÁFICA
+wordmark-selva.svg: firma Selva #173D32 y punto Terracota #BF6846. Para fondos claros.
+wordmark-marfil.svg: firma Marfil #F5F0E6 y punto Sol #D3A75E. Para fondos oscuros, preferentemente Selva.
+wordmark-carbon.svg: firma completa, incluido el punto, en Carbón #242723. Versión de una tinta.
+
+Las tres firmas son SVG autónomos: todos los caracteres son trazados vectoriales.
+No requieren tener las fuentes instaladas ni acceso a servicios externos.
+El fondo es transparente. Mantener la proporción original y los colores de cada variante.
+La variante Marfil debe verse sobre un fondo oscuro; el archivo no incluye ese fondo.
+
+La firma reproduce la composición actual del tema: «trota» en Cormorant Garamond 600 normal,
+«mundos» en Cormorant Garamond 500 cursiva y punto en 600 normal, con espaciado de -0,075 em.
+Los trazados se han obtenido de los archivos WOFF2 locales de la web, con HarfBuzz y fontTools,
+con kerning y sin ligaduras discrecionales. No se ha sustituido ni rediseñado la tipografía.
+No incluyen el descriptor secundario «POR JUAN TROTA MUNDOS».
+
+EXPORTACIONES PNG
+wordmark-selva.png / wordmark-marfil.png / wordmark-carbon.png: 1600 × 357 píxeles.
+simbolo.png: 512 × 512 píxeles. Todos los PNG usan fondo transparente.
+Los SVG son el formato preferido para impresión y para cambiar de tamaño sin perder calidad.
+
+SÍMBOLO
+simbolo.svg: copia exacta del símbolo circular del tema, con fondo Selva y sol/camino Sol.
+Tiene formato cuadrado 64 × 64 y mantiene todos los trazados originales.
+
+PALETA
+trotamundos.gpl: paleta GIMP con los cinco colores exactos, en sRGB.
+Selva #173D32 / Marfil #F5F0E6 / Terracota #BF6846 / Sol #D3A75E / Carbón #242723.
+
+TIPOGRAFÍAS Y LICENCIAS
+Cormorant Garamond: https://fonts.google.com/specimen/Cormorant+Garamond
+Manrope: https://fonts.google.com/specimen/Manrope
+Las fuentes empleadas por el tema se distribuyen bajo SIL Open Font License 1.1.
+Se incluyen los textos íntegros de licencia en licenses/.
+Los SVG contienen los contornos de la firma, no incluyen software de fuentes.
+
+GUÍA EN PDF
+trotamundos-guia-de-marca.pdf: guía completa de identidad, con portada, capítulos,
+marcadores y créditos. Las fotografías reproducidas conservan sus licencias
+y atribuciones, que se detallan al final del documento.

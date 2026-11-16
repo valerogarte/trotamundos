@@ -1,0 +1,75 @@
+{#
+/**
+ * @file
+ * Destination page: the place, where it is and its experiences.
+ */
+#}
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+{{ attach_library('trotamundos/pages') }}
+{% set d = destination %}
+<article{{ attributes.addClass('destination-page') }}>
+  <div class="container">
+    <nav class="breadcrumb" aria-label="{{ 'Ruta de navegación'|t }}">
+      <ol>
+        <li><a href="{{ path('<front>') }}">{{ 'Inicio'|t }}</a></li>
+        <li><a href="{{ tm.destinations_url }}">{{ 'Destinos'|t }}</a></li>
+        <li aria-current="page">{{ d.title|default(label) }}</li>
+      </ol>
+    </nav>
+  </div>
+
+  <header class="destination-hero container">
+    <div class="destination-hero__copy">
+      <p class="eyebrow">{{ d.department }}{% if d.region_label %} · {{ d.region_label }}{% endif %}</p>
+      <h1>{{ d.place|default(label) }}</h1>
+      {% if content.body|render|striptags|trim %}
+        <div class="prose destination-hero__body">{{ content.body }}</div>
+      {% endif %}
+      <div class="destination-hero__actions">
+        {% if d.count %}
+          <a class="button button--primary" href="#experiencias-destino">
+            {% set count = d.count %}
+            {% trans %}Ver 1 experiencia{% plural count %}Ver {{ count }} experiencias{% endtrans %}
+            {{ icons.icon('arrow') }}
+          </a>
+        {% endif %}
+        <a class="button button--whatsapp" href="{{ destination_whatsapp_url }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }} {{ 'Preguntar por este destino'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+      </div>
+    </div>
+    <div class="destination-hero__visual">
+      {% if d.image %}
+        <figure class="destination-hero__image">
+          <img src="{{ d.image.src }}" alt="{{ d.image.alt }}" width="{{ d.image.width }}" height="{{ d.image.height }}" loading="eager" decoding="async">
+        </figure>
+      {% endif %}
+      {% include '@trotamundos/components/colombia-map.html.twig' with {point: map} %}
+    </div>
+  </header>
+
+  <section class="container destination-experiences" id="experiencias-destino" aria-labelledby="destination-experiences-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">{{ 'Experiencias'|t }}</p>
+        <h2 id="destination-experiences-title">{{ 'Qué vivir en @place'|t({'@place': d.place|default(label)}) }}</h2>
+      </div>
+      {% if destination_experiences and destination_catalog_url %}
+        <a class="text-link" href="{{ destination_catalog_url }}">{{ 'Filtrar en el catálogo'|t }} {{ icons.icon('arrow') }}</a>
+      {% endif %}
+    </div>
+    {% if destination_experiences %}
+      <div class="experience-grid">
+        {% for card in destination_experiences %}{% include '@trotamundos/components/experience-card.html.twig' with {card: card} %}{% endfor %}
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <h3>{{ 'Próximamente'|t }}</h3>
+        <p>{{ 'Estamos preparando experiencias en este destino junto a sus anfitriones. Escríbenos si quieres que te avisemos.'|t }}</p>
+        <div class="empty-state__actions">
+          <a class="button button--whatsapp" href="{{ destination_whatsapp_url }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }} {{ 'Avísenme'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+          <a class="button button--secondary" href="{{ tm.catalog_url }}">{{ 'Ver otras experiencias'|t }}</a>
+        </div>
+      </div>
+    {% endif %}
+  </section>
+  {{ tm_cache }}
+</article>

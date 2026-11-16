@@ -1,0 +1,22 @@
+MAPA CONTINENTAL DE COLOMBIA
+
+Made with Natural Earth. Free vector and raster map data @ naturalearthdata.com.
+Fuente: https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson
+Capa: ne_50m_admin_0_countries; filtro ADM0_A3 = COL.
+Se utiliza el polígono continental mayor, con proyección lineal de longitud/latitud y escala uniforme.
+Escala de la fuente: 1:50 millones. Se omiten islas del contorno para encuadrar el continente.
+Licencia de los datos: dominio público.
+Condiciones: https://www.naturalearthdata.com/about/terms-of-use/
+Autores principales del conjunto: Tom Patterson y Nathaniel Vaughn Kelso, y colaboradores.
+
+COORDENADAS APROXIMADAS DE LOS DESTINOS
+Concepción, Antioquia: 6°23′42″N, 75°15′30″W.
+https://www.wikidata.org/wiki/Q2279494
+Valle de Cocora: 4°38′12.88″N, 75°29′11.58″W.
+https://www.wikidata.org/wiki/Q965776
+Islas del Rosario: 10°10′30″N, 75°45′0″W.
+https://www.wikidata.org/wiki/Q1674250
+Datos estructurados Wikidata: CC0 1.0.
+https://creativecommons.org/publicdomain/zero/1.0/
+Los puntos representan lugares o áreas de forma aproximada. La posición de Rosario es del archipiélago.
+La selección de coordenadas, límites, transformación y porcentajes está registrada en colombia.metadata.json.

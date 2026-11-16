@@ -1,0 +1,23 @@
+langcode: es
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - trotamundos_4
+id: trotamundos_4_content
+theme: trotamundos_4
+region: content
+weight: 0
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Contenido principal'
+  label_display: '0'
+  provider: system
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    pages: '<front>'

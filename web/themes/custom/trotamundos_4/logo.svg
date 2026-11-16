@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Trotamundos</title>
+  <desc id="desc">Un camino se bifurca en dos direcciones.</desc>
+  <path d="M24 41V28L10 14M10 24V14H20" stroke="#173D32" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter"/>
+  <path d="M24 28L38 14M28 14H38V24" stroke="#BF6846" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter"/>
+</svg>

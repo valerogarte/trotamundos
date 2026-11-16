@@ -1,0 +1,53 @@
+TROTAMUNDOS 2 · GUÍA DE IDENTIDAD DIGITAL
+Edición 02 · Versión 2.0
+
+IDEA
+Que el viaje te mueva.
+Conectar a las personas con una Colombia viva: sus paisajes, sus pueblos
+y las historias que se encuentran por el camino.
+Personalidad: viva, cercana, consciente y auténtica.
+
+FIRMA
+«trotamundos» en Bricolage Grotesque 800, espaciado −0,075 em y minúsculas.
+El monograma geométrico acompaña al nombre. No alterar sus proporciones.
+Zona libre equivalente a la altura de una «o». Referencia digital mínima:
+firma 160 px, monograma 32 px. Selva sobre fondos claros; marfil sobre selva.
+
+COLOR
+Selva #173D32 (23, 61, 50): identidad, titulares y acciones.
+Marfil #F5F0E6 (245, 240, 230): respiro y lectura.
+Terracota #BF6846 (191, 104, 70): impulso gráfico y texto grande.
+Sol #D3A75E (211, 167, 94): bloques cálidos y detalles.
+Carbón #242723 (36, 39, 35): lectura y monocromía.
+Para texto pequeño terracota sobre marfil: variante #984C31.
+Contraste AA mínimo: 4,5:1 normal; 3:1 grande (24 px o 18,7 px en negrita).
+https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html
+
+TIPOGRAFÍA
+Bricolage Grotesque 700–800 para titulares y firma: líneas cortas y
+espaciado compacto. DM Sans 400 para leer y 500–700 para señalar.
+Ambas familias son variables y locales. No sustituirlas sin revisar el conjunto.
+
+SISTEMA
+Retícula hasta 1320 px. Bloques rectos, círculos y flechas para marcar ritmo.
+Una columna en móvil. Márgenes cómodos y un protagonista por composición.
+Escala de espacio: 4, 8, 16, 24, 32, 48, 64 y 96 px.
+Una acción principal por contexto; foco visible, etiquetas y errores con texto.
+Las transiciones respetan la preferencia de movimiento reducido.
+
+MIRADA
+Paisajes reales, luz natural y detalles con historia. La gráfica acompaña.
+Evitar saturación extrema, fotografías genéricas y promesas no confirmadas.
+Conservar autorías, procedencia y licencias de cada fotografía.
+
+VOZ
+Directa, cálida y curiosa. Invitar con energía y explicar con precisión.
+Sí: «Sal a encontrar tu próxima historia».
+Evitar: «Reserva ahora o te quedarás fuera».
+Hablar de lugares concretos y de sus personas con respeto.
+Confirmar lo que se puede ofrecer antes de prometer disponibilidad.
+
+RECURSOS
+Firmas y monograma SVG, paleta GPL, tokens CSS, pautas YAML,
+fuentes WOFF2 con licencias y guía PDF de esta identidad.
+Las fotografías mantienen sus condiciones y no se incluyen en el kit.

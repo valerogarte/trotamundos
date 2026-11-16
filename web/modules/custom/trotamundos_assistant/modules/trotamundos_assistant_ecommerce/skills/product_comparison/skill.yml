@@ -1,0 +1,26 @@
+machine_name: product_comparison
+title: 'Comparar productos'
+btn_responsive_title: 'Ver comparativa'
+group: ecommerce
+theme:
+  variables:
+    outro: ''
+    product_items: []
+    comparison_rows: []
+handler:
+  class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\ProductComparison\ProductComparisonSkillHandler'
+  file: 'src/ProductComparisonSkillHandler.php'
+assets:
+  dependencies:
+    - trotamundos_assistant_ecommerce/skill.product_common
+dependencies:
+  modules:
+    - commerce_product
+chat_reply_fallback: 'He preparado la comparativa en el panel.'
+description: 'Compara dos o más productos y muestra diferencias, ventajas y criterios de elección.'
+provider:
+  requires_rag: true
+  intent: 'Usar cuando el usuario pida comparar productos o decidir entre varias opciones concretas.'
+  when_to_use:
+    - 'El usuario menciona dos o más productos.'
+    - 'El usuario pregunta cuál conviene más entre varias opciones.'

@@ -1,0 +1,626 @@
+/**
+ * Layout: header, navigation, language switch, footer and page shells.
+ */
+
+/* Header */
+.site-header {
+  position: sticky;
+  z-index: 30;
+  top: var(--drupal-displace-offset-top, 0px);
+  color: var(--selva);
+  background: var(--marfil);
+  transition: background-color 200ms ease, box-shadow 200ms ease, color 200ms ease;
+}
+
+.site-header.header-is-scrolled {
+  box-shadow: 0 4px 24px rgb(23 61 50 / 10%);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 40px);
+  min-height: var(--header-height);
+  border-bottom: 1px solid var(--line);
+}
+
+.wordmark {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: auto;
+  color: inherit;
+  text-decoration: none;
+}
+
+.wordmark__name {
+  font-family: var(--font-display);
+  font-size: 46px;
+  font-weight: 600;
+  letter-spacing: -0.07em;
+  line-height: 0.9;
+}
+
+.wordmark__italic {
+  font-weight: 500;
+  font-style: italic;
+}
+
+.wordmark__dot {
+  color: var(--terracota);
+}
+
+.wordmark__signature {
+  margin-top: 8px;
+  padding-left: 2px;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.22em;
+  line-height: 1.2;
+}
+
+.primary-navigation {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.6vw, 40px);
+}
+
+.primary-navigation__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  color: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 180ms;
+}
+
+.primary-navigation__link::after {
+  position: absolute;
+  right: 0;
+  bottom: 8px;
+  left: 0;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: currentColor;
+  content: "";
+  transition: transform 200ms ease;
+}
+
+.primary-navigation__link:hover::after,
+.primary-navigation__link.is-active::after {
+  transform: scaleX(1);
+}
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+}
+
+.language-switch a,
+.language-switch span {
+  display: inline-grid;
+  min-width: 40px;
+  min-height: 36px;
+  padding: 0 10px;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+.language-switch [aria-current="true"] {
+  color: var(--marfil);
+  background: var(--selva);
+}
+
+.language-switch a:hover {
+  background: rgb(23 61 50 / 8%);
+}
+
+.whatsapp-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 10px 18px;
+  color: #fff;
+  border-radius: var(--radius-pill);
+  background: var(--whatsapp);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 180ms;
+}
+
+.whatsapp-button:hover {
+  background: #17603c;
+}
+
+.whatsapp-button .icon {
+  width: 21px;
+  height: 21px;
+}
+
+.menu-toggle {
+  display: none;
+}
+
+/* Overlay header on the home page video */
+.site-header--overlay {
+  color: var(--marfil);
+  background: var(--selva);
+}
+
+.trotamundos-js .site-header--overlay {
+  position: fixed;
+  inset: var(--drupal-displace-offset-top, 0px) 0 auto;
+  background: linear-gradient(180deg, rgb(8 24 20 / 55%), rgb(8 24 20 / 0%));
+}
+
+.trotamundos-js .site-header--overlay.header-is-scrolled,
+.trotamundos-js .site-header--overlay.menu-is-open {
+  background: var(--selva);
+}
+
+.site-header--overlay .site-header__inner {
+  border-bottom-color: rgb(245 240 230 / 22%);
+}
+
+.site-header--overlay .wordmark__dot {
+  color: var(--sol);
+}
+
+.site-header--overlay .language-switch {
+  border-color: rgb(245 240 230 / 45%);
+}
+
+.site-header--overlay .language-switch [aria-current="true"] {
+  color: var(--selva);
+  background: var(--marfil);
+}
+
+.site-header--overlay .language-switch a:hover {
+  background: rgb(245 240 230 / 14%);
+}
+
+.site-header--overlay :focus-visible {
+  outline-color: var(--marfil);
+}
+
+/* Mobile and tablet navigation */
+@media (max-width: 1023px) {
+  .site-header__inner {
+    gap: 10px;
+  }
+
+  .wordmark__name {
+    font-size: 38px;
+  }
+
+  .wordmark__signature {
+    margin-top: 6px;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+  }
+
+  .header-tools .language-switch {
+    display: none;
+  }
+
+  .whatsapp-button__label {
+    display: none;
+  }
+
+  .whatsapp-button {
+    width: 46px;
+    padding: 0;
+  }
+
+  .whatsapp-button .icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  .menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 46px;
+    min-height: 46px;
+    padding: 6px 4px 6px 10px;
+    border: 0;
+    background: transparent;
+    font-size: 15px;
+    font-weight: 650;
+  }
+
+  .trotamundos-js .menu-toggle {
+    display: inline-flex;
+  }
+
+  .menu-toggle__lines {
+    position: relative;
+    display: block;
+    width: 24px;
+    height: 14px;
+    border-top: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transition: transform 200ms;
+  }
+
+  .menu-toggle__lines::after {
+    position: absolute;
+    top: 4px;
+    right: 0;
+    left: 0;
+    border-top: 2px solid currentColor;
+    content: "";
+  }
+
+  .menu-is-open .menu-toggle__lines {
+    transform: rotate(45deg);
+    border-bottom: 0;
+  }
+
+  .menu-is-open .menu-toggle__lines::after {
+    top: -2px;
+    transform: rotate(90deg);
+  }
+
+  .primary-navigation {
+    display: none;
+  }
+
+  .trotamundos-js .primary-navigation {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    max-height: calc(100dvh - var(--header-height) - var(--drupal-displace-offset-top, 0px));
+    overflow-y: auto;
+    padding: 12px var(--gutter) 32px;
+    color: var(--selva);
+    border-bottom: 1px solid var(--line);
+    background: var(--marfil);
+    box-shadow: 0 24px 32px rgb(23 61 50 / 10%);
+  }
+
+  .trotamundos-js .menu-is-open .primary-navigation {
+    display: flex;
+  }
+
+  .primary-navigation__link {
+    min-height: 64px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 500;
+  }
+
+  .primary-navigation__link::after {
+    display: none;
+  }
+
+  .primary-navigation__link.is-active {
+    color: var(--terracota-text);
+  }
+
+  .primary-navigation__extra {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .site-header--overlay .primary-navigation {
+    color: var(--marfil);
+    border-bottom-color: rgb(245 240 230 / 20%);
+    background: var(--selva);
+  }
+
+  .site-header--overlay .primary-navigation__link {
+    border-bottom-color: rgb(245 240 230 / 20%);
+  }
+
+  .site-header--overlay .primary-navigation__link.is-active {
+    color: var(--sol);
+  }
+}
+
+@media (min-width: 1024px) {
+  .primary-navigation__extra {
+    display: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .wordmark__name {
+    font-size: 34px;
+  }
+
+  .wordmark__signature {
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+  }
+
+  .menu-toggle__label {
+    display: none;
+  }
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  padding-block: 20px 0;
+  font-size: 14px;
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumb li {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+}
+
+.breadcrumb li + li::before {
+  color: var(--line-strong);
+  content: "/";
+}
+
+.breadcrumb a {
+  color: var(--selva);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 639px) {
+  /* On phones keep the useful way back: section and place, not the title. */
+  .breadcrumb li:first-child,
+  .breadcrumb li[aria-current] {
+    display: none;
+  }
+
+  .breadcrumb li:nth-child(2)::before {
+    content: none;
+  }
+}
+
+/* Editor tabs on public pages */
+.admin-tabs .tabs,
+.content-page .tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0;
+  padding: 16px 0 0;
+  font-size: 14px;
+  list-style: none;
+}
+
+.admin-tabs .tabs a,
+.content-page .tabs a {
+  color: var(--selva);
+  font-weight: 650;
+}
+
+/* Page shells */
+.page-shell {
+  min-height: 60vh;
+}
+
+.page-intro {
+  padding-block: clamp(40px, 6vw, 80px) clamp(28px, 4vw, 48px);
+}
+
+.page-intro h1 {
+  margin-top: 14px;
+  font-size: var(--type-heading);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.page-intro h1 em {
+  color: var(--terracota);
+}
+
+.page-intro .lead {
+  max-width: 680px;
+  margin-top: 18px;
+}
+
+/* Footer */
+.site-footer {
+  margin-top: 0;
+  padding-top: 64px;
+  color: var(--selva);
+  border-top: 1px solid var(--line);
+  background: var(--sand);
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.25fr) minmax(0, 0.8fr) minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 40px;
+  padding-bottom: 48px;
+}
+
+.wordmark--footer {
+  margin-right: 0;
+}
+
+.wordmark--footer .wordmark__name {
+  font-size: 52px;
+}
+
+.footer-brand__tagline {
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-size: 25px;
+  font-style: italic;
+  line-height: 1.2;
+}
+
+.footer-brand__text {
+  max-width: 340px;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: var(--type-small);
+}
+
+.footer-brand .language-switch {
+  margin-top: 22px;
+}
+
+.footer-column h2 {
+  margin-bottom: 14px;
+  color: var(--selva);
+  font-family: var(--font-body);
+  font-size: var(--type-caption);
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.footer-column ul {
+  padding: 0;
+  list-style: none;
+}
+
+.footer-column {
+  min-width: 0;
+}
+
+.footer-column a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  min-height: 40px;
+  color: var(--carbon);
+  font-size: 16px;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.footer-column a:hover {
+  color: var(--terracota-text);
+  text-decoration: underline;
+}
+
+.footer-column .icon {
+  width: 19px;
+  height: 19px;
+  color: var(--selva);
+}
+
+.footer-extra {
+  padding-bottom: 32px;
+}
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 28px;
+  min-height: 72px;
+  padding-block: 18px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.footer-bottom__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+
+.footer-bottom a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.footer-bottom a:hover {
+  color: var(--selva);
+  text-decoration: underline;
+}
+
+.back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-weight: 600;
+}
+
+.back-to-top .icon {
+  width: 17px;
+  height: 17px;
+  transform: rotate(-90deg);
+}
+
+@media (max-width: 1023px) {
+  .footer-top {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 639px) {
+  .site-footer {
+    padding-top: 44px;
+  }
+
+  .footer-top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 20px;
+    padding-bottom: 32px;
+  }
+
+  .wordmark--footer .wordmark__name {
+    font-size: 44px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

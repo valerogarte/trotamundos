@@ -1,0 +1,1001 @@
+# English translation of the Trotamundos theme and modules.
+# Source strings are in Spanish (locale.settings:translate_english is enabled).
+msgid ""
+msgstr ""
+"Project-Id-Version: Trotamundos 2.0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+msgid "1 noche"
+msgstr "1 night"
+
+msgid "2 o 3 noches"
+msgstr "2 or 3 nights"
+
+msgid "4 noches o más"
+msgstr "4 nights or more"
+
+msgid "Acompañamiento cercano"
+msgstr "Close support"
+
+msgid "Activar sonido"
+msgstr "Turn sound on"
+
+msgid "Ahora mismo no hay fechas publicadas. Escríbenos y te avisamos de las próximas."
+msgstr "There are no published dates right now. Message us and we will let you know the next ones."
+
+msgid "Al confirmar la reserva te enviamos la ubicación exacta, la ruta y las opciones de transporte."
+msgstr "Once your booking is confirmed, we send you the exact location, the route and the transport options."
+
+msgid "Amazonía"
+msgstr "Amazon"
+
+msgid "Ampliar la foto @number de @total"
+msgstr "Enlarge photo @number of @total"
+
+msgid "Anfitriones"
+msgstr "Hosts"
+
+msgid "Anfitriones locales"
+msgstr "Local hosts"
+
+msgid "Antes"
+msgstr "Before"
+
+msgid "Antes de publicar una experiencia, la visitamos y la preparamos con sus anfitriones."
+msgstr "Before we publish an experience, we visit it and prepare it with its hosts."
+
+msgid "Antes de viajar te enviamos un vídeo de bienvenida y una guía práctica. Durante el viaje seguimos contigo por WhatsApp."
+msgstr "Before you travel we send you a welcome video and a practical guide. During the trip we stay with you on WhatsApp."
+
+msgid "Así somos"
+msgstr "Who we are"
+
+msgid "Atención al viajero"
+msgstr "Traveller care"
+
+msgid "Avísenme"
+msgstr "Let me know"
+
+msgid "Ayuda"
+msgstr "Help"
+
+msgid "Añadir un viajero"
+msgstr "Add a traveller"
+
+msgid "Busca experiencias por región, departamento y municipio. Cada destino reúne los planes que preparamos con sus anfitriones."
+msgstr "Find experiences by region, department and town. Each destination brings together the plans we prepare with its hosts."
+
+msgid "Buscar experiencias"
+msgstr "Search experiences"
+
+msgid "COP por persona"
+msgstr "COP per person"
+
+msgid "Cada experiencia la preparamos con quienes viven en el destino."
+msgstr "We prepare every experience with the people who live in the destination."
+
+msgid "Cada experiencia tiene su política de cancelación, visible en su ficha antes de reservar. Te la recordamos también en la confirmación."
+msgstr "Each experience has its own cancellation policy, shown on its page before you book. We also remind you of it in your confirmation."
+
+msgid "Cada ficha indica qué incluye y qué no. El precio «desde» es por persona; el total depende de la fecha, del número de viajeros y del tipo de habitación."
+msgstr "Each page shows what is and is not included. The “from” price is per person; the total depends on the date, the number of travellers and the room type."
+
+msgid "Cada ficha tiene sus recomendaciones. Antes del viaje te enviamos una guía práctica con todo lo necesario."
+msgstr "Each page has its own recommendations. Before the trip we send you a practical guide with everything you need."
+
+msgid "Cada reserva deja ingresos en las familias y en las comunidades que visitas."
+msgstr "Every booking brings income to the families and communities you visit."
+
+msgid "Cambios y cancelaciones"
+msgstr "Changes and cancellations"
+
+msgid "Cambios y cancelación"
+msgstr "Changes and cancellation"
+
+msgid "Canales de contacto"
+msgstr "Contact channels"
+
+msgid "Catálogo"
+msgstr "Catalogue"
+
+msgid "Cercana"
+msgstr "Warm"
+
+msgid "Cerrar"
+msgstr "Close"
+
+msgid "Cerrar la galería"
+msgstr "Close the gallery"
+
+msgid "Cerrar menú"
+msgstr "Close menu"
+
+msgid "Cinco rasgos,"
+msgstr "Five traits,"
+
+msgid "Color @color copiado."
+msgstr "Colour @color copied."
+
+msgid "Comprometida"
+msgstr "Committed"
+
+msgid "Comunidades y aliados"
+msgstr "Communities and partners"
+
+msgid "Con la guía práctica del viaje y el contacto de tus anfitriones."
+msgstr "With the practical travel guide and your hosts’ contact details."
+
+msgid "Con las comunidades y los emprendedores locales: su bienestar es parte de cada viaje."
+msgstr "To communities and local entrepreneurs: their wellbeing is part of every trip."
+
+msgid "Concepción, Antioquia"
+msgstr "Concepción, Antioquia"
+
+msgid "Confirmamos la disponibilidad"
+msgstr "We confirm availability"
+
+msgid "Conoce nuestra esencia"
+msgstr "Get to know us"
+
+msgid "Conocemos cada lugar"
+msgstr "We know every place"
+
+msgid "Consultar por WhatsApp"
+msgstr "Ask on WhatsApp"
+
+msgid "Contacto"
+msgstr "Contact"
+
+msgid "Contigo en cada etapa"
+msgstr "With you at every stage"
+
+msgid "Controles del vídeo"
+msgstr "Video controls"
+
+msgid "Correo"
+msgstr "Email"
+
+msgid "Correo de contacto"
+msgstr "Contact email"
+
+msgid "Créditos de imágenes, vídeo y audio"
+msgstr "Image, video and audio credits"
+
+msgid "Cualquier duración"
+msgstr "Any length"
+
+msgid "Cualquier fecha"
+msgstr "Any date"
+
+msgid "Cualquier precio"
+msgstr "Any price"
+
+msgid "Cuidadosa"
+msgstr "Careful"
+
+msgid "Cuidamos cómo mostramos los lugares, cómo hablamos de las personas y qué prometemos."
+msgstr "We take care in how we show places, how we talk about people and what we promise."
+
+msgid "Curiosa"
+msgstr "Curious"
+
+msgid "Cuéntanos qué buscas"
+msgstr "Tell us what you are looking for"
+
+msgid "Cuéntanos qué te gustaría vivir, con quién viajas y en qué fechas, y te recomendamos la experiencia ideal."
+msgstr "Tell us what you would like to experience, who you are travelling with and when, and we will recommend the right experience."
+
+msgid "Cómo trabajamos"
+msgstr "How we work"
+
+msgid "De @min a @max"
+msgstr "@min to @max"
+
+msgid "Dejamos espacio para mirar, respirar y elegir sin presiones."
+msgstr "We leave room to look, breathe and choose without pressure."
+
+msgid "Del @start al @end"
+msgstr "From @start to @end"
+
+msgid "Departamento"
+msgstr "Department"
+
+msgid "Descubre destinos poco conocidos de Colombia y reserva experiencias con anfitriones locales. Viajar bonito. Sentir de verdad."
+msgstr "Discover little-known destinations in Colombia and book experiences with local hosts. Travel beautifully. Feel deeply."
+
+msgid "Descubrimos destinos poco conocidos de Colombia junto a quienes los cuidan. Cada viaje apoya a emprendedores turísticos y genera oportunidades para las comunidades locales."
+msgstr "We discover little-known destinations in Colombia together with the people who look after them. Every trip supports tourism entrepreneurs and creates opportunities for local communities."
+
+msgid "Descubrir Colombia."
+msgstr "Discover Colombia."
+
+msgid "Descubrir destinos poco conocidos"
+msgstr "Discover little-known destinations"
+
+msgid "Desde"
+msgstr "From"
+
+msgid "Desde Medellín"
+msgstr "From Medellín"
+
+msgid "Después"
+msgstr "After"
+
+msgid "Destino"
+msgstr "Destination"
+
+msgid "Destino, tipo de plan, precio, duración y fecha"
+msgstr "Destination, type of plan, price, length and date"
+
+msgid "Destinos"
+msgstr "Destinations"
+
+msgid "Destinos poco conocidos de Colombia, anfitriones locales y experiencias que dejan algo bueno en cada comunidad."
+msgstr "Little-known destinations in Colombia, local hosts and experiences that leave something good in every community."
+
+msgid "Destinos por descubrir"
+msgstr "Places to discover"
+
+msgid "Disponibilidad"
+msgstr "Availability"
+
+msgid "Duración"
+msgstr "Length"
+
+msgid "Duración y recomendaciones"
+msgstr "Length and recommendations"
+
+msgid "Duración:"
+msgstr "Length:"
+
+msgid "Durante"
+msgstr "During"
+
+msgid "Durante el viaje"
+msgstr "During the trip"
+
+msgid "El corazón de Trotamundos es humano y comunitario: cada viaje conecta a un viajero con las personas que hacen especial un lugar."
+msgstr "The heart of Trotamundos is human and community-based: every trip connects a traveller with the people who make a place special."
+
+msgid "El destino"
+msgstr "The destination"
+
+msgid "El plan"
+msgstr "The plan"
+
+msgid "El pueblo de Concepción, Antioquia, entre montañas."
+msgstr "The town of Concepción, Antioquia, among the mountains."
+
+msgid "Elige la experiencia, la fecha y el número de viajeros, y pulsa «Reservar». Te escribimos por WhatsApp para confirmar la disponibilidad con los anfitriones y te enviamos un enlace de pago seguro. La reserva queda confirmada al completar el pago."
+msgstr "Choose the experience, the date and the number of travellers, then press “Book”. We message you on WhatsApp to confirm availability with the hosts and send you a secure payment link. Your booking is confirmed once the payment is complete."
+
+msgid "Elige la fecha de llegada."
+msgstr "Choose your arrival date."
+
+msgid "Eliges fecha y viajeros, y te confirmamos la disponibilidad."
+msgstr "You choose the date and travellers, and we confirm availability."
+
+msgid "Emprendedores locales"
+msgstr "Local entrepreneurs"
+
+msgid "En el camino ha conocido pueblos, ríos y montañas que merecen más visitas, y a las personas que los cuidan. Trotamundos convierte esas historias en experiencias que se pueden reservar con confianza."
+msgstr "Along the way he has found towns, rivers and mountains that deserve more visitors, and the people who look after them. Trotamundos turns those stories into experiences you can book with confidence."
+
+msgid "En esta ficha"
+msgstr "On this page"
+
+msgid "En esta página"
+msgstr "On this page"
+
+msgid "Enviar la solicitud no tiene ningún coste ni compromiso."
+msgstr "Sending the request is free and without commitment."
+
+msgid "Enviar la solicitud por WhatsApp"
+msgstr "Send the request on WhatsApp"
+
+msgid "Esa fecha no está disponible."
+msgstr "That date is not available."
+
+msgid "Esa fecha no está disponible. Elige una entre el @start y el @end, o escríbenos."
+msgstr "That date is not available. Choose one between @start and @end, or message us."
+
+msgid "Escribir a"
+msgstr "Message"
+
+msgid "Escríbenos por WhatsApp"
+msgstr "Message us on WhatsApp"
+
+msgid "Escríbenos por WhatsApp y te ayudamos a resolverlo con los anfitriones."
+msgstr "Message us on WhatsApp and we will help you sort it out with the hosts."
+
+msgid "Escríbenos y te contamos qué destinos están por llegar."
+msgstr "Message us and we will tell you which destinations are coming."
+
+msgid "Estamos contigo por WhatsApp antes y durante el viaje."
+msgstr "We are with you on WhatsApp before and during the trip."
+
+msgid "Estamos preparando experiencias en este destino junto a sus anfitriones. Escríbenos si quieres que te avisemos."
+msgstr "We are preparing experiences in this destination with its hosts. Message us if you would like us to let you know."
+
+msgid "Estamos preparando las primeras experiencias"
+msgstr "We are preparing the first experiences"
+
+msgid "Estamos preparando los primeros destinos."
+msgstr "We are preparing the first destinations."
+
+msgid "Estilo de viaje"
+msgstr "Travel style"
+
+msgid "Estos son los primeros emprendimientos y comunidades con los que estamos construyendo Trotamundos."
+msgstr "These are the first businesses and communities we are building Trotamundos with."
+
+msgid "Experiencia"
+msgstr "Experience"
+
+msgid "Experiencias"
+msgstr "Experiences"
+
+msgid "Experiencias en destinos poco conocidos de Colombia"
+msgstr "Experiences in little-known destinations in Colombia"
+
+msgid "Experiencias en destinos poco conocidos de Colombia, de la mano de emprendedores y comunidades locales."
+msgstr "Experiences in little-known destinations in Colombia, hand in hand with local entrepreneurs and communities."
+
+msgid "Explora"
+msgstr "Explore"
+
+msgid "Explora Colombia"
+msgstr "Explore Colombia"
+
+msgid "Explorar destinos"
+msgstr "Explore destinations"
+
+msgid "Familias anfitrionas de Concepción"
+msgstr "Host families in Concepción"
+
+msgid "Fecha"
+msgstr "Date"
+
+msgid "Fecha de llegada"
+msgstr "Arrival date"
+
+msgid "Fecha disponible para solicitar."
+msgstr "This date is available to request."
+
+msgid "Ficha de ejemplo: precios y fechas provisionales"
+msgstr "Sample listing: provisional prices and dates"
+
+msgid "Fichas de ejemplo"
+msgstr "Sample listings"
+
+msgid "Fichas de ejemplo: los precios y las fechas son provisionales mientras cerramos los detalles con nuestros aliados."
+msgstr "Sample listings: prices and dates are provisional while we finalise the details with our partners."
+
+msgid "Filtrar en el catálogo"
+msgstr "Filter in the catalogue"
+
+msgid "Filtrar experiencias por estilo de viaje"
+msgstr "Filter experiences by travel style"
+
+msgid "Filtros activos"
+msgstr "Active filters"
+
+msgid "Fotos y vídeos"
+msgstr "Photos and videos"
+
+msgid "Generar oportunidades locales"
+msgstr "Create local opportunities"
+
+msgid "Guía de marca"
+msgstr "Brand guide"
+
+msgid "Hablamos con los anfitriones y te respondemos por WhatsApp."
+msgstr "We talk to the hosts and reply to you on WhatsApp."
+
+msgid "Hablamos de tú, con palabras sencillas y la calidez de alguien que te acompaña."
+msgstr "We speak plainly and warmly, like someone travelling with you."
+
+msgid "Hablemos"
+msgstr "Let’s talk"
+
+msgid "Hasta @amount"
+msgstr "Up to @amount"
+
+msgid "Hasta @count viajeros por reserva"
+msgstr "Up to @count travellers per booking"
+
+msgid "Hay un lugar"
+msgstr "There’s a place"
+
+msgid "Historia de @place"
+msgstr "The story of @place"
+
+msgid "Historias contadas con respeto"
+msgstr "Stories told with respect"
+
+msgid "Hola, Trotamundos. Me gustaría recibir información sobre sus experiencias."
+msgstr "Hi Trotamundos, I would like some information about your experiences."
+
+msgid "Hola, me gustaría saber más sobre «@title» (@location)."
+msgstr "Hi, I would like to know more about “@title” (@location)."
+
+msgid "Hola, me interesa viajar a @place. ¿Qué experiencias tienen?"
+msgstr "Hi, I am interested in travelling to @place. What experiences do you have?"
+
+msgid "Hola, quiero reservar «@title» (@location) para el @date, @travelers. Total estimado: @total COP."
+msgstr "Hi, I would like to book “@title” (@location) for @date, @travelers. Estimated total: @total COP."
+
+msgid "Hola, soy Juan."
+msgstr "Hi, I’m Juan."
+
+msgid "Hola, tengo un emprendimiento turístico y me gustaría ser aliado de Trotamundos."
+msgstr "Hi, I run a tourism business and would like to partner with Trotamundos."
+
+msgid "Hospedaje en casas campesinas tradicionales y recorridos con guías del pueblo."
+msgstr "Stays in traditional farmhouses and walks with local guides."
+
+msgid "Idioma"
+msgstr "Language"
+
+msgid "Impulsar a los emprendedores turísticos"
+msgstr "Support tourism entrepreneurs"
+
+msgid "Información clara"
+msgstr "Clear information"
+
+msgid "Inicio"
+msgstr "Home"
+
+msgid "Juan Trotamundos frente a la iglesia de Concepción, iluminada de noche."
+msgstr "Juan Trotamundos in front of the church of Concepción, lit up at night."
+
+msgid "Juan Trotamundos sentado a la puerta de una casa campesina en Concepción."
+msgstr "Juan Trotamundos sitting at the door of a farmhouse in Concepción."
+
+msgid "Juan Trotamundos y un equipo que cree en el turismo como una oportunidad para las comunidades."
+msgstr "Juan Trotamundos and a team who believe in tourism as an opportunity for communities."
+
+msgid "La forma más rápida de hablar con nosotros, consultar una experiencia o resolver un imprevisto."
+msgstr "The quickest way to talk to us, ask about an experience or sort out something unexpected."
+
+msgid "Las personas detrás"
+msgstr "The people behind"
+
+msgid "Llevo más de nueve años recorriendo Colombia y compartiendo lo que vivo con una comunidad de más de 347.000 trotamundos. Ahora quiero que esos lugares también se puedan reservar: con anfitriones locales, información clara y alguien que te acompaña antes y durante el viaje."
+msgstr "I have spent more than nine years travelling around Colombia and sharing what I experience with a community of more than 347,000 globetrotters. Now I want those places to be bookable too: with local hosts, clear information and someone by your side before and during the trip."
+
+msgid "Lo que suelen preguntarnos"
+msgstr "What people often ask us"
+
+msgid "Los precios, las fechas y algunos textos son provisionales mientras confirmamos los detalles con nuestros aliados."
+msgstr "Prices, dates and some texts are provisional while we confirm the details with our partners."
+
+msgid "Menú"
+msgstr "Menu"
+
+msgid "Mesa servida en una casa campesina de Concepción, entre flores y objetos antiguos."
+msgstr "A table set in a farmhouse in Concepción, among flowers and old objects."
+
+msgid "Mira los viajes de Juan y la comunidad antes de elegir el tuyo."
+msgstr "See Juan’s trips and the community before you choose yours."
+
+msgid "Mostramos a las personas y sus lugares tal como son, y siempre con su permiso."
+msgstr "We show people and their places as they are, and always with their permission."
+
+msgid "Muchas historias por impulsar."
+msgstr "Many stories to boost."
+
+msgid "Muestra de tipografía restablecida."
+msgstr "Type sample reset."
+
+msgid "Municipio"
+msgstr "Town"
+
+msgid "Más de @amount"
+msgstr "Over @amount"
+
+msgid "Más filtros"
+msgstr "More filters"
+
+msgid "Nariño, Antioquia"
+msgstr "Nariño, Antioquia"
+
+msgid "Navegación principal"
+msgstr "Main navigation"
+
+msgid "No encontramos experiencias con esos filtros"
+msgstr "We could not find experiences with those filters"
+
+msgid "No hay fechas publicadas en este momento. Escríbenos y te contamos las próximas salidas."
+msgstr "There are no published dates at the moment. Message us and we will tell you about the next departures."
+
+msgid "No incluye"
+msgstr "Not included"
+
+msgid "No se pudo copiar @color. Selecciona el código y cópialo manualmente."
+msgstr "Could not copy @color. Select the code and copy it manually."
+
+msgid "No se pudo copiar el color."
+msgstr "Could not copy the colour."
+
+msgid "Nos encantará saber cómo te fue para seguir mejorando con los anfitriones."
+msgstr "We would love to hear how it went so we can keep improving with the hosts."
+
+msgid "Nos interesan los detalles y las historias de cada lugar."
+msgstr "We care about the details and stories of every place."
+
+msgid "Nuestra esencia"
+msgstr "About us"
+
+msgid "Nuestro propósito"
+msgstr "Our purpose"
+
+msgid "Número con indicativo de país, sin espacios ni signos. Ejemplo: 573114232421. Se usa en la cabecera, las fichas y la página de ayuda."
+msgstr "Number with country code, without spaces or symbols. Example: 573114232421. Used in the header, experience pages and the help page."
+
+msgid "Ordenar"
+msgstr "Sort"
+
+msgid "Orinoquía"
+msgstr "Orinoquía"
+
+msgid "Otras experiencias"
+msgstr "More experiences"
+
+msgid "Otras regiones"
+msgstr "Other regions"
+
+msgid "POR JUAN TROTA MUNDOS"
+msgstr "BY JUAN TROTA MUNDOS"
+
+msgid "Pagas con un enlace de pago seguro. Nunca pedimos datos de tarjeta por chat."
+msgstr "You pay through a secure payment link. We never ask for card details by chat."
+
+msgid "Pagas de forma segura"
+msgstr "You pay securely"
+
+msgid "Pago seguro"
+msgstr "Secure payment"
+
+msgid "Pago seguro mediante enlace de pago"
+msgstr "Secure payment by payment link"
+
+msgid "Para propuestas de grupo, alianzas o consultas con más detalle."
+msgstr "For group proposals, partnerships or more detailed questions."
+
+msgid "Para toda Colombia"
+msgstr "For all of Colombia"
+
+msgid "Pausar vídeo"
+msgstr "Pause video"
+
+msgid "Pedir una recomendación"
+msgstr "Ask for a recommendation"
+
+msgid "Plan de un día"
+msgstr "Day trip"
+
+msgid "Planes con anfitriones locales en destinos poco conocidos de Colombia. Filtra por lo que te gustaría descubrir, el destino, tu presupuesto, la duración o la fecha."
+msgstr "Plans with local hosts in little-known destinations in Colombia. Filter by what you would like to discover, the destination, your budget, the length or the date."
+
+msgid "Planes con anfitriones locales en destinos poco conocidos de Colombia: alojamientos con encanto y paquetes listos para reservar."
+msgstr "Plans with local hosts in little-known destinations in Colombia: charming stays and packages ready to book."
+
+msgid "Políticas"
+msgstr "Policies"
+
+msgid "Políticas de reserva y cancelación"
+msgstr "Booking and cancellation policies"
+
+msgid "Por WhatsApp, antes y durante el viaje."
+msgstr "On WhatsApp, before and during the trip."
+
+msgid "Por qué reservar con Trotamundos"
+msgstr "Why book with Trotamundos"
+
+msgid "Pozas de agua termal, túneles de roca, senderos y cascadas en el oriente antioqueño. Aliado del piloto de Trotamundos."
+msgstr "Hot spring pools, rock tunnels, trails and waterfalls in eastern Antioquia. A partner in the Trotamundos pilot."
+
+msgid "Precio por persona"
+msgstr "Price per person"
+
+msgid "Precio: de mayor a menor"
+msgstr "Price: high to low"
+
+msgid "Precio: de menor a mayor"
+msgstr "Price: low to high"
+
+msgid "Precios y fechas"
+msgstr "Prices and dates"
+
+msgid "Precios, fechas y disponibilidad"
+msgstr "Prices, dates and availability"
+
+msgid "Preguntar por este destino"
+msgstr "Ask about this destination"
+
+msgid "Preguntas frecuentes"
+msgstr "Frequently asked questions"
+
+msgid "Propósito"
+msgstr "Purpose"
+
+msgid "Prueba con otra fecha o quita algún filtro. Si buscas algo concreto, cuéntanos y te ayudamos a encontrarlo."
+msgstr "Try another date or remove a filter. If you are looking for something specific, tell us and we will help you find it."
+
+msgid "Próximamente"
+msgstr "Coming soon"
+
+msgid "Pueblos con historia, ríos, montañas y paisajes que todavía no aparecen en todas las guías."
+msgstr "Historic towns, rivers, mountains and landscapes that are not in every guidebook yet."
+
+msgid "Pueblos, ríos y montañas que todavía no aparecen en todas las guías."
+msgstr "Towns, rivers and mountains that are not in every guidebook yet."
+
+msgid "Quitar el filtro"
+msgstr "Remove the filter"
+
+msgid "Quitar todos"
+msgstr "Remove all"
+
+msgid "Quitar un viajero"
+msgstr "Remove a traveller"
+
+msgid "Quién te acompaña"
+msgstr "Who travels with you"
+
+msgid "Quiénes somos"
+msgstr "Who we are"
+
+msgid "Qué incluye"
+msgstr "What’s included"
+
+msgid "Qué vivir en @place"
+msgstr "Things to do in @place"
+
+msgid "Recibes tu confirmación"
+msgstr "You receive your confirmation"
+
+msgid "Recomendadas"
+msgstr "Recommended"
+
+msgid "Recorriendo Colombia"
+msgstr "Travelling around Colombia"
+
+msgid "Regiones"
+msgstr "Regions"
+
+msgid "Región"
+msgstr "Region"
+
+msgid "Región Andina"
+msgstr "Andean region"
+
+msgid "Región Caribe"
+msgstr "Caribbean region"
+
+msgid "Región Insular"
+msgstr "Island region"
+
+msgid "Región Pacífica"
+msgstr "Pacific region"
+
+msgid "Reproducir vídeo"
+msgstr "Play video"
+
+msgid "Reserva sencilla"
+msgstr "Easy booking"
+
+msgid "Reserva tu experiencia"
+msgstr "Book your experience"
+
+msgid "Reserva y pago"
+msgstr "Booking and payment"
+
+msgid "Reservar"
+msgstr "Book"
+
+msgid "Reservas y pagos"
+msgstr "Bookings and payments"
+
+msgid "Resolvemos tus dudas antes, durante y después del viaje. Si no encuentras lo que buscas, escríbenos."
+msgstr "We answer your questions before, during and after your trip. If you cannot find what you are looking for, message us."
+
+msgid "Resumen"
+msgstr "Summary"
+
+msgid "Revisa tu reserva"
+msgstr "Review your booking"
+
+msgid "Ruta de navegación"
+msgstr "Breadcrumb"
+
+msgid "Sabes qué incluye cada plan, cuánto cuesta y cuáles son sus condiciones antes de reservar."
+msgstr "You know what each plan includes, what it costs and its conditions before you book."
+
+msgid "Saltar al contenido"
+msgstr "Skip to content"
+
+msgid "Seguimos disponibles por WhatsApp si necesitas algo."
+msgstr "We are still available on WhatsApp if you need anything."
+
+msgid "Sentir de verdad."
+msgstr "Feel deeply."
+
+msgid "Serena"
+msgstr "Calm"
+
+msgid "Si los anfitriones no pueden recibirte, te proponemos otra fecha o te devolvemos el dinero según la política de la experiencia."
+msgstr "If the hosts cannot welcome you, we offer you another date or refund you according to the experience’s policy."
+
+msgid "Si tienes un emprendimiento turístico en un destino poco conocido, escríbenos. Nos encantará conocer tu proyecto."
+msgstr "If you run a tourism business in a little-known destination, message us. We would love to hear about your project."
+
+msgid "Si tienes un hospedaje, ofreces recorridos o lideras un proyecto comunitario en un destino poco conocido, nos encantará conocerte."
+msgstr "If you run a place to stay, offer tours or lead a community project in a little-known destination, we would love to meet you."
+
+msgid "Sigue explorando"
+msgstr "Keep exploring"
+
+msgid "Silenciar sonido"
+msgstr "Turn sound off"
+
+msgid "Sin cobros hasta confirmar la disponibilidad"
+msgstr "No charge until availability is confirmed"
+
+msgid "Sobre Trotamundos"
+msgstr "About Trotamundos"
+
+msgid "Sí, según la disponibilidad de los anfitriones y la política de cada experiencia. Escríbenos lo antes posible."
+msgstr "Yes, depending on the hosts’ availability and each experience’s policy. Message us as soon as possible."
+
+msgid "Sí. Escríbenos con las fechas, el número de personas y lo que te gustaría vivir, y te preparamos una propuesta."
+msgstr "Yes. Message us with the dates, the number of people and what you would like to experience, and we will prepare a proposal."
+
+msgid "Sí. Pagas mediante un enlace de pago seguro. Nunca te pediremos los datos de tu tarjeta por WhatsApp, correo ni teléfono."
+msgstr "Yes. You pay through a secure payment link. We will never ask for your card details by WhatsApp, email or phone."
+
+msgid "Te acompaña"
+msgstr "Travelling with you"
+
+msgid "Te acompañamos"
+msgstr "We are with you"
+
+msgid "Te ayudamos a elegir, resolvemos dudas y te enviamos la guía práctica."
+msgstr "We help you choose, answer your questions and send you the practical guide."
+
+msgid "Te enviamos un enlace de pago seguro. Nunca te pediremos los datos de tu tarjeta por chat."
+msgstr "We send you a secure payment link. We will never ask for your card details by chat."
+
+msgid "Temas de ayuda"
+msgstr "Help topics"
+
+msgid "Termales Espíritu Santo"
+msgstr "Termales Espíritu Santo"
+
+msgid "Tipo de plan"
+msgstr "Type of plan"
+
+msgid "Todas"
+msgstr "All"
+
+msgid "Todos"
+msgstr "All"
+
+msgid "Todos los destinos"
+msgstr "All destinations"
+
+msgid "Todos los estilos"
+msgstr "All styles"
+
+msgid "Total estimado"
+msgstr "Estimated total"
+
+msgid "Trabajamos con hospedajes familiares, guías y pequeños negocios. Les ayudamos a contar su historia y a llegar a más viajeros."
+msgstr "We work with family-run stays, guides and small businesses. We help them tell their story and reach more travellers."
+
+msgid "Trabajamos directamente con las familias y los negocios que reciben a los viajeros."
+msgstr "We work directly with the families and businesses that welcome travellers."
+
+msgid "Transformar realidades."
+msgstr "Transform lives."
+
+msgid "Trotamundos en la comunidad"
+msgstr "Globetrotters in the community"
+
+msgid "Trotamundos es el proyecto de Juan Trotamundos, un viajero curioso que lleva más de nueve años recorriendo Colombia y otros países, y compartiendo lo que aprende, vive y siente con su comunidad. Su lema: «nunca vamos a quedarnos quietos»."
+msgstr "Trotamundos is the project of Juan Trotamundos, a curious traveller who has spent more than nine years exploring Colombia and other countries and sharing what he learns, lives and feels with his community. His motto: “we will never stand still”."
+
+msgid "Trotamundos nace para descubrir destinos poco conocidos de Colombia, apoyar a los emprendedores turísticos y generar oportunidades para las comunidades locales."
+msgstr "Trotamundos was born to discover little-known destinations in Colombia, support tourism entrepreneurs and create opportunities for local communities."
+
+msgid "Trotamundos, inicio"
+msgstr "Trotamundos, home"
+
+msgid "Tu reserva genera ingresos y oportunidades en las comunidades que visitas."
+msgstr "Your booking creates income and opportunities in the communities you visit."
+
+msgid "Tus anfitriones"
+msgstr "Your hosts"
+
+msgid "Ubicación"
+msgstr "Location"
+
+msgid "Ubicación aproximada de @place en el mapa de Colombia."
+msgstr "Approximate location of @place on the map of Colombia."
+
+msgid "Ubicación y cómo llegar"
+msgstr "Location and how to get there"
+
+msgid "Una Colombia por descubrir."
+msgstr "A Colombia to discover."
+
+msgid "Una comunidad que"
+msgstr "A community that"
+
+msgid "Una vecina de Concepción en el corredor de su casa, entre geranios."
+msgstr "A resident of Concepción on the porch of her house, among geraniums."
+
+msgid "Usuario de Instagram"
+msgstr "Instagram user"
+
+msgid "Ver @count fotos y vídeos"
+msgstr "See @count photos and videos"
+
+msgid "Ver el catálogo completo"
+msgstr "See the full catalogue"
+
+msgid "Ver experiencias"
+msgstr "See experiences"
+
+msgid "Ver experiencias de la región"
+msgstr "See experiences in this region"
+
+msgid "Ver las @count fotos"
+msgstr "See all @count photos"
+
+msgid "Ver otras experiencias"
+msgstr "See other experiences"
+
+msgid "Ver resultados"
+msgstr "Show results"
+
+msgid "Ver todas las experiencias"
+msgstr "See all experiences"
+
+msgid "Ver todos los destinos"
+msgstr "See all destinations"
+
+msgid "Viajar bonito."
+msgstr "Travel beautifully."
+
+msgid "Viajar bonito. Sentir de verdad."
+msgstr "Travel beautifully. Feel deeply."
+
+msgid "Viajeros"
+msgstr "Travellers"
+
+msgid "Viajes que dejan"
+msgstr "Trips that leave"
+
+msgid "Viajes que dejan algo bueno"
+msgstr "Trips that leave something good"
+
+msgid "Vista aérea de Termales Espíritu Santo, entre el río y la selva."
+msgstr "Aerial view of Termales Espíritu Santo, between the river and the jungle."
+
+msgid "Volver arriba"
+msgstr "Back to top"
+
+msgid "WhatsApp"
+msgstr "WhatsApp"
+
+msgid "algo bueno."
+msgstr "something good."
+
+msgid "ayudamos?"
+msgstr "help you?"
+
+msgid "años"
+msgstr "years"
+
+msgid "cerca"
+msgstr "nearby"
+
+msgid "de cada experiencia."
+msgstr "every experience."
+
+msgid "descubrir?"
+msgstr "to discover?"
+
+msgid "nunca se queda quieta."
+msgstr "never stands still."
+
+msgid "para ti."
+msgstr "for you."
+
+msgid "por destino"
+msgstr "by destination"
+
+msgid "se abre en una pestaña nueva"
+msgstr "opens in a new tab"
+
+msgid "una misma forma de viajar."
+msgstr "one way of travelling."
+
+msgid "¿Cómo llego al destino?"
+msgstr "How do I get to the destination?"
+
+msgid "¿Cómo puedo ser aliado?"
+msgstr "How can I become a partner?"
+
+msgid "¿Cómo reservo una experiencia?"
+msgstr "How do I book an experience?"
+
+msgid "¿En qué te"
+msgstr "How can we"
+
+msgid "¿Es seguro pagar?"
+msgstr "Is it safe to pay?"
+
+msgid "¿No sabes cuál elegir?"
+msgstr "Not sure which to choose?"
+
+msgid "¿Puedo cambiar la fecha?"
+msgstr "Can I change the date?"
+
+msgid "¿Puedo reservar para un grupo o pedir un plan a medida?"
+msgstr "Can I book for a group or ask for a tailor-made plan?"
+
+msgid "¿Quién está detrás de Trotamundos?"
+msgstr "Who is behind Trotamundos?"
+
+msgid "¿Qué debo llevar?"
+msgstr "What should I bring?"
+
+msgid "¿Qué hago si tengo un imprevisto?"
+msgstr "What if something unexpected happens?"
+
+msgid "¿Qué incluye el precio?"
+msgstr "What does the price include?"
+
+msgid "¿Qué pasa si cancelo?"
+msgstr "What happens if I cancel?"
+
+msgid "¿Qué te gustaría"
+msgstr "What would you like"
+
+msgid "¿Qué te gustaría descubrir?"
+msgstr "What would you like to discover?"
+
+msgid "¿Tienes dudas o buscas algo especial? Escríbenos y te ayudamos a elegir."
+msgstr "Have questions or looking for something special? Message us and we will help you choose."
+
+msgid "¿Tienes un emprendimiento turístico?"
+msgstr "Do you run a tourism business?"
+
+msgid "¿Y si el viaje se cancela por el clima o por fuerza mayor?"
+msgstr "What if the trip is cancelled because of the weather or force majeure?"
+
+msgid "1 experiencia"
+msgid_plural "@count experiencias"
+msgstr[0] "1 experience"
+msgstr[1] "@count experiences"
+
+msgid "1 viajero"
+msgid_plural "@count viajeros"
+msgstr[0] "1 traveller"
+msgstr[1] "@count travellers"
+
+msgid "Ver 1 experiencia"
+msgid_plural "Ver @count experiencias"
+msgstr[0] "See 1 experience"
+msgstr[1] "See @count experiences"
+
+msgid "Ver 1 experiencia en @department_name"
+msgid_plural "Ver @count experiencias en @department_name"
+msgstr[0] "See 1 experience in @department_name"
+msgstr[1] "See @count experiences in @department_name"

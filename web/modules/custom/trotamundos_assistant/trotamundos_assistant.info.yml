@@ -1,0 +1,14 @@
+name: 'Trotamundos Assistant'
+type: module
+description: 'Provides an embedded AI-powered catalog assistant block based on configurable skills.'
+package: 'Minsait'
+core_version_requirement: ^10 || ^11
+version: 1.0.3
+configure: trotamundos_assistant.overview
+dependencies:
+  - ai:ai_assistant_api
+  - ai:ai_search
+  - drupal:text
+  - drupal:user
+  - key:key
+  - search_api:search_api

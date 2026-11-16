@@ -1,0 +1,35 @@
+{#
+/**
+ * @file
+ * Home video banner. Shorter than a full screen so the experiences start
+ * right below it; the video stays the protagonist.
+ *
+ * To use the brand's own film, replace the four files in assets/video/
+ * (desktop and mobile MP4 and their WebP posters) keeping the same names.
+ */
+#}
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+{{ attach_library('trotamundos/immersive-hero') }}
+<section class="immersive-hero" aria-labelledby="immersive-hero-title" data-immersive-hero>
+  <div class="immersive-hero__media" aria-hidden="true">
+    <video class="immersive-hero__video" muted loop playsinline preload="none"
+      poster="{{ trotamundos_path }}/assets/video/hero-naturaleza-poster.webp"
+      data-hero-video
+      data-video-desktop="{{ trotamundos_path }}/assets/video/hero-naturaleza.mp4"
+      data-video-mobile="{{ trotamundos_path }}/assets/video/hero-naturaleza-mobile.mp4"
+      data-poster-desktop="{{ trotamundos_path }}/assets/video/hero-naturaleza-poster.webp"
+      data-poster-mobile="{{ trotamundos_path }}/assets/video/hero-naturaleza-mobile-poster.webp"
+      tabindex="-1"></video>
+  </div>
+  <div class="immersive-hero__inner container">
+    <div class="immersive-hero__copy">
+      <p class="eyebrow immersive-hero__eyebrow">{{ 'Viajar bonito. Sentir de verdad.'|t }}</p>
+      <h1 id="immersive-hero-title">{{ 'Hay un lugar'|t }}<br><em>{{ 'para ti.'|t }}</em></h1>
+      <p class="immersive-hero__description">{{ 'Destinos poco conocidos de Colombia, anfitriones locales y experiencias que dejan algo bueno en cada comunidad.'|t }}</p>
+      <div class="immersive-hero__actions">
+        <a class="button button--light" href="#experiencias">{{ 'Ver experiencias'|t }} {{ icons.icon('arrow') }}</a>
+        <a class="button button--ghost-light" href="{{ tm.esencia_url }}">{{ 'Conoce nuestra esencia'|t }}</a>
+      </div>
+    </div>
+  </div>
+</section>

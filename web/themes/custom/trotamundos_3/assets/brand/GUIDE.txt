@@ -1,0 +1,55 @@
+Trotamundos 3 · Guía de identidad digital
+Edición 03 · Versión 3.0
+
+La idea
+Hay viajes que se quedan contigo.
+Invitar a descubrir Colombia desde la emoción de sus paisajes,
+el encuentro con sus personas y el tiempo para sentir cada lugar.
+Una personalidad sensible, cercana, curiosa y cuidadosa.
+
+La firma
+«trotamundos.» en Fraunces 600, minúsculas, espaciado −0,035 em.
+El símbolo traza un camino entre dos puntos. El punto sol aporta luz.
+Zona libre alrededor equivalente a la altura de una «o».
+Referencia digital mínima: firma 160 px; símbolo 32 px.
+No estirar, inclinar ni superponer a imágenes que dificulten reconocerla.
+
+El color
+Selva #173D32 · RGB 23, 61, 50: atmósfera principal y profundidad.
+Marfil #F5F0E6 · RGB 245, 240, 230: paneles de lectura y calma.
+Terracota #BF6846 · RGB 191, 104, 70: cercanía y acentos gráficos.
+Sol #D3A75E · RGB 211, 167, 94: detalles luminosos sobre selva.
+Carbón #242723 · RGB 36, 39, 35: lectura, pie y versiones monocromas.
+Para terracota pequeño sobre marfil, variante de lectura #984C31.
+Contraste AA: 4,5:1 normal; 3:1 grande (24 px o 18,7 px en negrita).
+https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html
+
+La tipografía
+Fraunces 500 en titulares; cursiva 400 en portada y 600 para acentos.
+La firma usa 600 normal. Plus Jakarta Sans acompaña con pesos 400–700.
+Títulos en frases naturales; párrafos claros y un interlineado generoso.
+La cursiva acompaña la emoción, no sustituye bloques largos de lectura.
+
+El sistema
+Fondo selva, paneles marfil y fotografías con radio de 24 px.
+Botones y navegación en cápsula. Retícula hasta 1240 px y una columna en móvil.
+Escala de espacio: 4, 8, 16, 24, 32, 48, 64 y 96 px.
+Foco visible, etiquetas y errores con explicación. Una acción principal por contexto.
+Movimiento suave y respeto a la preferencia de movimiento reducido.
+
+La mirada
+Paisajes reales, luz natural y detalles con historia.
+La imagen invita a sentir el lugar y muestra a sus personas con respeto.
+Evitar filtros extremos, escenas genéricas y ofertas no confirmadas.
+Conservar procedencia, autorías y licencias.
+
+La voz
+Hablar de tú, con calidez y detalles concretos.
+Sí: «Encuentra una forma de viajar que se parezca a ti».
+Evitar: «Tienes que vivir esta experiencia ahora mismo».
+Acompañar con información clara y prometer solo lo que podemos ofrecer.
+
+Los recursos
+Firmas y símbolo SVG, paleta GPL, fuentes WOFF2 y licencias,
+tokens CSS, pautas YAML y guía PDF de esta edición.
+Las fotografías mantienen condiciones propias y no se incluyen en el kit.

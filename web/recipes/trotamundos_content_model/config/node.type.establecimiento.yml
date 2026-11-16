@@ -1,0 +1,10 @@
+langcode: es
+status: true
+dependencies: {  }
+name: Establecimiento
+type: establecimiento
+description: 'Alojamiento, termales u otro establecimiento asociado a un destino.'
+help: 'Relaciona el establecimiento con un destino. La disponibilidad se confirmará cuando exista una fuente fiable.'
+new_revision: true
+preview_mode: 1
+display_submitted: false

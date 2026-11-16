@@ -1,0 +1,57 @@
+{#
+/**
+ * @file
+ * Footer: purpose, navigation, help, contact channels and language.
+ */
+#}
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+<footer class="site-footer">
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <a class="wordmark wordmark--footer" href="{{ path('<front>') }}" aria-label="{{ 'Trotamundos, inicio'|t }}">
+        <span class="wordmark__name" aria-hidden="true">trota<span class="wordmark__italic">mundos</span><span class="wordmark__dot">.</span></span>
+      </a>
+      <p class="footer-brand__tagline">{{ 'Viajar bonito. Sentir de verdad.'|t }}</p>
+      <p class="footer-brand__text">{{ 'Experiencias en destinos poco conocidos de Colombia, de la mano de emprendedores y comunidades locales.'|t }}</p>
+      {% include '@trotamundos/components/language-switch.html.twig' %}
+    </div>
+
+    <nav class="footer-column" aria-labelledby="footer-explore-title">
+      <h2 id="footer-explore-title">{{ 'Explora'|t }}</h2>
+      <ul>
+        {% for item in tm.navigation %}
+          <li><a href="{{ item.url }}">{{ item.label }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <nav class="footer-column" aria-labelledby="footer-help-title">
+      <h2 id="footer-help-title">{{ 'Ayuda'|t }}</h2>
+      <ul>
+        <li><a href="{{ tm.ayuda_url }}#preguntas">{{ 'Preguntas frecuentes'|t }}</a></li>
+        <li><a href="{{ tm.ayuda_url }}#reservas">{{ 'Reservas y pagos'|t }}</a></li>
+        <li><a href="{{ tm.ayuda_url }}#cancelaciones">{{ 'Cambios y cancelaciones'|t }}</a></li>
+        <li><a href="{{ tm.ayuda_url }}#atencion">{{ 'Atención al viajero'|t }}</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer-column">
+      <h2 id="footer-contact-title">{{ 'Contacto'|t }}</h2>
+      <ul aria-labelledby="footer-contact-title">
+        <li><a href="{{ tm.whatsapp_url }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }} {{ tm.whatsapp_display }}<span class="visually-hidden"> (WhatsApp, {{ 'se abre en una pestaña nueva'|t }})</span></a></li>
+        <li><a href="mailto:{{ tm.email }}">{{ icons.icon('mail') }} {{ tm.email }}</a></li>
+        <li><a href="{{ tm.instagram_url }}" target="_blank" rel="noopener">{{ icons.icon('instagram') }} @{{ tm.instagram }}<span class="visually-hidden"> (Instagram, {{ 'se abre en una pestaña nueva'|t }})</span></a></li>
+      </ul>
+    </div>
+  </div>
+  {% if page.footer %}<div class="container footer-extra">{{ page.footer }}</div>{% endif %}
+  <div class="container footer-bottom">
+    <span>© {{ 'now'|date('Y') }} Juan Trota Mundos</span>
+    <div class="footer-bottom__links">
+      <a href="{{ trotamundos_path }}/assets/CREDITS.txt" target="_blank" rel="noopener">{{ 'Créditos de imágenes y vídeo'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+      {% if trotamundos_brand_guide_url %}<a href="{{ trotamundos_brand_guide_url }}">{{ 'Guía de marca'|t }}</a>{% endif %}
+    </div>
+    <a class="back-to-top" href="#main-content">{{ 'Volver arriba'|t }} {{ icons.icon('arrow') }}</a>
+  </div>
+</footer>
+{{ tm_cache }}

@@ -1,0 +1,16 @@
+{% import '@trotamundos_2/components/icons.html.twig' as icons %}
+<header class="tm2-header" data-tm2-header>
+  <div class="tm2-container tm2-header__inner">
+    <a class="tm2-wordmark" href="{{ front_page }}" aria-label="{{ 'Trotamundos, inicio'|t }}">
+      <img src="{{ tm2_path }}/logo.svg" alt="" width="40" height="40">
+      <span><span class="tm2-wordmark__name">trotamundos</span><span class="tm2-wordmark__signature">POR JUAN TROTA MUNDOS</span></span>
+    </a>
+    <button class="tm2-menu-toggle" type="button" data-tm2-menu-toggle aria-label="{{ 'Abrir menú'|t }}" aria-expanded="false" aria-controls="tm2-navigation"><span></span><span></span></button>
+    <nav id="tm2-navigation" class="tm2-navigation" data-tm2-menu aria-label="{{ 'Navegación principal'|t }}">
+      <a href="{{ front_page }}#experiencias">{{ 'Experiencias'|t }}</a>
+      <a href="{{ front_page }}#destinos">{{ 'Los lugares'|t }}</a>
+      <a href="{{ front_page }}#esencia">{{ 'Así viajamos'|t }}</a>
+      <a class="tm2-navigation__cta" href="{{ front_page }}#experiencias">{{ 'Tu próxima escapada'|t }} {{ icons.icon('diagonal') }}</a>
+    </nav>
+  </div>
+</header>

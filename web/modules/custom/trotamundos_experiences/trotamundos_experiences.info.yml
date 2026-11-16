@@ -1,0 +1,18 @@
+name: Trotamundos Experiences
+type: module
+description: 'Catálogo de experiencias: tipo de contenido, filtros, fichas con reserva y destinos por región.'
+package: Trotamundos
+core_version_requirement: ^11
+dependencies:
+  - drupal:node
+  - drupal:taxonomy
+  - drupal:image
+  - drupal:file
+  - drupal:text
+  - drupal:options
+  - drupal:datetime
+  - drupal:datetime_range
+  - drupal:path
+  - drupal:path_alias
+'interface translation project': trotamundos_experiences
+'interface translation server pattern': modules/custom/trotamundos_experiences/translations/%language.po

@@ -1,0 +1,4 @@
+administer trotamundos assistant documents:
+  title: 'Administrar documentos de Trotamundos Assistant'
+  description: 'Configurar reglas de extracción de texto desde documentos Media.'
+  restrict access: true

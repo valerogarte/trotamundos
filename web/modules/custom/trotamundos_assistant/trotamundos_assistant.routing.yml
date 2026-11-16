@@ -1,0 +1,158 @@
+trotamundos_assistant.home:
+  path: '/home-ai'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Controller\TrotamundosAssistantController::home'
+    _title: 'Home AI'
+  requirements:
+    _permission: 'access content'
+
+trotamundos_assistant.overview:
+  path: '/admin/config/services/trotamundos-assistant'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Controller\TrotamundosAssistantAdminController::overview'
+    _title: 'Estado'
+  requirements:
+    _permission: 'administer trotamundos assistant settings'
+  options:
+    _admin_route: TRUE
+
+trotamundos_assistant.flow:
+  path: '/admin/config/services/trotamundos-assistant/flow'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Controller\TrotamundosAssistantAdminController::flow'
+    _title: 'Flujo'
+  requirements:
+    _permission: 'administer trotamundos assistant settings'
+  options:
+    _admin_route: TRUE
+
+trotamundos_assistant.status:
+  path: '/admin/config/services/trotamundos-assistant/status'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Controller\TrotamundosAssistantAdminController::overview'
+    _title: 'Estado'
+  requirements:
+    _permission: 'administer trotamundos assistant settings'
+  options:
+    _admin_route: TRUE
+
+trotamundos_assistant.chat:
+  path: '/trotamundos-assistant/chat'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Controller\TrotamundosAssistantController::chat'
+  requirements:
+    _permission: 'access content'
+    _csrf_request_header_token: 'TRUE'
+  methods: [POST]
+
+trotamundos_assistant.chat_history:
+  path: '/trotamundos-assistant/chat/history'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Controller\TrotamundosAssistantController::history'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
+
+trotamundos_assistant.chat_reset:
+  path: '/trotamundos-assistant/chat/reset'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Controller\TrotamundosAssistantController::reset'
+  requirements:
+    _permission: 'access content'
+    _csrf_request_header_token: 'TRUE'
+  methods: [POST]
+
+trotamundos_assistant.skill_action:
+  path: '/trotamundos-assistant/skills/{machine_name}/{action}'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Skill\Action\SkillActionDispatcher::handle'
+  requirements:
+    _permission: 'access content'
+    machine_name: '[a-z0-9_]+'
+    action: '[a-z0-9_]+'
+  methods: [GET, POST]
+
+trotamundos_assistant.cart_add:
+  path: '/trotamundos-assistant/cart/add'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Skill\Action\SkillActionDispatcher::handle'
+    machine_name: 'shopping_cart_add'
+    action: 'add_to_cart'
+  requirements:
+    _permission: 'access content'
+    _csrf_request_header_token: 'TRUE'
+  methods: [POST]
+
+trotamundos_assistant.cart_panel:
+  path: '/trotamundos-assistant/cart/panel'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Skill\Action\SkillActionDispatcher::handle'
+    machine_name: 'shopping_cart_view'
+    action: 'panel'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
+
+trotamundos_assistant.usage:
+  path: '/admin/config/services/trotamundos-assistant/usage'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Controller\TrotamundosAssistantAdminController::usage'
+    _title: 'Coste'
+  requirements:
+    _permission: 'view trotamundos assistant usage'
+  options:
+    _no_big_pipe: TRUE
+    _admin_route: TRUE
+
+trotamundos_assistant.statistics:
+  path: '/admin/config/services/trotamundos-assistant/statistics'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Controller\TrotamundosAssistantAdminController::statistics'
+    _title: 'Estadísticas'
+  requirements:
+    _permission: 'view trotamundos assistant usage'
+  options:
+    _no_big_pipe: TRUE
+    _admin_route: TRUE
+
+trotamundos_assistant.usage_detail:
+  path: '/admin/config/services/trotamundos-assistant/usage/{conversation_id}'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Controller\TrotamundosAssistantAdminController::usageDetail'
+    _title: 'Detalle de conversación'
+  requirements:
+    _permission: 'view trotamundos assistant usage'
+    conversation_id: '[A-Za-z0-9_.:-]+'
+  options:
+    _no_big_pipe: TRUE
+    _admin_route: TRUE
+
+trotamundos_assistant.settings:
+  path: '/admin/config/services/trotamundos-assistant/settings'
+  defaults:
+    _form: '\Drupal\trotamundos_assistant\Form\SettingsForm'
+    _title: 'Configuración'
+  requirements:
+    _permission: 'administer trotamundos assistant settings'
+  options:
+    _admin_route: TRUE
+
+trotamundos_assistant.skills:
+  path: '/admin/config/services/trotamundos-assistant/skills'
+  defaults:
+    _form: '\Drupal\trotamundos_assistant\Form\SkillsSettingsForm'
+    _title: 'Skills'
+  requirements:
+    _permission: 'administer trotamundos assistant settings'
+  options:
+    _admin_route: TRUE
+
+trotamundos_assistant.extensions:
+  path: '/admin/config/services/trotamundos-assistant/extensions'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Controller\TrotamundosAssistantAdminController::extensions'
+    _title: 'Extensiones'
+  requirements:
+    _permission: 'administer trotamundos assistant settings'
+  options:
+    _admin_route: TRUE

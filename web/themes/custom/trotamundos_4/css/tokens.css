@@ -1,0 +1,34 @@
+/** The five identity colors, arranged as a travel atlas. */
+:root {
+  --selva: #173d32;
+  --marfil: #f5f0e6;
+  --terracota: #bf6846;
+  --sol: #d3a75e;
+  --carbon: #242723;
+  --terracota-text: #984c31;
+  --muted: #62695f;
+  --line: rgba(23, 61, 50, 0.22);
+  --font-display: "Barlow Condensed", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --container: 1160px;
+  --gutter: clamp(20px, 3.5vw, 56px);
+  --header-height: 72px;
+  --rail-width: 208px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --radius-control: 0px;
+  --radius-pill: 0px;
+  --type-display: clamp(64px, 8vw, 112px);
+  --type-heading: clamp(42px, 5vw, 72px);
+  --type-card: 42px;
+  --type-body: 16px;
+  --type-caption: 11px;
+}

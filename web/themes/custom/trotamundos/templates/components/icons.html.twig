@@ -1,0 +1,50 @@
+{#
+/**
+ * @file
+ * Fine-stroke icon set. Decorative by default: buttons keep their own names.
+ */
+#}
+{% macro icon(name, class = '') %}
+  <svg class="icon icon--{{ name }} {{ class }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+    {% if name == 'arrow' %}<path d="M5 12h14m-6-6 6 6-6 6"/>
+    {% elseif name == 'arrow-left' %}<path d="M19 12H5m6-6-6 6 6 6"/>
+    {% elseif name == 'diagonal' %}<path d="M6 18 18 6M6 6h12v12"/>
+    {% elseif name == 'down' %}<path d="M12 4v16m-6-6 6 6 6-6"/>
+    {% elseif name == 'chevron' %}<path d="m6 9 6 6 6-6"/>
+    {% elseif name == 'pin' %}<path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.4"/>
+    {% elseif name == 'leaf' %}<path d="M19 4C8 3 3 7 5 14s15 6 14-10ZM5 20 15 9M10 15v-5m0 5h5"/>
+    {% elseif name == 'sun' %}<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/>
+    {% elseif name == 'village' %}<path d="m3 11 6-7 6 7M5 9v11h8V9m2 1 3-3 4 4m-7 9h6V10M8 20v-6h2v6"/>
+    {% elseif name == 'mountain' %}<path d="m3 19 6.5-11 4 6.5 2.5-4L21 19z"/><path d="m7.6 11.2 1.9 1.3 1.6-1.2"/>
+    {% elseif name == 'heart' %}<path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10Z"/>
+    {% elseif name == 'cup' %}<path d="M5 9h11v5a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10.5h1.5a2.5 2.5 0 0 1 0 5H16M8 3.5c-.8 1 .8 2 0 3m4-3c-.8 1 .8 2 0 3"/>
+    {% elseif name == 'wave' %}<path d="M3 9c2 0 2-1.5 4.5-1.5S9.5 9 12 9s2-1.5 4.5-1.5S19 9 21 9M3 15c2 0 2-1.5 4.5-1.5S9.5 15 12 15s2-1.5 4.5-1.5S19 15 21 15"/>
+    {% elseif name == 'sprout' %}<path d="M12 20v-8m0 0c0-3.5-2.5-6-6.5-6 0 3.6 2.6 6 6.5 6Zm0 0c0-3.2 2.3-5.5 6-5.5 0 3.3-2.4 5.5-6 5.5Z"/>
+    {% elseif name == 'close' %}<path d="m6 6 12 12M6 18 18 6"/>
+    {% elseif name == 'plus' %}<path d="M12 5v14M5 12h14"/>
+    {% elseif name == 'minus' %}<path d="M5 12h14"/>
+    {% elseif name == 'check' %}<path d="m5 12.5 4.2 4.2L19 7"/>
+    {% elseif name == 'copy' %}<rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M16 8V4H4v12h4"/>
+    {% elseif name == 'play' %}<path d="m8 5 12 7-12 7z"/>
+    {% elseif name == 'pause' %}<path d="M9 5v14m6-14v14"/>
+    {% elseif name == 'sound' %}<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7m3.5-10a9 9 0 0 1 0 13"/>
+    {% elseif name == 'whatsapp' %}<path d="M20.5 11.6a8.6 8.6 0 0 1-12.7 7.5L3.5 20.5l1.4-4.1A8.6 8.6 0 1 1 20.5 11.6Z"/><path d="M9.1 7.6c.3-.3.8-.3 1 .1l.8 1.6c.1.3.1.6-.1.8l-.6.7c.6 1.2 1.6 2.2 2.8 2.8l.7-.6c.2-.2.5-.2.8-.1l1.6.8c.4.2.4.7.1 1l-.8.8c-.6.6-1.6.7-2.4.3-2-1-3.6-2.6-4.6-4.6-.4-.8-.3-1.8.3-2.4Z"/>
+    {% elseif name == 'instagram' %}<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".7" fill="currentColor" stroke="none"/>
+    {% elseif name == 'mail' %}<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/>
+    {% elseif name == 'calendar' %}<rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4m8-4v4"/>
+    {% elseif name == 'clock' %}<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>
+    {% elseif name == 'users' %}<circle cx="9" cy="8.5" r="3.2"/><path d="M3 19.5c.6-3.3 3-5 6-5s5.4 1.7 6 5"/><path d="M15.5 5.6a3 3 0 0 1 0 5.8M18 14.8c1.6.7 2.6 2.2 3 4.2"/>
+    {% elseif name == 'globe' %}<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.3 2.4 3.5 5.2 3.5 8.5s-1.2 6.1-3.5 8.5c-2.3-2.4-3.5-5.2-3.5-8.5S9.7 5.9 12 3.5Z"/>
+    {% elseif name == 'sliders' %}<path d="M4 7h10m4 0h2M4 17h4m4 0h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>
+    {% elseif name == 'shield' %}<path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.6 7 9 4.1-1.4 7-4.8 7-9V6z"/><path d="m9 12 2.2 2.2L15.5 10"/>
+    {% elseif name == 'card' %}<rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3 9.5h18M7 15h3"/>
+    {% elseif name == 'map' %}<path d="m3.5 6.5 5.5-2 6 2 5.5-2v13l-5.5 2-6-2-5.5 2z"/><path d="M9 4.5v13m6-11v13"/>
+    {% elseif name == 'help' %}<circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.4"/><circle cx="12" cy="16.8" r=".6" fill="currentColor" stroke="none"/>
+    {% elseif name == 'info' %}<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".7" fill="currentColor" stroke="none"/>
+    {% elseif name == 'image' %}<rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="9.5" r="1.8"/><path d="m4 17.5 5-4.5 3.5 3 3-2.5 4.5 4"/>
+    {% elseif name == 'grid' %}<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>
+    {% elseif name == 'video' %}<rect x="3" y="6.5" width="13" height="11" rx="2"/><path d="m16 10.5 5-3v9l-5-3"/>
+    {% elseif name == 'search' %}<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.4-4.4"/>
+    {% endif %}
+  </svg>
+{% endmacro %}

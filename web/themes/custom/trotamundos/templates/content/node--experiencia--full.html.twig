@@ -1,0 +1,313 @@
+{#
+/**
+ * @file
+ * Experience page: a beautiful presentation plus everything needed to buy.
+ *
+ * Variables (trotamundos_preprocess_node):
+ * - experience: ExperienceRepository::detail().
+ * - related: cards of nearby experiences.
+ * - experience_whatsapp_url: WhatsApp link with a message about this plan.
+ * - map: point on the Colombia outline, or NULL.
+ */
+#}
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+{{ attach_library('trotamundos/experience') }}
+{% set e = experience %}
+{% set first_range = e.ranges|first %}
+{% set last_range = e.ranges|last %}
+<article{{ attributes.addClass('experience') }} data-experience>
+  <div class="container">
+    <nav class="breadcrumb" aria-label="{{ 'Ruta de navegación'|t }}">
+      <ol>
+        {% for crumb in e.breadcrumb %}<li><a href="{{ crumb.url }}">{{ crumb.label }}</a></li>{% endfor %}
+        <li aria-current="page">{{ e.title }}</li>
+      </ol>
+    </nav>
+
+    <header class="experience-header">
+      <div class="experience-header__tags">
+        {% if e.type %}<span class="experience-tag">{{ e.type.label }}</span>{% endif %}
+        {% for style in e.styles %}<span class="experience-tag experience-tag--light">{{ icons.icon(style.icon) }} {{ style.label }}</span>{% endfor %}
+      </div>
+      <h1>{{ e.title }}</h1>
+      <ul class="experience-facts">
+        {% if e.location %}<li>{{ icons.icon('pin') }} <a href="#ubicacion">{{ e.location }}</a></li>{% endif %}
+        {% if e.duration %}<li>{{ icons.icon('clock') }} {{ e.duration }}</li>{% endif %}
+        <li>{{ icons.icon('users') }} {{ 'Hasta @count viajeros por reserva'|t({'@count': e.capacity}) }}</li>
+      </ul>
+      {% if e.is_example %}
+        <p class="example-badge">{{ icons.icon('info') }} {{ 'Ficha de ejemplo: precios y fechas provisionales'|t }}</p>
+      {% endif %}
+    </header>
+  </div>
+
+  {% if e.gallery %}
+    {% set media_total = e.gallery|length + e.videos|length %}
+    <div class="experience-gallery container" data-gallery>
+      <div class="experience-gallery__grid experience-gallery__grid--{{ min(e.gallery|length, 5) }}">
+        {% for image in e.gallery|slice(0, 5) %}
+          <button type="button" class="experience-gallery__item" data-gallery-open="{{ loop.index0 }}">
+            <img src="{{ loop.first ? image.wide : image.src }}" alt="{{ image.alt }}" width="{{ loop.first ? 1600 : image.width }}" height="{{ loop.first ? 1200 : image.height }}" loading="{{ loop.first ? 'eager' : 'lazy' }}" decoding="async"{% if loop.first %} fetchpriority="high"{% endif %}>
+            <span class="visually-hidden">{{ 'Ampliar la foto @number de @total'|t({'@number': loop.index, '@total': media_total}) }}</span>
+          </button>
+        {% endfor %}
+      </div>
+      <button class="button button--light experience-gallery__all" type="button" data-gallery-open="0">
+        {{ icons.icon('grid') }}
+        {% if e.videos %}
+          {{ 'Ver @count fotos y vídeos'|t({'@count': media_total}) }}
+        {% else %}
+          {{ 'Ver las @count fotos'|t({'@count': media_total}) }}
+        {% endif %}
+      </button>
+    </div>
+  {% endif %}
+
+  <div class="experience-layout container">
+    <div class="experience-main">
+      <section class="experience-section experience-intro" aria-label="{{ 'Resumen'|t }}">
+        <p class="experience-lead">{{ e.summary }}</p>
+        <nav class="experience-index" aria-label="{{ 'En esta ficha'|t }}">
+          <a href="#plan">{{ 'El plan'|t }}</a>
+          <a href="#incluye">{{ 'Qué incluye'|t }}</a>
+          <a href="#anfitriones">{{ 'Anfitriones'|t }}</a>
+          <a href="#ubicacion">{{ 'Ubicación'|t }}</a>
+          <a href="#fechas">{{ 'Precios y fechas'|t }}</a>
+          <a href="#politicas">{{ 'Políticas'|t }}</a>
+        </nav>
+      </section>
+
+      {% if e.description %}
+        <section class="experience-section" id="plan" aria-labelledby="plan-title">
+          <h2 id="plan-title">{{ 'El plan'|t }}</h2>
+          <div class="prose">{{ e.description }}</div>
+        </section>
+      {% endif %}
+
+      {% if e.includes or e.excludes %}
+        <section class="experience-section" id="incluye" aria-labelledby="includes-title">
+          <h2 id="includes-title">{{ 'Qué incluye'|t }}</h2>
+          <div class="experience-includes">
+            {% if e.includes %}
+              <ul class="check-list">
+                {% for item in e.includes %}<li>{{ icons.icon('check') }} {{ item }}</li>{% endfor %}
+              </ul>
+            {% endif %}
+            {% if e.excludes %}
+              <div class="experience-excludes">
+                <h3>{{ 'No incluye'|t }}</h3>
+                <ul class="x-list">
+                  {% for item in e.excludes %}<li>{{ icons.icon('minus') }} {{ item }}</li>{% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+          </div>
+        </section>
+      {% endif %}
+
+      {% if e.story %}
+        <section class="experience-section experience-story" id="destino" aria-labelledby="story-title">
+          <p class="eyebrow">{{ 'El destino'|t }}</p>
+          <h2 id="story-title">{{ 'Historia de @place'|t({'@place': e.destination.place|default(e.location)}) }}</h2>
+          <div class="prose">{{ e.story }}</div>
+        </section>
+      {% endif %}
+
+      {% if e.host.name or e.host.story %}
+        <section class="experience-section experience-host" id="anfitriones" aria-labelledby="host-title">
+          {% if e.host.photo %}
+            <img class="experience-host__photo" src="{{ e.host.photo.src }}" alt="{{ e.host.photo.alt }}" width="{{ e.host.photo.width }}" height="{{ e.host.photo.height }}" loading="lazy" decoding="async">
+          {% endif %}
+          <div>
+            <p class="eyebrow">{{ 'Tus anfitriones'|t }}</p>
+            <h2 id="host-title">{{ e.host.name }}</h2>
+            <div class="prose">{{ e.host.story }}</div>
+          </div>
+        </section>
+      {% endif %}
+
+      {% include '@trotamundos/components/companion.html.twig' with {whatsapp_url: experience_whatsapp_url} %}
+
+      <section class="experience-section" id="ubicacion" aria-labelledby="location-title">
+        <h2 id="location-title">{{ 'Ubicación y cómo llegar'|t }}</h2>
+        <div class="experience-location">
+          <div>
+            {% if e.destination %}
+              <dl class="experience-location__facts">
+                <div><dt>{{ 'Municipio'|t }}</dt><dd><a href="{{ e.destination.url }}">{{ e.destination.municipality }}</a></dd></div>
+                <div><dt>{{ 'Departamento'|t }}</dt><dd>{{ e.destination.department }}</dd></div>
+                {% if e.destination.region_label %}<div><dt>{{ 'Región'|t }}</dt><dd>{{ e.destination.region_label }}</dd></div>{% endif %}
+              </dl>
+            {% endif %}
+            {% if e.how_to_get %}<div class="prose">{{ e.how_to_get }}</div>{% endif %}
+          </div>
+          {% include '@trotamundos/components/colombia-map.html.twig' with {point: map} %}
+        </div>
+      </section>
+
+      <section class="experience-section" id="recomendaciones" aria-labelledby="tips-title">
+        <h2 id="tips-title">{{ 'Duración y recomendaciones'|t }}</h2>
+        <p class="experience-duration">{{ icons.icon('clock') }} <strong>{{ 'Duración:'|t }}</strong> {{ e.duration }}</p>
+        {% if e.recommendations %}
+          <ul class="tips-list">
+            {% for tip in e.recommendations %}<li>{{ icons.icon('sun') }} {{ tip }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+      </section>
+
+      <section class="experience-section" id="fechas" aria-labelledby="dates-title">
+        <h2 id="dates-title">{{ 'Precios, fechas y disponibilidad'|t }}</h2>
+        <div class="experience-prices">
+          <div class="experience-prices__price">
+            <span>{{ 'Desde'|t }}</span>
+            <strong>{{ e.price_label }}</strong>
+            <span>{{ 'COP por persona'|t }}{% if e.price_note %} · {{ e.price_note }}{% endif %}</span>
+          </div>
+          <div class="experience-prices__dates">
+            {% if e.availability %}<p class="experience-prices__availability">{{ icons.icon('calendar') }} {{ e.availability }}</p>{% endif %}
+            {% if e.ranges %}
+              <ul class="date-list">
+                {% for range in e.ranges %}<li>{{ range.label }}</li>{% endfor %}
+              </ul>
+            {% else %}
+              <p>{{ 'No hay fechas publicadas en este momento. Escríbenos y te contamos las próximas salidas.'|t }}</p>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+
+      {% if e.booking_policy or e.cancellation_policy %}
+        <section class="experience-section" id="politicas" aria-labelledby="policies-title">
+          <h2 id="policies-title">{{ 'Políticas de reserva y cancelación'|t }}</h2>
+          <div class="accordion">
+            {% if e.booking_policy %}
+              <details open>
+                <summary>{{ 'Reserva y pago'|t }} {{ icons.icon('plus') }}</summary>
+                <div class="accordion__content prose">{{ e.booking_policy }}</div>
+              </details>
+            {% endif %}
+            {% if e.cancellation_policy %}
+              <details>
+                <summary>{{ 'Cambios y cancelación'|t }} {{ icons.icon('plus') }}</summary>
+                <div class="accordion__content prose">{{ e.cancellation_policy }}</div>
+              </details>
+            {% endif %}
+          </div>
+        </section>
+      {% endif %}
+    </div>
+
+    <aside class="experience-aside" aria-labelledby="booking-title">
+      <div class="booking-card" id="reservar" data-booking
+        data-price="{{ e.price }}"
+        data-capacity="{{ e.capacity }}"
+        data-ranges="{{ e.ranges|map(range => {start: range.start, end: range.end})|json_encode }}"
+        data-title="{{ e.title }}"
+        data-location="{{ e.location }}"
+        data-whatsapp="{{ tm.whatsapp_base }}"
+        data-lang="{{ e.langcode }}">
+        <h2 id="booking-title" class="booking-card__title">{{ 'Reserva tu experiencia'|t }}</h2>
+        <p class="booking-card__price"><span>{{ 'Desde'|t }}</span> <strong>{{ e.price_label }}</strong> <span>{{ 'COP por persona'|t }}</span></p>
+        {% if e.price_note %}<p class="booking-card__note">{{ e.price_note }}</p>{% endif %}
+
+        {% if e.ranges %}
+          <form class="booking-form" data-booking-form novalidate>
+            <div class="tm-field">
+              <label class="tm-label" for="booking-date">{{ 'Fecha de llegada'|t }}</label>
+              <input class="tm-input" type="date" id="booking-date" name="date" min="{{ first_range.start }}" max="{{ last_range.end }}" required aria-describedby="booking-date-help">
+              <p class="tm-hint" id="booking-date-help" data-booking-date-message>{{ e.availability }}</p>
+            </div>
+            <div class="tm-field">
+              <span class="tm-label" id="booking-travelers-label">{{ 'Viajeros'|t }}</span>
+              <div class="stepper" role="group" aria-labelledby="booking-travelers-label">
+                <button type="button" class="stepper__button" data-step="-1" aria-label="{{ 'Quitar un viajero'|t }}">{{ icons.icon('minus') }}</button>
+                <input class="stepper__input" type="number" id="booking-travelers" name="travelers" value="2" min="1" max="{{ e.capacity }}" inputmode="numeric" aria-labelledby="booking-travelers-label">
+                <button type="button" class="stepper__button" data-step="1" aria-label="{{ 'Añadir un viajero'|t }}">{{ icons.icon('plus') }}</button>
+              </div>
+            </div>
+            <dl class="booking-summary" aria-live="polite">
+              <div><dt data-summary-line>{{ e.price_label }} × 2</dt><dd data-summary-subtotal>{{ e.price_label }}</dd></div>
+              <div class="booking-summary__total"><dt>{{ 'Total estimado'|t }}</dt><dd data-summary-total>{{ e.price_label }}</dd></div>
+            </dl>
+            <button class="button button--primary button--block" type="submit">{{ 'Reservar'|t }}</button>
+          </form>
+        {% else %}
+          <p class="tm-notice">{{ 'Ahora mismo no hay fechas publicadas. Escríbenos y te avisamos de las próximas.'|t }}</p>
+        {% endif %}
+
+        <a class="button button--whatsapp button--block" href="{{ experience_whatsapp_url }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }} {{ 'Consultar por WhatsApp'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+
+        <ul class="booking-assurances">
+          <li>{{ icons.icon('shield') }} {{ 'Pago seguro mediante enlace de pago'|t }}</li>
+          <li>{{ icons.icon('check') }} {{ 'Sin cobros hasta confirmar la disponibilidad'|t }}</li>
+          <li>{{ icons.icon('calendar') }} <a href="#politicas">{{ 'Políticas de reserva y cancelación'|t }}</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  {% if related %}
+    <section class="experience-related container" aria-labelledby="related-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">{{ 'Sigue explorando'|t }}</p><h2 id="related-title">{{ 'Otras experiencias'|t }} <em>{{ 'cerca'|t }}</em></h2></div>
+        <a class="text-link" href="{{ tm.catalog_url }}">{{ 'Ver el catálogo completo'|t }} {{ icons.icon('arrow') }}</a>
+      </div>
+      <div class="experience-grid">
+        {% for card in related %}{% include '@trotamundos/components/experience-card.html.twig' with {card: card} %}{% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <div class="booking-bar" data-booking-bar>
+    <p class="booking-bar__price"><span>{{ 'Desde'|t }}</span> <strong>{{ e.price_label }}</strong> <span>{{ 'COP por persona'|t }}</span></p>
+    <a class="booking-bar__whatsapp" href="{{ experience_whatsapp_url }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }}<span class="visually-hidden">{{ 'Consultar por WhatsApp'|t }} ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+    <a class="button button--primary" href="#reservar" data-booking-jump>{{ 'Reservar'|t }}</a>
+  </div>
+
+  {% if e.gallery %}
+    <dialog class="tm-dialog gallery-dialog" data-gallery-dialog aria-labelledby="gallery-dialog-title">
+      <div class="tm-dialog__header">
+        <h2 id="gallery-dialog-title">{{ 'Fotos y vídeos'|t }}</h2>
+        <button class="dialog-close" type="button" data-dialog-close aria-label="{{ 'Cerrar la galería'|t }}">{{ icons.icon('close') }}</button>
+      </div>
+      <div class="gallery-dialog__body">
+        <ul class="gallery-dialog__list">
+          {% for video in e.videos %}
+            <li class="gallery-dialog__item gallery-dialog__item--video">
+              <video controls preload="metadata" playsinline aria-label="{{ video.label }}"><source src="{{ video.src }}" type="{{ video.type }}"></video>
+            </li>
+          {% endfor %}
+          {% for image in e.gallery %}
+            <li class="gallery-dialog__item" data-gallery-index="{{ loop.index0 }}">
+              <img src="{{ image.wide }}" alt="{{ image.alt }}" loading="lazy" decoding="async" style="aspect-ratio: {{ image.ratio }};">
+              <span class="gallery-dialog__caption">{{ image.alt }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </dialog>
+  {% endif %}
+
+  <dialog class="tm-dialog booking-dialog" data-booking-dialog aria-labelledby="booking-dialog-title">
+    <div class="tm-dialog__header">
+      <h2 id="booking-dialog-title">{{ 'Revisa tu reserva'|t }}</h2>
+      <button class="dialog-close" type="button" data-dialog-close aria-label="{{ 'Cerrar'|t }}">{{ icons.icon('close') }}</button>
+    </div>
+    <div class="tm-dialog__body">
+      <dl class="booking-review">
+        <div><dt>{{ 'Experiencia'|t }}</dt><dd>{{ e.title }}</dd></div>
+        <div><dt>{{ 'Fecha de llegada'|t }}</dt><dd data-review-date></dd></div>
+        <div><dt>{{ 'Viajeros'|t }}</dt><dd data-review-travelers></dd></div>
+        <div><dt>{{ 'Total estimado'|t }}</dt><dd data-review-total></dd></div>
+      </dl>
+      <ol class="booking-steps">
+        <li><strong>{{ 'Confirmamos la disponibilidad'|t }}</strong><span>{{ 'Hablamos con los anfitriones y te respondemos por WhatsApp.'|t }}</span></li>
+        <li><strong>{{ 'Pagas de forma segura'|t }}</strong><span>{{ 'Te enviamos un enlace de pago seguro. Nunca te pediremos los datos de tu tarjeta por chat.'|t }}</span></li>
+        <li><strong>{{ 'Recibes tu confirmación'|t }}</strong><span>{{ 'Con la guía práctica del viaje y el contacto de tus anfitriones.'|t }}</span></li>
+      </ol>
+      <a class="button button--whatsapp button--block" href="{{ experience_whatsapp_url }}" target="_blank" rel="noopener" data-review-whatsapp>{{ icons.icon('whatsapp') }} {{ 'Enviar la solicitud por WhatsApp'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+      <p class="tm-hint booking-dialog__note">{{ 'Enviar la solicitud no tiene ningún coste ni compromiso.'|t }}</p>
+    </div>
+  </dialog>
+  {{ tm_cache }}
+</article>

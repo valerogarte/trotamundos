@@ -1,0 +1,86 @@
+{#
+/**
+ * @file
+ * Document lookup template for Trotamundos Assistant.
+ */
+#}
+<article class="trotamundos-assistant-template trotamundos-assistant-template--document-lookup">
+  <header class="trotamundos-assistant-template__header">
+    <p class="trotamundos-assistant-template__eyebrow">{{ title|default('Busqueda en documentos'|t) }}</p>
+  </header>
+
+  {% if answer is defined and answer %}
+    <section class="minsait-document-lookup__answer">
+      <h3>{{ 'Respuesta'|t }}</h3>
+      <p>{{ answer }}</p>
+    </section>
+  {% endif %}
+
+  {% if summary is defined and summary %}
+    <p class="trotamundos-assistant-template__description">{{ summary }}</p>
+  {% endif %}
+
+  {% if citations is defined and citations %}
+    <section class="minsait-document-lookup__section">
+      <h3>{{ 'Dónde se dice'|t }}</h3>
+      <div class="minsait-document-lookup__citations">
+        {% for citation in citations %}
+          <article class="minsait-document-lookup__citation">
+            {% if citation.location %}
+              <p class="minsait-document-lookup__location">{{ citation.location }}</p>
+            {% endif %}
+            {% if citation.quote %}
+              <blockquote>{{ citation.quote }}</blockquote>
+            {% endif %}
+            {% if citation.document_title or citation.document_url %}
+              <p class="minsait-document-lookup__source">
+                {% if citation.document_url %}
+                  <a href="{{ citation.document_url }}" target="_blank" rel="noopener noreferrer">{{ citation.document_title|default('Ver documento'|t) }}</a>
+                {% else %}
+                  {{ citation.document_title }}
+                {% endif %}
+              </p>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% if documents is defined and documents %}
+    <section class="minsait-document-lookup__section">
+      <h3>{{ 'Documento'|t }}</h3>
+      <ul class="minsait-document-lookup__documents">
+        {% for document in documents %}
+          <li>
+            {% if document.document_url %}
+              <a class="minsait-document-lookup__document-link" href="{{ document.document_url }}" target="_blank" rel="noopener noreferrer">
+                <span class="minsait-document-lookup__document-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"></path>
+                    <path d="M14 2v5h5"></path>
+                    <path d="M9 13h6"></path>
+                    <path d="M9 17h4"></path>
+                  </svg>
+                </span>
+                <span>{{ document.title|default('Ver documento'|t) }}</span>
+              </a>
+            {% else %}
+              <span class="minsait-document-lookup__document-link is-disabled">
+                <span class="minsait-document-lookup__document-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"></path>
+                    <path d="M14 2v5h5"></path>
+                    <path d="M9 13h6"></path>
+                    <path d="M9 17h4"></path>
+                  </svg>
+                </span>
+                <span>{{ document.title|default('Documento'|t) }}</span>
+              </span>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+</article>

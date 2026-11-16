@@ -1,0 +1,8 @@
+{
+  "chat_reply": "Te muestro el formulario de edición en el panel.",
+  "result": {
+    "content_title": "Página de ejemplo",
+    "entity_type": "node",
+    "description": "Revisa el formulario y guarda los cambios cuando termines."
+  }
+}

@@ -1,0 +1,80 @@
+{#
+/**
+ * @file
+ * Embedded AI assistant layout.
+ */
+#}
+{% set access_allowed = elements['#access_allowed'] is not defined or elements['#access_allowed'] %}
+{% set configuration_error = elements['#configuration_error']|default('') %}
+{% set toggle_label = elements['#toggle_label']|default('Trotamundos Assistant') %}
+{% set chat_logo_path = elements['#chat_logo_path']|default('/modules/custom/trotamundos_assistant/assets/images/minsait-chatbot-logo-head.png') %}
+<section
+  class="trotamundos-assistant{% if not access_allowed %} is-access-denied{% endif %}{% if configuration_error %} has-configuration-error{% endif %}"
+  aria-label="{{ 'Trotamundos Assistant assistant'|t }}"
+  data-result-target-selector="{{ elements['#result_target_selector']|default('') }}"
+  data-desktop-always-open="{{ elements['#desktop_always_open']|default(false) ? 'true' : 'false' }}"
+>
+  <button class="trotamundos-assistant__toggle" type="button" aria-expanded="false">
+    <span class="trotamundos-assistant__toggle-label">{{ toggle_label }}</span>
+  </button>
+
+  <aside class="trotamundos-assistant__chat" aria-label="{{ toggle_label }}">
+    <div class="trotamundos-assistant__chat-header">
+      <div class="trotamundos-assistant__brand">
+        <img
+          class="trotamundos-assistant__logo"
+          src="{{ chat_logo_path }}"
+          alt="{{ 'Trotamundos Assistant'|t }}"
+        />
+      </div>
+      <button class="trotamundos-assistant__reset" type="button">
+        <span class="trotamundos-assistant__reset-icon" aria-hidden="true">+</span>
+        <span class="trotamundos-assistant__reset-label">{{ 'Nuevo chat'|t }}</span>
+      </button>
+      <button class="trotamundos-assistant__close" type="button" aria-label="{{ 'Cerrar chat'|t }}" aria-hidden="true">
+        <span aria-hidden="true">X</span>
+      </button>
+    </div>
+
+    <div class="trotamundos-assistant__configuration-error" role="alert"{% if not configuration_error %} hidden{% endif %}>
+      {{ configuration_error }}
+    </div>
+
+    <div class="trotamundos-assistant__messages" aria-live="polite">
+      <div class="trotamundos-assistant__message trotamundos-assistant__message--assistant">
+        {{ elements['#welcome_message'] }}
+      </div>
+    </div>
+
+    {% if elements['#model_id'] %}
+      <p class="trotamundos-assistant__powered-by">
+        {{ 'Impulsado por @model'|t({ '@model': elements['#model_id'] }) }}
+      </p>
+    {% endif %}
+
+    <form class="trotamundos-assistant__form">
+      <label class="visually-hidden" for="trotamundos-assistant-message">
+        {{ 'Message'|t }}
+      </label>
+      <textarea
+        class="trotamundos-assistant__input"
+        id="trotamundos-assistant-message"
+        name="message"
+        rows="3"
+        placeholder="{{ elements['#input_placeholder']|default('Escribe tu consulta...'|t) }}"
+      ></textarea>
+      <button class="trotamundos-assistant__submit" type="submit">
+        {{ 'Enviar'|t }}
+      </button>
+      {% if elements['#privacy_notice'] %}
+        <p class="trotamundos-assistant__privacy-notice">
+          {{ elements['#privacy_notice'] }}
+        </p>
+      {% endif %}
+    </form>
+  </aside>
+
+  <template class="trotamundos-assistant__default-result">
+    {{ elements.result }}
+  </template>
+</section>

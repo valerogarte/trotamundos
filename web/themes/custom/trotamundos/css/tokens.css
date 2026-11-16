@@ -1,0 +1,43 @@
+/**
+ * Trotamundos: shared visual identity tokens.
+ * The website and brand guide use this same source of colors and typography.
+ */
+:root {
+  --selva: #173d32;
+  --marfil: #f5f0e6;
+  --terracota: #bf6846;
+  --sol: #d3a75e;
+  --carbon: #242723;
+  --terracota-text: #984c31;
+  --muted: #55584e;
+  --panel: #fffcf6;
+  --sand: #ece5d6;
+  --line: rgba(23, 61, 50, 0.16);
+  --line-strong: rgba(23, 61, 50, 0.32);
+  --whatsapp: #1f7a4d;
+  --font-body: Manrope, Arial, sans-serif;
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --container: 1280px;
+  --gutter: clamp(20px, 4.4vw, 72px);
+  --header-height: 88px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --radius-control: 4px;
+  --radius-card: 6px;
+  --radius-pill: 999px;
+  --shadow-soft: 0 10px 40px rgb(23 61 50 / 10%);
+  --type-display: clamp(60px, 6.6vw, 104px);
+  --type-heading: clamp(40px, 4.4vw, 62px);
+  --type-card: 29px;
+  --type-lead: 19px;
+  --type-body: 17px;
+  --type-small: 15px;
+  --type-caption: 13px;
+}

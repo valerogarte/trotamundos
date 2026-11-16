@@ -1,0 +1,31 @@
+machine_name: payment
+title: 'Pago'
+btn_responsive_title: 'Ver opciones de pago'
+group: ecommerce
+theme:
+  variables:
+    intro: ''
+    outro: ''
+    product_items: []
+    summary_points: []
+handler:
+  class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\Payment\PaymentSkillHandler'
+  file: 'src/PaymentSkillHandler.php'
+assets:
+  dependencies:
+    - trotamundos_assistant_ecommerce/skill.product_common
+    - trotamundos_assistant_ecommerce/skill.shopping_cart_view
+dependencies:
+  modules:
+    - commerce_cart
+    - commerce_checkout
+chat_reply_fallback: 'He preparado el acceso al pago en el panel.'
+description: 'Guía al usuario hacia checkout y pago cuando ya quiere finalizar la compra.'
+provider:
+  requires_rag: false
+  intent: 'Usar cuando el usuario quiera pagar, finalizar la compra, ir a checkout o conocer cómo completar el pago.'
+  when_to_use:
+    - 'El usuario dice que quiere pagar o finalizar la compra.'
+    - 'El usuario pide ir al checkout o completar el pedido.'
+    - 'El usuario pregunta por el siguiente paso después de añadir productos al carrito.'
+    - 'El usuario necesita una acción clara para revisar el carrito y continuar al pago.'

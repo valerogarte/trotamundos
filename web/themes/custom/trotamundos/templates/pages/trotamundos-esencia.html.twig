@@ -1,0 +1,153 @@
+{#
+/**
+ * @file
+ * Nuestra esencia: who we are, purpose, how we work, communities and allies.
+ */
+#}
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+<div class="esencia">
+  <header class="esencia-hero container">
+    <div class="esencia-hero__copy">
+      <p class="eyebrow">{{ 'Nuestra esencia'|t }}</p>
+      <h1>{{ 'Viajar bonito.'|t }}<br><em>{{ 'Sentir de verdad.'|t }}</em></h1>
+      <p class="lead">{{ 'Trotamundos nace para descubrir destinos poco conocidos de Colombia, apoyar a los emprendedores turísticos y generar oportunidades para las comunidades locales.'|t }}</p>
+      <nav class="esencia-hero__index" aria-label="{{ 'En esta página'|t }}">
+        <a href="#quienes-somos">{{ 'Quiénes somos'|t }}</a>
+        <a href="#proposito">{{ 'Propósito'|t }}</a>
+        <a href="#comunidades">{{ 'Comunidades y aliados'|t }}</a>
+      </nav>
+    </div>
+    <figure class="esencia-hero__image">
+      <img src="{{ trotamundos_path }}/assets/images/concepcion-panoramica.webp" alt="{{ 'El pueblo de Concepción, Antioquia, entre montañas.'|t }}" width="1050" height="1400" loading="eager" decoding="async">
+      <figcaption>{{ icons.icon('pin') }} {{ 'Concepción, Antioquia'|t }}</figcaption>
+    </figure>
+  </header>
+
+  <section class="esencia-section esencia-about container" id="quienes-somos" aria-labelledby="about-title">
+    <figure class="esencia-about__photo">
+      <img src="{{ trotamundos_path }}/assets/images/juan-concepcion-noche.webp" alt="{{ 'Juan Trotamundos frente a la iglesia de Concepción, iluminada de noche.'|t }}" width="825" height="1100" loading="lazy" decoding="async">
+    </figure>
+    <div class="esencia-about__copy">
+      <p class="eyebrow">{{ 'Quiénes somos'|t }}</p>
+      <h2 id="about-title">{{ 'Una comunidad que'|t }} <em>{{ 'nunca se queda quieta.'|t }}</em></h2>
+      <div class="prose">
+        <p>{{ 'Trotamundos es el proyecto de Juan Trotamundos, un viajero curioso que lleva más de nueve años recorriendo Colombia y otros países, y compartiendo lo que aprende, vive y siente con su comunidad. Su lema: «nunca vamos a quedarnos quietos».'|t }}</p>
+        <p>{{ 'En el camino ha conocido pueblos, ríos y montañas que merecen más visitas, y a las personas que los cuidan. Trotamundos convierte esas historias en experiencias que se pueden reservar con confianza.'|t }}</p>
+      </div>
+      <dl class="esencia-stats">
+        <div><dt>{{ 'Recorriendo Colombia'|t }}</dt><dd>+9 <span>{{ 'años'|t }}</span></dd></div>
+        <div><dt>{{ 'Trotamundos en la comunidad'|t }}</dt><dd>347K</dd></div>
+        <div><dt>{{ 'Desde Medellín'|t }}</dt><dd>{{ 'Para toda Colombia'|t }}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="esencia-section esencia-purpose" id="proposito" aria-labelledby="purpose-page-title">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">{{ 'Nuestro propósito'|t }}</p>
+          <h2 id="purpose-page-title">{{ 'Descubrir Colombia.'|t }} <em>{{ 'Transformar realidades.'|t }}</em></h2>
+        </div>
+        <p class="section-heading__description">{{ 'El corazón de Trotamundos es humano y comunitario: cada viaje conecta a un viajero con las personas que hacen especial un lugar.'|t }}</p>
+      </div>
+      <ol class="esencia-pillars">
+        <li>
+          <span class="esencia-pillars__number">01</span>
+          {{ icons.icon('map') }}
+          <h3>{{ 'Descubrir destinos poco conocidos'|t }}</h3>
+          <p>{{ 'Pueblos con historia, ríos, montañas y paisajes que todavía no aparecen en todas las guías.'|t }}</p>
+        </li>
+        <li>
+          <span class="esencia-pillars__number">02</span>
+          {{ icons.icon('heart') }}
+          <h3>{{ 'Impulsar a los emprendedores turísticos'|t }}</h3>
+          <p>{{ 'Trabajamos con hospedajes familiares, guías y pequeños negocios. Les ayudamos a contar su historia y a llegar a más viajeros.'|t }}</p>
+        </li>
+        <li>
+          <span class="esencia-pillars__number">03</span>
+          {{ icons.icon('sprout') }}
+          <h3>{{ 'Generar oportunidades locales'|t }}</h3>
+          <p>{{ 'Cada reserva deja ingresos en las familias y en las comunidades que visitas.'|t }}</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="esencia-section container" aria-labelledby="how-title">
+    <div class="esencia-how">
+      <div>
+        <p class="eyebrow">{{ 'Cómo trabajamos'|t }}</p>
+        <h2 id="how-title">{{ 'Viajes que dejan'|t }} <em>{{ 'algo bueno.'|t }}</em></h2>
+      </div>
+      <ul class="esencia-principles">
+        <li>{{ icons.icon('pin') }}<div><h3>{{ 'Conocemos cada lugar'|t }}</h3><p>{{ 'Antes de publicar una experiencia, la visitamos y la preparamos con sus anfitriones.'|t }}</p></div></li>
+        <li>{{ icons.icon('check') }}<div><h3>{{ 'Información clara'|t }}</h3><p>{{ 'Sabes qué incluye cada plan, cuánto cuesta y cuáles son sus condiciones antes de reservar.'|t }}</p></div></li>
+        <li>{{ icons.icon('heart') }}<div><h3>{{ 'Historias contadas con respeto'|t }}</h3><p>{{ 'Mostramos a las personas y sus lugares tal como son, y siempre con su permiso.'|t }}</p></div></li>
+        <li>{{ icons.icon('whatsapp') }}<div><h3>{{ 'Acompañamiento cercano'|t }}</h3><p>{{ 'Estamos contigo por WhatsApp antes y durante el viaje.'|t }}</p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="esencia-section esencia-allies" id="comunidades" aria-labelledby="allies-title">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">{{ 'Comunidades y aliados'|t }}</p>
+          <h2 id="allies-title">{{ 'Las personas detrás'|t }} <em>{{ 'de cada experiencia.'|t }}</em></h2>
+        </div>
+        <p class="section-heading__description">{{ 'Estos son los primeros emprendimientos y comunidades con los que estamos construyendo Trotamundos.'|t }}</p>
+      </div>
+      <div class="ally-grid">
+        <article class="ally-card">
+          <img src="{{ trotamundos_path }}/assets/images/termales-aerea.webp" alt="{{ 'Vista aérea de Termales Espíritu Santo, entre el río y la selva.'|t }}" width="765" height="1100" loading="lazy" decoding="async">
+          <div class="ally-card__copy">
+            <p class="ally-card__place">{{ icons.icon('pin') }} {{ 'Nariño, Antioquia'|t }}</p>
+            <h3>{{ 'Termales Espíritu Santo'|t }}</h3>
+            <p>{{ 'Pozas de agua termal, túneles de roca, senderos y cascadas en el oriente antioqueño. Aliado del piloto de Trotamundos.'|t }}</p>
+          </div>
+        </article>
+        <article class="ally-card">
+          <img src="{{ trotamundos_path }}/assets/images/mesa-concepcion.webp" alt="{{ 'Mesa servida en una casa campesina de Concepción, entre flores y objetos antiguos.'|t }}" width="825" height="1100" loading="lazy" decoding="async">
+          <div class="ally-card__copy">
+            <p class="ally-card__place">{{ icons.icon('pin') }} {{ 'Concepción, Antioquia'|t }}</p>
+            <h3>{{ 'Familias anfitrionas de Concepción'|t }}</h3>
+            <p>{{ 'Hospedaje en casas campesinas tradicionales y recorridos con guías del pueblo.'|t }}</p>
+          </div>
+        </article>
+        <article class="ally-card ally-card--invite">
+          <div class="ally-card__copy">
+            {{ icons.icon('sprout') }}
+            <h3>{{ '¿Tienes un emprendimiento turístico?'|t }}</h3>
+            <p>{{ 'Si tienes un hospedaje, ofreces recorridos o lideras un proyecto comunitario en un destino poco conocido, nos encantará conocerte.'|t }}</p>
+            <a class="button button--whatsapp" href="{{ partner_whatsapp_url }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }} {{ 'Hablemos'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="esencia-section container" aria-labelledby="personality-title">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">{{ 'Así somos'|t }}</p>
+        <h2 id="personality-title">{{ 'Cinco rasgos,'|t }} <em>{{ 'una misma forma de viajar.'|t }}</em></h2>
+      </div>
+    </div>
+    <ul class="personality-list">
+      <li><h3>{{ 'Cercana'|t }}</h3><p>{{ 'Hablamos de tú, con palabras sencillas y la calidez de alguien que te acompaña.'|t }}</p></li>
+      <li><h3>{{ 'Serena'|t }}</h3><p>{{ 'Dejamos espacio para mirar, respirar y elegir sin presiones.'|t }}</p></li>
+      <li><h3>{{ 'Curiosa'|t }}</h3><p>{{ 'Nos interesan los detalles y las historias de cada lugar.'|t }}</p></li>
+      <li><h3>{{ 'Cuidadosa'|t }}</h3><p>{{ 'Cuidamos cómo mostramos los lugares, cómo hablamos de las personas y qué prometemos.'|t }}</p></li>
+      <li class="personality-list__highlight"><h3>{{ 'Comprometida'|t }}</h3><p>{{ 'Con las comunidades y los emprendedores locales: su bienestar es parte de cada viaje.'|t }}</p></li>
+    </ul>
+  </section>
+
+  <section class="closing container" aria-labelledby="esencia-closing-title">
+    <h2 id="esencia-closing-title">{{ 'Una Colombia por descubrir.'|t }}<br><em>{{ 'Muchas historias por impulsar.'|t }}</em></h2>
+    <div class="closing__actions">
+      <a class="button button--primary" href="{{ tm.catalog_url }}">{{ 'Ver experiencias'|t }} {{ icons.icon('arrow') }}</a>
+      <a class="button button--secondary" href="{{ tm.destinations_url }}">{{ 'Explorar destinos'|t }}</a>
+    </div>
+  </section>
+</div>

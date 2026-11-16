@@ -1,0 +1,85 @@
+machine_name: shopping_cart_view
+title: 'Ver carrito'
+btn_responsive_title: 'Ver carrito completo'
+group: ecommerce
+theme:
+  variables:
+    intro: ''
+    cart_items: []
+    cart_groups: []
+    cart_total: ''
+handler:
+  class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\ShoppingCartView\ShoppingCartViewSkillHandler'
+  file: 'src/ShoppingCartViewSkillHandler.php'
+assets:
+  css:
+    - css/shopping_cart_common.css
+  js:
+    - js/shopping_cart_common.js
+  dependencies:
+    - core/drupal
+    - core/once
+    - trotamundos_assistant/template.base
+    - trotamundos_assistant_ecommerce/skill.product_common
+dependencies:
+  modules:
+    - commerce_cart
+    - commerce_checkout
+    - commerce_order
+    - commerce_product
+    - commerce_store
+chat_reply_fallback: 'Te muestro el carrito en el panel.'
+actions:
+  panel:
+    class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\ShoppingCartView\ShoppingCartViewActionHandler'
+    file: 'src/ShoppingCartViewActionHandler.php'
+    method: panel
+    http_method: GET
+    route: trotamundos_assistant.skill_action
+    csrf: false
+    arguments:
+      - module_handler
+      - commerce_cart.cart_manager
+      - commerce_cart.cart_provider
+      - renderer
+      - extension.list.module
+      - commerce_order.order_total_summary
+      - file_url_generator
+  update_item:
+    class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\ShoppingCartView\ShoppingCartViewActionHandler'
+    file: 'src/ShoppingCartViewActionHandler.php'
+    method: updateItem
+    http_method: POST
+    route: trotamundos_assistant.skill_action
+    csrf: true
+    arguments:
+      - module_handler
+      - commerce_cart.cart_manager
+      - commerce_cart.cart_provider
+      - renderer
+      - extension.list.module
+      - commerce_order.order_total_summary
+      - file_url_generator
+  remove_item:
+    class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\ShoppingCartView\ShoppingCartViewActionHandler'
+    file: 'src/ShoppingCartViewActionHandler.php'
+    method: removeItem
+    http_method: POST
+    route: trotamundos_assistant.skill_action
+    csrf: true
+    arguments:
+      - module_handler
+      - commerce_cart.cart_manager
+      - commerce_cart.cart_provider
+      - renderer
+      - extension.list.module
+      - commerce_order.order_total_summary
+      - file_url_generator
+description: 'Muestra el carrito de la compra actual y enlaza con la gestión completa de productos.'
+provider:
+  requires_rag: false
+  intent: 'Usar cuando el usuario quiera ver, revisar, editar o eliminar productos que ya están en el carrito.'
+  when_to_use:
+    - 'El usuario pide ver el carrito actual.'
+    - 'El usuario pregunta qué productos tiene en el carrito.'
+    - 'El usuario quiere editar, eliminar o revisar productos que ya están en la cesta.'

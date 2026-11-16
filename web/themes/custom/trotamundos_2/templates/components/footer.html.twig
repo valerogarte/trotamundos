@@ -1,0 +1,16 @@
+{% import '@trotamundos_2/components/icons.html.twig' as icons %}
+<footer class="tm2-footer">
+  <div class="tm2-container">
+    <div class="tm2-footer__top">
+      <p>{{ 'Un país por descubrir.'|t }}<br><strong>{{ 'Muchas maneras de sentirlo.'|t }}</strong></p>
+      <nav aria-label="{{ 'Navegación del pie'|t }}">
+        <a href="{{ front_page }}#experiencias">{{ 'Explorar experiencias'|t }} {{ icons.icon('diagonal') }}</a>
+        <a href="{{ front_page }}#esencia">{{ 'La manera Trotamundos'|t }} {{ icons.icon('diagonal') }}</a>
+        {% if tm2_brand_guide_url %}<a href="{{ tm2_brand_guide_url }}">{{ 'Nuestra guía de marca'|t }} {{ icons.icon('diagonal') }}</a>{% endif %}
+      </nav>
+    </div>
+    <a class="tm2-footer__wordmark" href="{{ front_page }}" aria-label="{{ 'Trotamundos, inicio'|t }}">trotamundos<span>↗</span></a>
+    {% if page.footer %}<div class="tm2-footer__extra">{{ page.footer }}</div>{% endif %}
+    <div class="tm2-footer__bottom"><span>© {{ 'now'|date('Y') }} JUAN TROTA MUNDOS</span><a href="{{ tm2_path }}/assets/CREDITS.txt">{{ 'Fotografía y créditos'|t }}</a><a href="#main-content">{{ 'Volver arriba'|t }} ↑</a><span>HECHO DE COLOMBIA.</span></div>
+  </div>
+</footer>

@@ -1,0 +1,21 @@
+global:
+  version: 1.0.0
+  css:
+    theme:
+      css/tokens.css: { weight: -10 }
+      css/trotamundos-2.css: {}
+  js:
+    js/trotamundos-2.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+brand-guide:
+  version: 1.0.0
+  css:
+    theme:
+      css/brand-guide.css: {}
+  js:
+    js/brand-guide.js: {}
+  dependencies:
+    - trotamundos_2/global

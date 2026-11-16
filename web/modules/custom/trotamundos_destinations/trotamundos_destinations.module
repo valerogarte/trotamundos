@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Theme hook for the destinations page. The template lives in the theme.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function trotamundos_destinations_theme($existing, $type, $theme, $path): array {
+  return [
+    'trotamundos_destinations' => [
+      'variables' => [
+        'tree' => [],
+        'total' => 0,
+        'catalog_url' => NULL,
+      ],
+      'template' => 'trotamundos-destinations',
+      'path' => \Drupal::service('extension.list.theme')->getPath('trotamundos') . '/templates/pages',
+    ],
+  ];
+}

@@ -1,0 +1,7 @@
+name: Trotamundos Destinations
+type: module
+description: 'Página de destinos por región, departamento y municipio, conectada con el catálogo de experiencias.'
+package: Trotamundos
+core_version_requirement: ^11
+dependencies:
+  - trotamundos_experiences:trotamundos_experiences

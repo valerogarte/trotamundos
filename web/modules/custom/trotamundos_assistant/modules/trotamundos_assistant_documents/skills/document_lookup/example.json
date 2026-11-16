@@ -1,0 +1,33 @@
+{
+  "chat_reply": "He encontrado la respuesta en la ficha tecnica y dejo las fuentes en el panel.",
+  "result": {
+    "answer": "La bateria indicada para el producto es de 5000 mAh.",
+    "summary": "La informacion aparece en la ficha tecnica enlazada al producto.",
+    "citations": [
+      {
+        "document_title": "Ficha tecnica del producto",
+        "quote": "Bateria: 5000 mAh",
+        "location": "Pagina 2, seccion Especificaciones tecnicas",
+        "page": 2,
+        "document_url": "https://example.com/sites/default/files/ficha-tecnica.pdf"
+      }
+    ],
+    "documents": [
+      {
+        "title": "Ficha tecnica del producto",
+        "media_id": 12,
+        "file_id": 34,
+        "document_url": "https://example.com/sites/default/files/ficha-tecnica.pdf"
+      }
+    ],
+    "references": [
+      {
+        "label": "Producto: Telefono Demo",
+        "entity_type": "commerce_product",
+        "entity_id": 123,
+        "field": "field_ficha_tecnica",
+        "url": "https://example.com/product/123"
+      }
+    ]
+  }
+}

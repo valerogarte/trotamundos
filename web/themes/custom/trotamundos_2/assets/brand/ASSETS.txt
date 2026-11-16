@@ -1,0 +1,36 @@
+TROTAMUNDOS 2 · RECURSOS DE IDENTIDAD
+Edición 02 · Versión 2.0
+
+FIRMA
+La firma presenta «trotamundos» en minúsculas, una sola línea.
+Bricolage Grotesque 800, tamaño óptico 28, espaciado −0,075 em.
+Los SVG contienen contornos vectoriales obtenidos de la fuente local
+mediante HarfBuzz y fontTools. Son autónomos y no necesitan instalar fuentes.
+
+wordmark-selva.svg: firma #173D32 sobre fondos claros.
+wordmark-marfil.svg: firma #F5F0E6 para fondos oscuros, preferentemente selva.
+wordmark-carbon.svg: firma #242723 para una sola tinta.
+No incluyen fondo, monograma ni descriptor «POR JUAN TROTA MUNDOS».
+El encabezado de la web compone estos elementos por separado.
+
+MONOGRAMA
+simbolo.svg es una copia exacta de logo.svg, el monograma geométrico del tema.
+Formato cuadrado 80 × 80, fondo selva y trazados sol; no requiere fuentes.
+
+PALETA
+trotamundos-2.gpl: cinco colores de identidad en sRGB, sin conversiones CMYK.
+Selva #173D32, Marfil #F5F0E6, Terracota #BF6846, Sol #D3A75E, Carbón #242723.
+
+TIPOGRAFÍA
+Bricolage Grotesque variable 200–800, normal, tamaño óptico 12–96.
+DM Sans variable 100–1000, normal, tamaño óptico 9–40.
+Fuentes locales WOFF2 bajo SIL Open Font License 1.1. Licencias incluidas.
+
+FUENTES DE IDENTIDAD
+identity/brand.yml contiene las pautas editoriales del tema.
+tokens/trotamundos-2-tokens.css contiene los valores compartidos con la web.
+La guía web /guia-de-marca calcula RGB y contrastes a partir de estos tokens.
+
+FOTOGRAFÍA
+Las fotografías no se incluyen en el kit. Los créditos del tema permanecen
+en assets/CREDITS.txt y assets/image-sources.json, con sus licencias propias.

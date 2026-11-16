@@ -1,0 +1,55 @@
+trotamundos_assistant.overview:
+  title: 'Trotamundos Assistant'
+  description: 'Revisa el estado del módulo y accede a sus pantallas.'
+  route_name: trotamundos_assistant.overview
+  parent: ai.admin_settings
+  weight: -80
+
+trotamundos_assistant.flow:
+  title: 'Flujo'
+  description: 'Consulta el flujo funcional del módulo.'
+  route_name: trotamundos_assistant.flow
+  parent: trotamundos_assistant.overview
+  weight: 110
+
+trotamundos_assistant.status:
+  title: 'Estado'
+  description: 'Revisa el estado del módulo y sus dependencias.'
+  route_name: trotamundos_assistant.overview
+  parent: trotamundos_assistant.overview
+  weight: 5
+
+trotamundos_assistant.settings:
+  title: 'Configuración'
+  description: 'Configura el bloque embebido de Trotamundos Assistant.'
+  route_name: trotamundos_assistant.settings
+  parent: trotamundos_assistant.overview
+  weight: 20
+
+trotamundos_assistant.skills:
+  title: 'Skills'
+  description: 'Activa o desactiva las skills disponibles en el módulo.'
+  route_name: trotamundos_assistant.skills
+  parent: trotamundos_assistant.overview
+  weight: 10
+
+trotamundos_assistant.extensions:
+  title: 'Extensiones'
+  description: 'Consulta las extensiones disponibles para Trotamundos Assistant.'
+  route_name: trotamundos_assistant.extensions
+  parent: trotamundos_assistant.overview
+  weight: 15
+
+trotamundos_assistant.usage:
+  title: 'Coste'
+  description: 'Consulta el uso de tokens y los costes estimados del bloque Trotamundos Assistant.'
+  route_name: trotamundos_assistant.usage
+  parent: trotamundos_assistant.overview
+  weight: 100
+
+trotamundos_assistant.statistics:
+  title: 'Estadísticas'
+  description: 'Consulta las skills más utilizadas por el asistente.'
+  route_name: trotamundos_assistant.statistics
+  parent: trotamundos_assistant.overview
+  weight: 90

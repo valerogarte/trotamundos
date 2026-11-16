@@ -1,0 +1,22 @@
+machine_name: clarification
+title: 'Pedir una aclaración sobre un producto'
+btn_responsive_title: 'Ver aclaración'
+group: ecommerce
+handler:
+  class: 'Drupal\trotamundos_assistant_ecommerce\SkillLocal\Clarification\ClarificationSkillHandler'
+  file: 'src/ClarificationSkillHandler.php'
+assets:
+  dependencies:
+    - trotamundos_assistant/template.base
+dependencies:
+  modules:
+    - commerce_product
+chat_reply_fallback: 'Necesito algun dato mas del producto para afinar.'
+description: 'Solicita al usuario un dato adicional para identificar un producto del catálogo cuando la petición es ambigua o faltan criterios.'
+provider:
+  requires_rag: false
+  intent: 'Usar solo cuando el usuario pida información, detalles, disponibilidad, precio, características o ayuda sobre un producto del catálogo, pero no haya datos suficientes para identificarlo o responder con seguridad.'
+  when_to_use:
+    - 'El usuario pregunta por un producto del catálogo sin indicar nombre, modelo, categoría, marca u otro criterio suficiente.'
+    - 'El usuario pide detalles, precio, disponibilidad, características o resumen de un producto, pero no queda claro a qué producto se refiere.'
+    - 'Hay varias fichas o variantes de producto posibles y conviene pedir una aclaración antes de mostrar resultados.'

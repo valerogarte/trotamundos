@@ -1,0 +1,13 @@
+machine_name: product_common
+title: 'Comportamiento común de producto'
+group: ecommerce
+assets:
+  js:
+    - js/product_actions.js
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+    - trotamundos_assistant/template.base
+    - minsait_mercury/messages
+

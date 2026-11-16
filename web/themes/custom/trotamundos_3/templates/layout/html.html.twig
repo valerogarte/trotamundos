@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html{{ html_attributes }}>
+  <head>
+    <head-placeholder token="{{ placeholder_token }}">
+    <title>{{ head_title|safe_join(' | ') }}</title>
+    <meta name="theme-color" content="#173D32">
+    {% if is_front %}
+      <meta name="description" content="Una Colombia que se siente. Descubre pueblos, paisajes y pequeñas pausas con la mirada de Juan Trota Mundos.">
+      <link rel="preload" as="image" href="{{ tm3_path }}/assets/images/hero-caribe.webp" media="(min-width: 640px)" fetchpriority="high">
+      <link rel="preload" as="image" href="{{ tm3_path }}/assets/images/hero-caribe-mobile.webp" media="(max-width: 639px)" fetchpriority="high">
+    {% endif %}
+    <link rel="preload" as="font" href="{{ tm3_path }}/assets/fonts/fraunces-latin.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="{{ tm3_path }}/assets/fonts/fraunces-latin-italic.woff2" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="{{ tm3_path }}/assets/fonts/plus-jakarta-sans-latin.woff2" type="font/woff2" crossorigin>
+    <css-placeholder token="{{ placeholder_token }}">
+    <js-placeholder token="{{ placeholder_token }}">
+  </head>
+  <body{{ attributes }}>
+    <a class="skip-link" href="#main-content">{{ 'Saltar al contenido'|t }}</a>
+    {{ page_top }}
+    {{ page }}
+    {{ page_bottom }}
+    <js-bottom-placeholder token="{{ placeholder_token }}">
+  </body>
+</html>

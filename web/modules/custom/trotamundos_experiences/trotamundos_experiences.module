@@ -1,0 +1,39 @@
+<?php
+
+/**
+ * @file
+ * Experience catalog: theme hooks and automatic aliases.
+ */
+
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_theme().
+ *
+ * Templates live with the rest of the presentation in the Trotamundos theme.
+ */
+function trotamundos_experiences_theme($existing, $type, $theme, $path): array {
+  return [
+    'trotamundos_catalog' => [
+      'variables' => [
+        'cards' => [],
+        'total' => 0,
+        'filters' => [],
+        'options' => [],
+        'active' => [],
+        'has_examples' => FALSE,
+        'reset_url' => NULL,
+        'pager' => NULL,
+      ],
+      'template' => 'trotamundos-catalog',
+      'path' => \Drupal::service('extension.list.theme')->getPath('trotamundos') . '/templates/pages',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for nodes.
+ */
+function trotamundos_experiences_node_presave(NodeInterface $node): void {
+  \Drupal::service('trotamundos_experiences.alias_generator')->ensureAlias($node);
+}

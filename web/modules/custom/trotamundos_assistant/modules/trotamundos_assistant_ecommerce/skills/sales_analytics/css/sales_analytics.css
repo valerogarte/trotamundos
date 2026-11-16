@@ -1,0 +1,186 @@
+/**
+ * @file
+ * Sales analytics dashboard styles.
+ *
+ * Colours come from the theme custom properties injected by minsait_mercury,
+ * so the panel follows whichever subsite is active.
+ */
+
+.wa-sales {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.wa-sales__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.wa-sales__period {
+  font-weight: 600;
+  color: var(--foreground, #1a0f14);
+}
+
+.wa-sales__ranges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.wa-sales__range {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--border, #e0e0e0);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground, #767676);
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.wa-sales__range:hover {
+  border-color: var(--primary, #480e2a);
+  color: var(--primary, #480e2a);
+}
+
+.wa-sales__range.is-active {
+  background: var(--primary, #480e2a);
+  border-color: var(--primary, #480e2a);
+  color: var(--primary-foreground, #fff);
+}
+
+.wa-sales__kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.wa-sales__kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border, #e0e0e0);
+  border-radius: 12px;
+  background: var(--card, #fff);
+}
+
+.wa-sales__kpi-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted-foreground, #767676);
+}
+
+.wa-sales__kpi-value {
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: var(--foreground, #1a0f14);
+}
+
+.wa-sales__kpi-delta {
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+/* Direction is also carried by the sign in the label, never colour alone. */
+.wa-sales__kpi-delta--up { color: var(--success, #2e7d32); }
+.wa-sales__kpi-delta--down { color: var(--error, #d32f2f); }
+.wa-sales__kpi-delta--flat { color: var(--muted-foreground, #767676); }
+
+.wa-sales__baseline {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--muted-foreground, #767676);
+}
+
+.wa-sales__baseline--empty { font-style: italic; }
+
+.wa-sales__chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.wa-sales__chart-block {
+  padding: 0.85rem 1rem 1rem;
+  border: 1px solid var(--border, #e0e0e0);
+  border-radius: 12px;
+  background: var(--card, #fff);
+}
+
+.wa-sales__chart-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--foreground, #1a0f14);
+}
+
+.wa-sales__chart {
+  width: 100%;
+  height: 220px;
+}
+
+.wa-sales__chart--tall { height: 280px; }
+
+.wa-sales__orders {
+  padding: 0.85rem 1rem 1rem;
+  border: 1px solid var(--border, #e0e0e0);
+  border-radius: 12px;
+  background: var(--card, #fff);
+  overflow-x: auto;
+}
+
+.wa-sales__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.wa-sales__table th {
+  text-align: left;
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid var(--border, #e0e0e0);
+  color: var(--muted-foreground, #767676);
+  font-weight: 600;
+}
+
+.wa-sales__table td {
+  padding: 0.45rem 0.5rem;
+  border-bottom: 1px solid var(--border, #e0e0e0);
+  color: var(--foreground, #1a0f14);
+}
+
+.wa-sales__table .is-numeric {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.wa-sales__empty,
+.wa-sales__notice {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: var(--muted, #f2e8ed);
+  color: var(--muted-foreground, #767676);
+  font-size: 0.875rem;
+}
+
+.wa-sales.is-loading { opacity: 0.6; }
+
+[data-wa-sales-error] {
+  color: var(--error, #d32f2f);
+  background: transparent;
+  padding: 0;
+}
+
+.wa-sales__invoice {
+  color: var(--primary, #480e2a);
+  font-weight: 600;
+  text-decoration: underline;
+  white-space: nowrap;
+}

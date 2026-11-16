@@ -1,0 +1,16 @@
+services:
+  trotamundos_experiences.repository:
+    class: Drupal\trotamundos_experiences\ExperienceRepository
+    arguments:
+      - '@entity_type.manager'
+      - '@entity.repository'
+      - '@file_url_generator'
+      - '@language_manager'
+      - '@transliteration'
+      - '@datetime.time'
+      - '@string_translation'
+  trotamundos_experiences.alias_generator:
+    class: Drupal\trotamundos_experiences\AliasGenerator
+    arguments:
+      - '@path_alias.repository'
+      - '@trotamundos_experiences.repository'

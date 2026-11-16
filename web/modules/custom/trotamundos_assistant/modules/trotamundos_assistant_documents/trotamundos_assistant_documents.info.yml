@@ -1,0 +1,11 @@
+name: 'Trotamundos Assistant Documents'
+type: module
+description: 'Extracts text from PDF Media files referenced by configured entity bundles for later vector indexing.'
+package: 'Minsait'
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:file
+  - drupal:field
+  - drupal:media
+  - drupal:text
+  - trotamundos_assistant:trotamundos_assistant

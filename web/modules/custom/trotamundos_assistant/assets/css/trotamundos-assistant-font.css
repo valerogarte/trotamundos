@@ -1,0 +1,112 @@
+@font-face {
+  font-family: "ForFuture Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src:
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF2/ForFutureSans-Light.woff2") format("woff2"),
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF/ForFutureSans-Light.woff") format("woff");
+}
+
+@font-face {
+  font-family: "ForFuture Sans";
+  font-style: italic;
+  font-weight: 300;
+  font-display: swap;
+  src:
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF2/ForFutureSans-LightItalic.woff2") format("woff2"),
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF/ForFutureSans-LightItalic.woff") format("woff");
+}
+
+@font-face {
+  font-family: "ForFuture Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF2/ForFutureSans-Regular.woff2") format("woff2"),
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF/ForFutureSans-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "ForFuture Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src:
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF2/ForFutureSans-RegularItalic.woff2") format("woff2"),
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF/ForFutureSans-RegularItalic.woff") format("woff");
+}
+
+@font-face {
+  font-family: "ForFuture Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src:
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF2/ForFutureSans-Medium.woff2") format("woff2"),
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF/ForFutureSans-Medium.woff") format("woff");
+}
+
+@font-face {
+  font-family: "ForFuture Sans";
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src:
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF2/ForFutureSans-MediumItalic.woff2") format("woff2"),
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF/ForFutureSans-MediumItalic.woff") format("woff");
+}
+
+@font-face {
+  font-family: "ForFuture Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF2/ForFutureSans-Bold.woff2") format("woff2"),
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF/ForFutureSans-Bold.woff") format("woff");
+}
+
+@font-face {
+  font-family: "ForFuture Sans";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src:
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF2/ForFutureSans-BoldItalic.woff2") format("woff2"),
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF/ForFutureSans-BoldItalic.woff") format("woff");
+}
+
+@font-face {
+  font-family: "ForFuture Sans";
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src:
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF2/ForFutureSans-Black.woff2") format("woff2"),
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF/ForFutureSans-Black.woff") format("woff");
+}
+
+@font-face {
+  font-family: "ForFuture Sans";
+  font-style: italic;
+  font-weight: 900;
+  font-display: swap;
+  src:
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF2/ForFutureSans-BlackItalic.woff2") format("woff2"),
+    url("../fonts/ForFuture Sans/Web Fonts/WOFF/ForFutureSans-BlackItalic.woff") format("woff");
+}
+
+:root {
+  --minsait-font-family: "ForFuture Sans", Arial, sans-serif;
+}
+
+.trotamundos-assistant,
+.trotamundos-assistant-usage,
+.trotamundos-assistant-flow,
+.trotamundos-assistant-template,
+.trotamundos-assistant-skills,
+.trotamundos-assistant-skills-form {
+  font-family: var(--minsait-font-family);
+}

@@ -1,0 +1,466 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for Trotamundos Assistant.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function trotamundos_assistant_schema(): array {
+  $schema['trotamundos_assistant_usage'] = [
+    'description' => 'Stores AI provider usage and estimated cost for Trotamundos Assistant calls.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'call_id' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'description' => 'Identifier for the frontend assistant request.',
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Unix timestamp when the provider call was recorded.',
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'thread_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+      ],
+      'assistant_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+      ],
+      'provider_request_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+      ],
+      'provider_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+      ],
+      'model_id' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+      ],
+      'operation_type' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+      ],
+      'iteration_number' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Conversation iteration number inside the thread.',
+      ],
+      'input_tokens' => [
+        'type' => 'int',
+        'not null' => FALSE,
+      ],
+      'output_tokens' => [
+        'type' => 'int',
+        'not null' => FALSE,
+      ],
+      'total_tokens' => [
+        'type' => 'int',
+        'not null' => FALSE,
+      ],
+      'cached_tokens' => [
+        'type' => 'int',
+        'not null' => FALSE,
+      ],
+      'reasoning_tokens' => [
+        'type' => 'int',
+        'not null' => FALSE,
+      ],
+      'input_cost_usd' => [
+        'type' => 'numeric',
+        'precision' => 18,
+        'scale' => 10,
+        'not null' => TRUE,
+        'default' => '0',
+      ],
+      'output_cost_usd' => [
+        'type' => 'numeric',
+        'precision' => 18,
+        'scale' => 10,
+        'not null' => TRUE,
+        'default' => '0',
+      ],
+      'cached_cost_usd' => [
+        'type' => 'numeric',
+        'precision' => 18,
+        'scale' => 10,
+        'not null' => TRUE,
+        'default' => '0',
+      ],
+      'total_cost_usd' => [
+        'type' => 'numeric',
+        'precision' => 18,
+        'scale' => 10,
+        'not null' => TRUE,
+        'default' => '0',
+      ],
+      'currency' => [
+        'type' => 'varchar',
+        'length' => 3,
+        'not null' => TRUE,
+        'default' => 'USD',
+      ],
+      'pricing_source' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+      ],
+      'request_text' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+        'description' => 'Text sent by the user for this assistant request.',
+      ],
+      'response_text' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+        'description' => 'Full text returned by the assistant for this request.',
+      ],
+      'provider_request_raw' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+        'description' => 'Raw request input captured from the AI provider event.',
+      ],
+      'provider_system_prompt' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+        'description' => 'Final system prompt sent to the AI provider, including skill instructions.',
+      ],
+      'provider_response_raw' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+        'description' => 'Raw response output captured from the AI provider event.',
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'call_id' => ['call_id'],
+      'thread_id' => ['thread_id'],
+      'iteration_number' => ['thread_id', 'iteration_number'],
+      'created' => ['created'],
+      'uid' => ['uid'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Implements hook_update_last_removed().
+ */
+function trotamundos_assistant_update_last_removed(): int {
+  return 11012;
+}
+
+/**
+ * Splits the shopping cart skill into view and add skills.
+ */
+function trotamundos_assistant_update_11013(): void {
+  $config = \Drupal::configFactory()->getEditable('trotamundos_assistant.settings');
+  $enabled_skills = $config->get('enabled_skills');
+  if (!is_array($enabled_skills)) {
+    return;
+  }
+
+  $updated = [];
+  foreach ($enabled_skills as $skill) {
+    $skill = (string) $skill;
+    if ($skill === 'shopping_cart') {
+      $updated[] = 'shopping_cart_add';
+      $updated[] = 'shopping_cart_view';
+      continue;
+    }
+    $updated[] = $skill;
+  }
+
+  $config
+    ->set('enabled_skills', array_values(array_unique($updated)))
+    ->save();
+}
+
+/**
+ * Adds role restriction defaults for assistant access.
+ */
+function trotamundos_assistant_update_11014(): void {
+  $config = \Drupal::configFactory()->getEditable('trotamundos_assistant.settings');
+  $defaults = [
+    'allowed_roles' => ['administrator'],
+    'login_required_message' => 'Para usar el asistente de catálogo debes estar logado.',
+    'role_denied_chat_message' => 'No tienes permisos para usar este asistente.',
+  ];
+
+  foreach ($defaults as $key => $value) {
+    if ($config->get($key) === NULL) {
+      $config->set($key, $value);
+    }
+  }
+
+  $config->save();
+}
+
+/**
+ * Removes the duplicated anonymous chat message setting.
+ */
+function trotamundos_assistant_update_11015(): void {
+  \Drupal::configFactory()
+    ->getEditable('trotamundos_assistant.settings')
+    ->clear('login_required_chat_message')
+    ->save();
+}
+
+/**
+ * Leaves only the default skill enabled by default.
+ */
+function trotamundos_assistant_update_11016(): void {
+  \Drupal::configFactory()
+    ->getEditable('trotamundos_assistant.settings')
+    ->set('enabled_skills', ['default'])
+    ->save();
+}
+
+/**
+ * Moves ecommerce skill configuration to the ecommerce submodule namespace.
+ */
+function trotamundos_assistant_update_11017(): void {
+  if (!\Drupal::moduleHandler()->moduleExists('trotamundos_assistant_ecommerce')) {
+    \Drupal::service('module_installer')->install(['trotamundos_assistant_ecommerce']);
+  }
+
+  $ecommerce_skills = [
+    'clarification',
+    'payment',
+    'product_alternatives',
+    'product_comparison',
+    'product_recommendations',
+    'product_results',
+    'product_summary',
+    'shopping_cart_add',
+    'shopping_cart_view',
+  ];
+  $ecommerce_lookup = array_fill_keys($ecommerce_skills, TRUE);
+  $config = \Drupal::configFactory()->getEditable('trotamundos_assistant.settings');
+  $enabled_skills = $config->get('enabled_skills');
+  if (!is_array($enabled_skills)) {
+    return;
+  }
+
+  $updated = [];
+  foreach ($enabled_skills as $skill) {
+    $skill = (string) $skill;
+    $updated[] = isset($ecommerce_lookup[$skill])
+      ? 'trotamundos_assistant_ecommerce:' . $skill
+      : $skill;
+  }
+
+  $config
+    ->set('enabled_skills', array_values(array_unique($updated)))
+    ->save();
+}
+
+/**
+ * Adds external result panel configuration defaults.
+ */
+function trotamundos_assistant_update_11018(): void {
+  $config = \Drupal::configFactory()->getEditable('trotamundos_assistant.settings');
+  $defaults = [
+    'result_target_selector' => '#trotamundos-assistant-result-panel',
+    'desktop_always_open' => FALSE,
+  ];
+
+  foreach ($defaults as $key => $value) {
+    if ($config->get($key) === NULL) {
+      $config->set($key, $value);
+    }
+  }
+
+  $config->save();
+}
+
+/**
+ * Adds the configurable chat toggle label.
+ */
+function trotamundos_assistant_update_11019(): void {
+  $config = \Drupal::configFactory()->getEditable('trotamundos_assistant.settings');
+  if ($config->get('toggle_label') === NULL) {
+    $config->set('toggle_label', 'Trotamundos Assistant')->save();
+  }
+}
+
+/**
+ * Adds the configurable administration toolbar selector.
+ */
+function trotamundos_assistant_update_11020(): void {
+  $config = \Drupal::configFactory()->getEditable('trotamundos_assistant.settings');
+  if ($config->get('admin_toolbar_selector') === NULL) {
+    $config->set('admin_toolbar_selector', '#toolbar-administration')->save();
+  }
+}
+
+/**
+ * Adds the configurable chat logo path.
+ */
+function trotamundos_assistant_update_11021(): void {
+  $config = \Drupal::configFactory()->getEditable('trotamundos_assistant.settings');
+  if ($config->get('chat_logo_path') === NULL) {
+    $config
+      ->set('chat_logo_path', '/modules/custom/trotamundos_assistant/assets/images/minsait-chatbot-logo-head.png')
+      ->save();
+  }
+}
+
+/**
+ * Removes the obsolete content shift reference selector setting.
+ */
+function trotamundos_assistant_update_11022(): void {
+  \Drupal::configFactory()
+    ->getEditable('trotamundos_assistant.settings')
+    ->clear('shift_reference_selector')
+    ->save();
+}
+
+/**
+ * Removes the obsolete administration toolbar selector setting.
+ */
+function trotamundos_assistant_update_11023(): void {
+  \Drupal::configFactory()
+    ->getEditable('trotamundos_assistant.settings')
+    ->clear('admin_toolbar_selector')
+    ->save();
+}
+
+/**
+ * Adds the sticky header selector used to position the assistant.
+ */
+function trotamundos_assistant_update_11024(): void {
+  $config = \Drupal::configFactory()->getEditable('trotamundos_assistant.settings');
+  if ($config->get('header_sticky') === NULL) {
+    $config->set('header_sticky', 'header')->save();
+  }
+}
+
+/**
+ * Adds additional selectors shifted when the assistant opens.
+ */
+function trotamundos_assistant_update_11025(): void {
+  $config = \Drupal::configFactory()->getEditable('trotamundos_assistant.settings');
+  if ($config->get('extra_shift_selectors') === NULL) {
+    $config->set('extra_shift_selectors', 'footer')->save();
+  }
+}
+
+/**
+ * Adds the default legal and privacy notice shown in the assistant chat.
+ */
+function trotamundos_assistant_update_11026(): void {
+  $config = \Drupal::configFactory()->getEditable('trotamundos_assistant.settings');
+  if ($config->get('privacy_notice') === NULL) {
+    $config
+      ->set('privacy_notice', 'Al enviar una consulta aceptas que se procese para generar la respuesta del asistente. No incluyas datos personales, confidenciales o de pago.')
+      ->save();
+  }
+}
+
+/**
+ * Adds the configurable placeholder shown in the assistant input.
+ */
+function trotamundos_assistant_update_11027(): void {
+  $config = \Drupal::configFactory()->getEditable('trotamundos_assistant.settings');
+  if ($config->get('input_placeholder') === NULL) {
+    $config
+      ->set('input_placeholder', 'Escribe tu consulta...')
+      ->save();
+  }
+}
+
+/**
+ * Creates the usage tracking table on installs that predate its schema.
+ */
+function trotamundos_assistant_update_11028(): void {
+  $schema = \Drupal::database()->schema();
+  if (!$schema->tableExists('trotamundos_assistant_usage')) {
+    $tables = trotamundos_assistant_schema();
+    $schema->createTable('trotamundos_assistant_usage', $tables['trotamundos_assistant_usage']);
+  }
+}
+
+/**
+ * Migrates the usage table and schema state from the former module name.
+ */
+function trotamundos_assistant_update_11029(): void {
+  trotamundos_assistant_migrate_usage_table();
+}
+
+/**
+ * Stores the final system prompt for provider-call auditing.
+ */
+function trotamundos_assistant_update_11030(): void {
+  $schema = \Drupal::database()->schema();
+  if (!$schema->tableExists('trotamundos_assistant_usage') || $schema->fieldExists('trotamundos_assistant_usage', 'provider_system_prompt')) {
+    return;
+  }
+
+  $schema->addField('trotamundos_assistant_usage', 'provider_system_prompt', [
+    'type' => 'text',
+    'size' => 'big',
+    'not null' => FALSE,
+    'description' => 'Final system prompt sent to the AI provider, including skill instructions.',
+  ]);
+}
+
+/**
+ * Renames the usage table and removes obsolete schema state.
+ */
+function trotamundos_assistant_migrate_usage_table(): void {
+  $schema = \Drupal::database()->schema();
+
+  if (!$schema->tableExists('trotamundos_assistant_usage')) {
+    if ($schema->tableExists('minsait_assistant_usage')) {
+      $schema->renameTable('minsait_assistant_usage', 'trotamundos_assistant_usage');
+    }
+    else {
+      // Sites that adopted the schema version without ever running
+      // hook_schema() (machine-name change) end up with no usage table at all.
+      $tables = trotamundos_assistant_schema();
+      $schema->createTable('trotamundos_assistant_usage', $tables['trotamundos_assistant_usage']);
+    }
+  }
+
+  \Drupal::keyValue('system.schema')->deleteMultiple([
+    'minsait_assistant',
+    'minsait_assistant_documents',
+    'minsait_assistant_ecommerce',
+  ]);
+}
+
+/**
+ * Re-runs usage table migration on sites where the machine-name change skipped it.
+ */
+function trotamundos_assistant_update_11031(): void {
+  trotamundos_assistant_migrate_usage_table();
+}

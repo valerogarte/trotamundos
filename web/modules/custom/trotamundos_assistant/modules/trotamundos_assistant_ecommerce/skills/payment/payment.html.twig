@@ -1,0 +1,101 @@
+{#
+/**
+ * @file
+ * Payment skill template for Trotamundos Assistant.
+ */
+#}
+<article class="trotamundos-assistant-template trotamundos-assistant-template--payment">
+  <header class="trotamundos-assistant-template__header">
+    <p class="trotamundos-assistant-template__eyebrow">{{ title|default('Finalizar compra'|t) }}</p>
+  </header>
+
+  {% if intro is defined and intro %}
+    <p class="trotamundos-assistant-template__intro">{{ intro }}</p>
+  {% elseif description is defined and description %}
+    <p class="trotamundos-assistant-template__description">{{ description }}</p>
+  {% endif %}
+
+  <div class="trotamundos-assistant-payment">
+    <section class="trotamundos-assistant-payment__panel" aria-label="{{ 'Acciones de pago'|t }}">
+      <h3 class="trotamundos-assistant-payment__title">{{ 'Continúa en el checkout'|t }}</h3>
+      <p class="trotamundos-assistant-payment__copy">
+        {{ 'El pago se realiza en el flujo seguro de Commerce. Desde ahí podrás revisar el pedido, completar los datos necesarios y confirmar la compra.'|t }}
+      </p>
+      <div class="trotamundos-assistant-payment__actions">
+        <a class="trotamundos-assistant-payment__button" href="{{ path('commerce_checkout.checkout') }}">{{ 'Ir al pago'|t }}</a>
+        <a
+          class="trotamundos-assistant-payment__link"
+          href="{{ path('commerce_cart.page') }}"
+          data-trotamundos-assistant-cart-panel
+          data-cart-panel-url="{{ path('trotamundos_assistant.skill_action', {'machine_name': 'shopping_cart_view', 'action': 'panel'}) }}"
+        >
+          {{ 'Revisar carrito'|t }}
+        </a>
+      </div>
+    </section>
+
+    {% if product_items is defined and product_items %}
+      <section class="trotamundos-assistant-payment__panel" aria-label="{{ 'Productos relacionados con el pago'|t }}">
+        <h3 class="trotamundos-assistant-payment__title">{{ 'Productos antes de pagar'|t }}</h3>
+        <p class="trotamundos-assistant-payment__summary-note">
+          {{ 'Resumen de los productos seleccionados. Para modificar cantidades o productos, vuelve al carrito.'|t }}
+        </p>
+        <div class="trotamundos-assistant-cart">
+          {% for item in product_items %}
+            <article class="trotamundos-assistant-payment__product" aria-label="{{ item.title|default('Producto seleccionado'|t) }}">
+              <div class="trotamundos-assistant-payment__product-media">
+                {% if item.image_url %}
+                  <img
+                    src="{{ item.image_url }}"
+                    alt="{{ item.image_alt|default(item.title) }}"
+                    loading="lazy"
+                  />
+                {% else %}
+                  <span class="trotamundos-assistant-payment__product-placeholder" aria-hidden="true">{{ 'Sin imagen'|t }}</span>
+                {% endif %}
+              </div>
+
+              <div class="trotamundos-assistant-payment__product-copy">
+                {% if item.title %}
+                  <h4 class="trotamundos-assistant-payment__product-title">{{ item.title }}</h4>
+                {% endif %}
+                {% if item.body %}
+                  <p class="trotamundos-assistant-payment__product-description">{{ item.body }}</p>
+                {% endif %}
+              </div>
+
+              <dl class="trotamundos-assistant-payment__product-details">
+                <div>
+                  <dt>{{ 'Precio unitario'|t }}</dt>
+                  <dd>{{ item.price|default('Consultar precio'|t) }}</dd>
+                </div>
+                <div>
+                  <dt>{{ 'Cantidad'|t }}</dt>
+                  <dd>{{ item.quantity|default(1) }}</dd>
+                </div>
+              </dl>
+            </article>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+  </div>
+
+  {% if summary_points is defined and summary_points %}
+    <ul class="trotamundos-assistant-template__list">
+      {% for point in summary_points %}
+        <li class="trotamundos-assistant-template__list-item">
+          <span class="trotamundos-assistant-template__list-marker">{{ loop.index }}</span>
+          <span class="trotamundos-assistant-template__list-content">
+            {% if point.title %}
+              <strong>{{ point.title }}:</strong>
+            {% endif %}
+            {{ point.body }}
+          </span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% include '@trotamundos_assistant/trotamundos-assistant-suggestions.html.twig' with { notes: notes|default(''), outro: outro|default('') } only %}
+</article>

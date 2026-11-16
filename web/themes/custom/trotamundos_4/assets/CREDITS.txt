@@ -1,0 +1,78 @@
+Recursos visuales del tema trotamundos_4
+
+Fotografías: archivos originales de Wikimedia Commons. No implica relación comercial con los lugares o fotógrafos.
+Se han redimensionado y convertido a WebP. Las fotografías bajo CC BY-SA conservan esa licencia.
+
+images/hero-cocora.webp
+Fotografía: Wax Palms in the Cocora Valley, 2025.jpg
+Autor: Mottenpriesterin
+Origen: https://commons.wikimedia.org/wiki/File:Wax_Palms_in_the_Cocora_Valley,_2025.jpg
+Licencia: CC BY-SA 4.0 — https://creativecommons.org/licenses/by-sa/4.0
+Cambios: Redimensionada y convertida a WebP para la web.
+
+images/concepcion.webp
+Fotografía: Calle de Concepción, Antioquia.jpg
+Autor: XalD
+Origen: https://commons.wikimedia.org/wiki/File:Calle_de_Concepci%C3%B3n,_Antioquia.jpg
+Licencia: CC BY-SA 4.0 — https://creativecommons.org/licenses/by-sa/4.0
+Cambios: Redimensionada y convertida a WebP para la web.
+
+images/termales.webp
+Fotografía: Termales de Santa Rosa de Cabal.jpg
+Autor: Juan Sebastian Aparicio
+Origen: https://commons.wikimedia.org/wiki/File:Termales_de_Santa_Rosa_de_Cabal.jpg
+Licencia: CC BY-SA 4.0 — https://creativecommons.org/licenses/by-sa/4.0
+Cambios: Redimensionada y convertida a WebP para la web.
+
+images/pueblo.webp
+Fotografía: Concepción - calle.jpg
+Autor: Luis Pérez
+Origen: https://commons.wikimedia.org/wiki/File:Concepci%C3%B3n_-_calle.jpg
+Licencia: CC BY 2.0 — https://creativecommons.org/licenses/by/2.0
+Cambios: Redimensionada y convertida a WebP para la web.
+
+images/hero-caribe.webp
+Fotografía: 20251217 Islas del Rosario Comunidad Energetica - 7777.jpg
+Lugar: Islas del Rosario, Colombia
+Autor: Ovidio Gonzalez S / REPÚBLICA DE COLOMBIA
+Origen: https://commons.wikimedia.org/wiki/File:20251217_Islas_del_Rosario_Comunidad_Energetica_-_7777.jpg
+Publicación original: https://www.flickr.com/photos/197399771@N06/54990775801/
+Licencia: Dominio público (Public Domain Mark, publicación del autor en Flickr verificada por Wikimedia Commons) — https://creativecommons.org/publicdomain/mark/1.0/
+Cambios: Redimensionada a 2560 × 1707 y convertida a WebP para la web. Sin cambios de color.
+
+images/hero-caribe-mobile.webp
+Fotografía: 20251217 Islas del Rosario Comunidad Energetica - 7777.jpg
+Lugar: Islas del Rosario, Colombia
+Autor: Ovidio Gonzalez S / REPÚBLICA DE COLOMBIA
+Origen: https://commons.wikimedia.org/wiki/File:20251217_Islas_del_Rosario_Comunidad_Energetica_-_7777.jpg
+Publicación original: https://www.flickr.com/photos/197399771@N06/54990775801/
+Licencia: Dominio público (Public Domain Mark, publicación del autor en Flickr verificada por Wikimedia Commons) — https://creativecommons.org/publicdomain/mark/1.0/
+Cambios: Recorte vertical desde el original, redimensionado a 1080 × 1920 y convertido a WebP. Sin cambios de color.
+
+Fuentes alojadas localmente
+Barlow Condensed, normal, pesos estáticos 600 y 700, subconjunto latino con diacríticos españoles.
+Origen: https://fonts.google.com/specimen/Barlow+Condensed
+Archivos: fonts/barlow-condensed-semibold-latin.woff2 y fonts/barlow-condensed-bold-latin.woff2
+Licencia: SIL OFL 1.1, fonts/Barlow-Condensed-OFL.txt
+IBM Plex Sans, normal variable 100–700, subconjunto latino con diacríticos españoles.
+Pesos previstos en el diseño: 400–700.
+Origen: https://fonts.google.com/specimen/IBM+Plex+Sans
+Archivo: fonts/ibm-plex-sans-latin.woff2
+Licencia: SIL OFL 1.1, fonts/IBM-Plex-Sans-OFL.txt
+IBM Plex Mono, normal 400, subconjunto latino con diacríticos españoles.
+Origen: https://fonts.google.com/specimen/IBM+Plex+Mono
+Archivo: fonts/ibm-plex-mono-latin.woff2
+Licencia: SIL OFL 1.1, fonts/IBM-Plex-Mono-OFL.txt
+Los archivos de fuentes no se han modificado.
+
+Mapa
+Contorno real continental de Colombia: maps/colombia.svg, obtenido de Natural Earth (dominio público).
+Coordenadas de destinos: Wikidata (CC0). Fuentes y transformación en maps/colombia.metadata.json.
+Créditos completos del mapa: maps/CREDITS.txt.
+
+Símbolo vectorial
+logo.svg: desvío con dos flechas, creado para el tema trotamundos_4.
+Colores: Selva #173D32 y Terracota #BF6846, fondo transparente, trazados autónomos.
+
+Las fotografías se han copiado sin alterar sus bytes desde el tema trotamundos_3.
+Este tema incluye sus propios archivos y conserva las atribuciones y licencias originales.

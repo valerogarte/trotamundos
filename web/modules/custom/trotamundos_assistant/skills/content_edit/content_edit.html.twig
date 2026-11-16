@@ -1,0 +1,58 @@
+{#
+/**
+ * @file
+ * Content edit skill template for Trotamundos Assistant.
+ */
+#}
+<article class="trotamundos-assistant-template trotamundos-assistant-template--content-edit">
+  <header class="trotamundos-assistant-template__header">
+    <p class="trotamundos-assistant-template__eyebrow">{{ title|default('Editar contenido'|t) }}</p>
+  </header>
+
+  {% if description is defined and description %}
+    <p class="trotamundos-assistant-template__description">{{ description }}</p>
+  {% endif %}
+
+  {% if ambiguous is defined and ambiguous %}
+    <div class="trotamundos-assistant-template__empty">
+      <p>{{ 'He encontrado varios contenidos con un nombre parecido. Abre el que quieras editar o concreta más el nombre.'|t }}</p>
+      {% if matches is defined and matches %}
+        <ul>
+          {% for match in matches %}
+            <li>
+              {% if match.edit_url %}
+                <a href="{{ match.edit_url }}">{{ match.label }}</a>
+              {% else %}
+                {{ match.label }}
+              {% endif %}
+              {% if match.type %}
+                <span>({{ match.type }})</span>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  {% elseif found is defined and not found %}
+    <div class="trotamundos-assistant-template__empty">
+      <p>{{ 'No he encontrado ningún contenido con ese nombre.'|t }}</p>
+    </div>
+  {% elseif access_denied is defined and access_denied %}
+    <div class="trotamundos-assistant-template__empty">
+      <p>{{ 'No tienes permisos para editar este contenido.'|t }}</p>
+      {% if edit_url is defined and edit_url %}
+        <a class="trotamundos-assistant-profile__link" href="{{ edit_url }}">{{ 'Abrir contenido'|t }}</a>
+      {% endif %}
+    </div>
+  {% elseif content_form is defined and content_form %}
+    <div class="trotamundos-assistant-content-edit">
+      {% if content_title is defined and content_title %}
+        <h2 class="trotamundos-assistant-content-edit__title">{{ content_title }}</h2>
+      {% endif %}
+      {% if content_type is defined and content_type %}
+        <p class="trotamundos-assistant-template__intro">{{ content_type }}</p>
+      {% endif %}
+      {{ content_form }}
+    </div>
+  {% endif %}
+</article>

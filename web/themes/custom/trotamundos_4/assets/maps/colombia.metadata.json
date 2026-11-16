@@ -1,0 +1,82 @@
+{
+  "title": "Colombia continental — trotamundos_4",
+  "source": {
+    "name": "Natural Earth 1:50m Admin 0 Countries",
+    "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson",
+    "feature_filter": {
+      "ADM0_A3": "COL"
+    },
+    "selected_geometry": "Largest polygon of the Colombia MultiPolygon, mainland; offshore polygons omitted.",
+    "source_feature_sha256": "f4cfd1fc8be342f2416a7a318f911821024167c3fb8ca157125d87f67b3988a0",
+    "license": "Public domain",
+    "license_url": "https://www.naturalearthdata.com/about/terms-of-use/"
+  },
+  "viewBox": {
+    "x": 0,
+    "y": 0,
+    "width": 600,
+    "height": 660
+  },
+  "geographic_bounds": {
+    "min_longitude": -79.025439,
+    "min_latitude": -4.235938,
+    "max_longitude": -66.876025,
+    "max_latitude": 12.434375
+  },
+  "projection": {
+    "name": "Linear longitude/latitude (equirectangular coordinates), uniformly fitted to viewBox",
+    "scale_svg_units_per_degree": 37.191863164176944,
+    "offset_x": 74.07032849353203,
+    "offset_y": 20.0,
+    "formula_x": "offset_x + (longitude - min_longitude) * scale_svg_units_per_degree",
+    "formula_y": "offset_y + (max_latitude - latitude) * scale_svg_units_per_degree",
+    "css_overlay_contract": "Use a wrapper with aspect-ratio: 600 / 660. Positions are percentages of the full viewBox; center each marker with translate(-50%, -50%)."
+  },
+  "points": [
+    {
+      "id": "concepcion",
+      "label": "Concepción, Antioquia",
+      "latitude": 6.395,
+      "longitude": -75.25833333333334,
+      "wikidata": "Q2279494",
+      "source": "https://www.wikidata.org/wiki/Q2279494",
+      "source_value": "6°23′42″N, 75°15′30″W",
+      "corroboration": "https://www.minvivienda.gov.co/node/38692",
+      "svg_x": 214.176007,
+      "svg_y": 244.615609,
+      "x_percent": 35.696001,
+      "y_percent": 37.062971
+    },
+    {
+      "id": "cocora",
+      "label": "Valle de Cocora, Quindío",
+      "latitude": 4.636911111111111,
+      "longitude": -75.48655,
+      "wikidata": "Q965776",
+      "source": "https://www.wikidata.org/wiki/Q965776",
+      "source_value": "4°38′12.88″N, 75°29′11.58″W",
+      "coordinate_note": "Wikidata contains two coordinate statements; this uses the eastern valley coordinate, not the western alternate statement.",
+      "svg_x": 205.688204,
+      "svg_y": 310.00221,
+      "x_percent": 34.281367,
+      "y_percent": 46.970032
+    },
+    {
+      "id": "rosario",
+      "label": "Islas del Rosario",
+      "latitude": 10.175,
+      "longitude": -75.75,
+      "wikidata": "Q1674250",
+      "source": "https://www.wikidata.org/wiki/Q1674250",
+      "source_value": "10°10′30″N, 75°45′0″W",
+      "coordinate_note": "Approximate archipelago reference point, not a particular beach, building or boat departure.",
+      "svg_x": 195.890008,
+      "svg_y": 104.030366,
+      "x_percent": 32.648335,
+      "y_percent": 15.762177
+    }
+  ],
+  "coordinate_data_license": "Wikidata structured data: CC0 1.0",
+  "coordinate_data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "scope_note": "Generalized country outline and approximate destination markers for an editorial travel map. No routing or address-level positions."
+}

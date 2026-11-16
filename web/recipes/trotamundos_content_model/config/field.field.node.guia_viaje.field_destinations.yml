@@ -1,0 +1,26 @@
+langcode: es
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_destinations
+    - node.type.destino
+    - node.type.guia_viaje
+id: node.guia_viaje.field_destinations
+field_name: field_destinations
+entity_type: node
+bundle: guia_viaje
+label: 'Destinos relacionados'
+description: 'Lugares que se tratan en esta guía.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      destino: destino
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

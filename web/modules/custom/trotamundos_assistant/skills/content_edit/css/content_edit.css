@@ -1,0 +1,177 @@
+.trotamundos-assistant-template--content-edit {
+  --content-edit-field-border: rgba(var(--minsait-rgb-pruno-dark), 0.18);
+  --content-edit-field-border-focus: var(--minsait-color-pruno);
+  --content-edit-field-bg: var(--minsait-color-white);
+  --content-edit-muted: rgba(var(--minsait-rgb-pruno-dark), 0.68);
+}
+
+.trotamundos-assistant-content-edit {
+  display: grid;
+  gap: 18px;
+  max-width: 980px;
+}
+
+.trotamundos-assistant-content-edit__title {
+  margin: 0;
+  color: var(--minsait-color-pruno-dark);
+  font-size: 30px;
+  font-weight: 850;
+  line-height: 1.12;
+}
+
+.trotamundos-assistant-content-edit > .trotamundos-assistant-template__intro {
+  margin-block-start: -12px;
+}
+
+.trotamundos-assistant-content-edit-form {
+  display: grid;
+  gap: 18px;
+  padding: 0;
+  color: var(--minsait-color-pruno-dark);
+}
+
+.trotamundos-assistant-content-edit-form .form-item,
+.trotamundos-assistant-content-edit-form .form-wrapper {
+  margin: 0;
+}
+
+.trotamundos-assistant-content-edit-form .form-item:not(:last-child),
+.trotamundos-assistant-content-edit-form .field--widget-entity-reference-autocomplete,
+.trotamundos-assistant-content-edit-form .field--widget-options-select,
+.trotamundos-assistant-content-edit-form .field--widget-string-textfield,
+.trotamundos-assistant-content-edit-form .field--widget-text-textarea,
+.trotamundos-assistant-content-edit-form .field--widget-text-textarea-with-summary {
+  margin-block-end: 16px;
+}
+
+.trotamundos-assistant-content-edit-form label,
+.trotamundos-assistant-content-edit-form legend,
+.trotamundos-assistant-content-edit-form .fieldset__label {
+  display: block;
+  margin: 0 0 7px;
+  color: var(--minsait-color-pruno-dark);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.trotamundos-assistant-content-edit-form .form-required::after {
+  color: var(--minsait-color-fucsia);
+}
+
+.trotamundos-assistant-content-edit-form input[type="text"],
+.trotamundos-assistant-content-edit-form input[type="number"],
+.trotamundos-assistant-content-edit-form input[type="email"],
+.trotamundos-assistant-content-edit-form input[type="url"],
+.trotamundos-assistant-content-edit-form input[type="search"],
+.trotamundos-assistant-content-edit-form input[type="date"],
+.trotamundos-assistant-content-edit-form input[type="datetime-local"],
+.trotamundos-assistant-content-edit-form textarea,
+.trotamundos-assistant-content-edit-form select {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--content-edit-field-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--content-edit-field-bg);
+  color: var(--minsait-color-pruno-dark);
+  font: inherit;
+  line-height: 1.45;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.trotamundos-assistant-content-edit-form textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.trotamundos-assistant-content-edit-form input:focus,
+.trotamundos-assistant-content-edit-form textarea:focus,
+.trotamundos-assistant-content-edit-form select:focus {
+  outline: 0;
+  border-color: var(--content-edit-field-border-focus);
+  box-shadow: 0 0 0 3px rgba(var(--minsait-rgb-pruno), 0.14);
+}
+
+.trotamundos-assistant-content-edit-form .description,
+.trotamundos-assistant-content-edit-form .form-item__description,
+.trotamundos-assistant-content-edit-form .filter-guidelines,
+.trotamundos-assistant-content-edit-form .filter-help {
+  margin-block-start: 7px;
+  color: var(--content-edit-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.trotamundos-assistant-content-edit-form details,
+.trotamundos-assistant-content-edit-form fieldset {
+  overflow: hidden;
+  border: 1px solid var(--minsait-color-ceramica);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--minsait-color-surface-soft);
+}
+
+.trotamundos-assistant-content-edit-form summary {
+  cursor: pointer;
+  color: var(--minsait-color-pruno-dark);
+  font-weight: 800;
+}
+
+.trotamundos-assistant-content-edit-form .filter-wrapper {
+  margin-block-start: 10px;
+  border: 1px solid var(--minsait-color-ceramica);
+  border-radius: 8px;
+  padding: 12px;
+  background: var(--minsait-color-surface-accent);
+}
+
+.trotamundos-assistant-content-edit-form .form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-block-start: 8px;
+}
+
+.trotamundos-assistant-content-edit-form .button,
+.trotamundos-assistant-content-edit-form button,
+.trotamundos-assistant-content-edit-form input[type="submit"] {
+  min-height: 42px;
+  border: 1px solid var(--minsait-color-pruno);
+  border-radius: 8px;
+  padding: 10px 16px;
+  background: var(--minsait-color-pruno);
+  color: var(--minsait-color-white);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.trotamundos-assistant-content-edit-form .button:hover,
+.trotamundos-assistant-content-edit-form button:hover,
+.trotamundos-assistant-content-edit-form input[type="submit"]:hover {
+  background: var(--minsait-color-pruno-dark);
+  border-color: var(--minsait-color-pruno-dark);
+}
+
+.trotamundos-assistant-content-edit-form .button--danger,
+.trotamundos-assistant-content-edit-form input[value="Remove"],
+.trotamundos-assistant-content-edit-form input[value="Eliminar"] {
+  background: var(--minsait-color-white);
+  color: var(--minsait-color-pruno);
+}
+
+.trotamundos-assistant-content-edit-form img,
+.trotamundos-assistant-content-edit-form svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.trotamundos-assistant-content-edit-form .field--type-entity-reference,
+.trotamundos-assistant-content-edit-form .field--type-image,
+.trotamundos-assistant-content-edit-form .field--type-file {
+  display: grid;
+  gap: 10px;
+}

@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Initial assistant panel shown before the first user request.
+ */
+#}
+<article class="trotamundos-assistant-welcome">
+  <div class="trotamundos-assistant-welcome__content">
+    <p class="trotamundos-assistant-welcome__eyebrow">{{ title|default('Asistente de catálogo'|t) }}</p>
+
+    {% if intro is defined and intro %}
+      <h2 class="trotamundos-assistant-welcome__title">{{ intro }}</h2>
+    {% endif %}
+
+    {% if features is defined and features %}
+      <div class="trotamundos-assistant-welcome__features">
+        {% for feature in features %}
+          <section class="trotamundos-assistant-welcome__feature">
+            <span class="trotamundos-assistant-welcome__feature-index">{{ loop.index }}</span>
+            <h3 class="trotamundos-assistant-welcome__feature-title">{{ feature.label }}</h3>
+            <p class="trotamundos-assistant-welcome__feature-text">{{ feature.text }}</p>
+          </section>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if suggestions is defined and suggestions %}
+      <div class="trotamundos-assistant-welcome__suggestions" aria-label="{{ 'Consultas sugeridas'|t }}">
+        {% for suggestion in suggestions %}
+          <button class="trotamundos-assistant-welcome__suggestion" type="button" data-trotamundos-assistant-prompt="{{ suggestion }}">
+            {{ suggestion }}
+          </button>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</article>

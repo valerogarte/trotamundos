@@ -1,0 +1,140 @@
+{#
+/**
+ * @file
+ * Ayuda: contact channels, frequent questions and traveller care.
+ */
+#}
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+<div class="ayuda">
+  <header class="page-intro container">
+    <p class="eyebrow">{{ 'Ayuda'|t }}</p>
+    <h1>{{ '¿En qué te'|t }} <em>{{ 'ayudamos?'|t }}</em></h1>
+    <p class="lead">{{ 'Resolvemos tus dudas antes, durante y después del viaje. Si no encuentras lo que buscas, escríbenos.'|t }}</p>
+  </header>
+
+  <section class="container contact-grid-section" id="contacto" aria-labelledby="contact-title">
+    <h2 id="contact-title" class="visually-hidden">{{ 'Contacto'|t }}</h2>
+    <ul class="contact-grid">
+      <li class="contact-card contact-card--primary">
+        {{ icons.icon('whatsapp') }}
+        <h3>WhatsApp</h3>
+        <p>{{ 'La forma más rápida de hablar con nosotros, consultar una experiencia o resolver un imprevisto.'|t }}</p>
+        <a class="button button--whatsapp" href="{{ tm.whatsapp_url }}" target="_blank" rel="noopener">{{ 'Escribir a'|t }} {{ tm.whatsapp_display }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+      </li>
+      <li class="contact-card">
+        {{ icons.icon('mail') }}
+        <h3>{{ 'Correo'|t }}</h3>
+        <p>{{ 'Para propuestas de grupo, alianzas o consultas con más detalle.'|t }}</p>
+        <a class="text-link" href="mailto:{{ tm.email }}">{{ tm.email }}</a>
+      </li>
+      <li class="contact-card">
+        {{ icons.icon('instagram') }}
+        <h3>Instagram</h3>
+        <p>{{ 'Mira los viajes de Juan y la comunidad antes de elegir el tuyo.'|t }}</p>
+        <a class="text-link" href="{{ tm.instagram_url }}" target="_blank" rel="noopener">@{{ tm.instagram }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+      </li>
+    </ul>
+  </section>
+
+  <section class="container faq" id="preguntas" aria-labelledby="faq-title">
+    <div class="faq__heading">
+      <p class="eyebrow">{{ 'Preguntas frecuentes'|t }}</p>
+      <h2 id="faq-title">{{ 'Lo que suelen preguntarnos'|t }}</h2>
+      <nav class="faq__index" aria-label="{{ 'Temas de ayuda'|t }}">
+        <a href="#reservas">{{ 'Reservas y pagos'|t }}</a>
+        <a href="#cancelaciones">{{ 'Cambios y cancelaciones'|t }}</a>
+        <a href="#atencion">{{ 'Durante el viaje'|t }}</a>
+        <a href="#trotamundos">{{ 'Sobre Trotamundos'|t }}</a>
+      </nav>
+    </div>
+
+    <div class="faq__groups">
+      <div class="faq__group" id="reservas">
+        <h3>{{ icons.icon('card') }} {{ 'Reservas y pagos'|t }}</h3>
+        <div class="accordion">
+          <details>
+            <summary>{{ '¿Cómo reservo una experiencia?'|t }} {{ icons.icon('plus') }}</summary>
+            <div class="accordion__content"><p>{{ 'Elige la experiencia, la fecha y el número de viajeros, y pulsa «Reservar». Te escribimos por WhatsApp para confirmar la disponibilidad con los anfitriones y te enviamos un enlace de pago seguro. La reserva queda confirmada al completar el pago.'|t }}</p></div>
+          </details>
+          <details>
+            <summary>{{ '¿Es seguro pagar?'|t }} {{ icons.icon('plus') }}</summary>
+            <div class="accordion__content"><p>{{ 'Sí. Pagas mediante un enlace de pago seguro. Nunca te pediremos los datos de tu tarjeta por WhatsApp, correo ni teléfono.'|t }}</p></div>
+          </details>
+          <details>
+            <summary>{{ '¿Qué incluye el precio?'|t }} {{ icons.icon('plus') }}</summary>
+            <div class="accordion__content"><p>{{ 'Cada ficha indica qué incluye y qué no. El precio «desde» es por persona; el total depende de la fecha, del número de viajeros y del tipo de habitación.'|t }}</p></div>
+          </details>
+          <details>
+            <summary>{{ '¿Puedo reservar para un grupo o pedir un plan a medida?'|t }} {{ icons.icon('plus') }}</summary>
+            <div class="accordion__content"><p>{{ 'Sí. Escríbenos con las fechas, el número de personas y lo que te gustaría vivir, y te preparamos una propuesta.'|t }}</p></div>
+          </details>
+        </div>
+      </div>
+
+      <div class="faq__group" id="cancelaciones">
+        <h3>{{ icons.icon('calendar') }} {{ 'Cambios y cancelaciones'|t }}</h3>
+        <div class="accordion">
+          <details>
+            <summary>{{ '¿Puedo cambiar la fecha?'|t }} {{ icons.icon('plus') }}</summary>
+            <div class="accordion__content"><p>{{ 'Sí, según la disponibilidad de los anfitriones y la política de cada experiencia. Escríbenos lo antes posible.'|t }}</p></div>
+          </details>
+          <details>
+            <summary>{{ '¿Qué pasa si cancelo?'|t }} {{ icons.icon('plus') }}</summary>
+            <div class="accordion__content"><p>{{ 'Cada experiencia tiene su política de cancelación, visible en su ficha antes de reservar. Te la recordamos también en la confirmación.'|t }}</p></div>
+          </details>
+          <details>
+            <summary>{{ '¿Y si el viaje se cancela por el clima o por fuerza mayor?'|t }} {{ icons.icon('plus') }}</summary>
+            <div class="accordion__content"><p>{{ 'Si los anfitriones no pueden recibirte, te proponemos otra fecha o te devolvemos el dinero según la política de la experiencia.'|t }}</p></div>
+          </details>
+        </div>
+      </div>
+
+      <div class="faq__group" id="atencion">
+        <h3>{{ icons.icon('pin') }} {{ 'Durante el viaje'|t }}</h3>
+        <div class="accordion">
+          <details>
+            <summary>{{ '¿Cómo llego al destino?'|t }} {{ icons.icon('plus') }}</summary>
+            <div class="accordion__content"><p>{{ 'Al confirmar la reserva te enviamos la ubicación exacta, la ruta y las opciones de transporte.'|t }}</p></div>
+          </details>
+          <details>
+            <summary>{{ '¿Qué hago si tengo un imprevisto?'|t }} {{ icons.icon('plus') }}</summary>
+            <div class="accordion__content"><p>{{ 'Escríbenos por WhatsApp y te ayudamos a resolverlo con los anfitriones.'|t }}</p></div>
+          </details>
+          <details>
+            <summary>{{ '¿Qué debo llevar?'|t }} {{ icons.icon('plus') }}</summary>
+            <div class="accordion__content"><p>{{ 'Cada ficha tiene sus recomendaciones. Antes del viaje te enviamos una guía práctica con todo lo necesario.'|t }}</p></div>
+          </details>
+        </div>
+      </div>
+
+      <div class="faq__group" id="trotamundos">
+        <h3>{{ icons.icon('heart') }} {{ 'Sobre Trotamundos'|t }}</h3>
+        <div class="accordion">
+          <details>
+            <summary>{{ '¿Quién está detrás de Trotamundos?'|t }} {{ icons.icon('plus') }}</summary>
+            <div class="accordion__content"><p>{{ 'Juan Trotamundos y un equipo que cree en el turismo como una oportunidad para las comunidades.'|t }} <a href="{{ tm.esencia_url }}">{{ 'Conoce nuestra esencia'|t }}</a>.</p></div>
+          </details>
+          <details>
+            <summary>{{ '¿Cómo puedo ser aliado?'|t }} {{ icons.icon('plus') }}</summary>
+            <div class="accordion__content"><p>{{ 'Si tienes un emprendimiento turístico en un destino poco conocido, escríbenos. Nos encantará conocer tu proyecto.'|t }} <a href="{{ tm.esencia_url }}#comunidades">{{ 'Comunidades y aliados'|t }}</a>.</p></div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container traveller-care" aria-labelledby="care-title">
+    <div class="traveller-care__inner">
+      <div>
+        <p class="eyebrow">{{ 'Atención al viajero'|t }}</p>
+        <h2 id="care-title">{{ 'Contigo en cada etapa'|t }}</h2>
+      </div>
+      <ol class="traveller-care__steps">
+        <li><strong>{{ 'Antes'|t }}</strong><span>{{ 'Te ayudamos a elegir, resolvemos dudas y te enviamos la guía práctica.'|t }}</span></li>
+        <li><strong>{{ 'Durante'|t }}</strong><span>{{ 'Seguimos disponibles por WhatsApp si necesitas algo.'|t }}</span></li>
+        <li><strong>{{ 'Después'|t }}</strong><span>{{ 'Nos encantará saber cómo te fue para seguir mejorando con los anfitriones.'|t }}</span></li>
+      </ol>
+      <a class="button button--whatsapp" href="{{ tm.whatsapp_url }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }} {{ 'Escríbenos por WhatsApp'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+    </div>
+  </section>
+</div>

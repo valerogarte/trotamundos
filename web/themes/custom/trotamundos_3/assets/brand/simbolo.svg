@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Trotamundos</title>
+  <desc id="desc">Un camino continuo conecta dos puntos de origen y destino.</desc>
+  <path d="M12 49C25 49 19 31 32 31S43 15 52 15" stroke="#F5F0E6" stroke-width="3.25" stroke-linecap="round"/>
+  <circle cx="12" cy="49" r="4.5" fill="#D3A75E"/>
+  <circle cx="52" cy="15" r="6" stroke="#F5F0E6" stroke-width="2.5"/>
+  <circle cx="52" cy="15" r="2.5" fill="#D3A75E"/>
+</svg>
