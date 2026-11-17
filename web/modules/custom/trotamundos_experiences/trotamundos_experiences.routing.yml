@@ -1,7 +1,34 @@
 trotamundos_experiences.catalog:
+  path: '/planes'
+  defaults:
+    _controller: '\Drupal\trotamundos_experiences\Controller\CatalogController::catalog'
+    _title: 'Planes'
+  requirements:
+    _permission: 'access content'
+
+trotamundos_experiences.stays:
+  path: '/alojamientos'
+  defaults:
+    _controller: '\Drupal\trotamundos_experiences\Controller\CatalogController::catalog'
+    _title: 'Alojamientos'
+    product_type: 'alojamiento'
+  requirements:
+    _permission: 'access content'
+
+trotamundos_experiences.experiences:
   path: '/experiencias'
   defaults:
     _controller: '\Drupal\trotamundos_experiences\Controller\CatalogController::catalog'
     _title: 'Experiencias'
+    product_type: 'experiencia'
+  requirements:
+    _permission: 'access content'
+
+trotamundos_experiences.packages:
+  path: '/paquetes'
+  defaults:
+    _controller: '\Drupal\trotamundos_experiences\Controller\CatalogController::catalog'
+    _title: 'Paquetes'
+    product_type: 'paquete'
   requirements:
     _permission: 'access content'

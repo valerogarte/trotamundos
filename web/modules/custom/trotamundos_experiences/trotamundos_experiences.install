@@ -6,6 +6,7 @@
  */
 
 use Drupal\trotamundos_experiences\Setup\ContentModel;
+use Drupal\trotamundos_experiences\Setup\ProductTypes;
 
 /**
  * Implements hook_install().
@@ -14,4 +15,29 @@ function trotamundos_experiences_install(bool $is_syncing): void {
   if (!$is_syncing) {
     ContentModel::ensure();
   }
+}
+
+/**
+ * Adds the optional companion filter without changing existing content.
+ */
+function trotamundos_experiences_update_11001(): string {
+  ContentModel::ensureAccompaniment();
+  return (string) t('Se añadió el campo de acompañamiento. Las experiencias existentes siguen sin asignar.');
+}
+
+/**
+ * Separates stays, experiences and packages while preserving existing URLs.
+ */
+function trotamundos_experiences_update_11002(): string {
+  ProductTypes::ensure();
+  $count = ProductTypes::migrate();
+  return (string) t('Tipos de contenido separados. Se trasladaron @count fichas conservando su contenido, revisiones y URLs.', ['@count' => $count]);
+}
+
+/**
+ * Completes the seven travel styles while retaining existing assignments.
+ */
+function trotamundos_experiences_update_11003(): string {
+  ContentModel::ensureTravelStyles(TRUE);
+  return (string) t('Se actualizaron los siete estilos de viaje conservando los términos y las asignaciones existentes.');
 }

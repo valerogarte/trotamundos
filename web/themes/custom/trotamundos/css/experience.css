@@ -76,6 +76,10 @@
   margin-top: 18px;
 }
 
+.experience-header__save {
+  margin-top: 20px;
+}
+
 /* Gallery mosaic */
 .experience-gallery {
   position: relative;

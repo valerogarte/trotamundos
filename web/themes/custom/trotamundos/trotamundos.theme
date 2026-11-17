@@ -8,12 +8,16 @@
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\trotamundos_experiences\Setup\ProductTypes;
 
 /**
  * Routes that use the full-width page shell.
  */
 const TROTAMUNDOS_FULL_ROUTES = [
   'trotamundos_experiences.catalog',
+  'trotamundos_experiences.stays',
+  'trotamundos_experiences.experiences',
+  'trotamundos_experiences.packages',
   'trotamundos_destinations.list',
   'trotamundos_pages.esencia',
   'trotamundos_pages.ayuda',
@@ -41,28 +45,28 @@ function trotamundos_preprocess_page(array &$variables): void {
   $variables['trotamundos_brand_guide_url'] = \Drupal::moduleHandler()->moduleExists('trotamundos_brand')
     ? Url::fromRoute('trotamundos_brand.guide')->toString()
     : NULL;
-  $variables['tm_cache'] = _trotamundos_cache(['config:trotamundos.settings'], ['url.path', 'url.query_args', 'languages:language_interface']);
+  $variables['tm_cache'] = _trotamundos_cache(['config:trotamundos.settings', 'config:user.settings'], ['url.path', 'url.query_args', 'languages:language_interface', 'user.roles:authenticated']);
 
-  if (!empty($variables['is_front']) && \Drupal::hasService('trotamundos_experiences.repository')) {
+  if (\Drupal::hasService('trotamundos_experiences.repository')) {
     $repository = \Drupal::service('trotamundos_experiences.repository');
+    $filters = \Drupal::request()->attributes->get('_trotamundos_catalog_filters', []);
+    $variables['tm_search_filters'] = $filters;
+    $variables['tm_discovery'] = $repository->filterOptions($filters);
+    $variables['tm_date_label'] = $repository->dateLabel($filters);
+    $variables['tm_cache'] = _trotamundos_cache(
+      array_merge(['config:trotamundos.settings', 'config:user.settings'], ProductTypes::CACHE_TAGS),
+      ['url.path', 'url.query_args', 'languages:language_interface', 'languages:language_content', 'user.roles:authenticated', 'user.permissions', 'user.node_grants:view'],
+      strtotime('tomorrow', \Drupal::time()->getRequestTime()) - \Drupal::time()->getRequestTime(),
+    );
+  }
+  if (!empty($variables['is_front']) && \Drupal::hasService('trotamundos_experiences.repository')) {
     $cards = $repository->featured(8);
-    $styles = [];
-    foreach ($cards as $card) {
-      foreach ($card['styles'] as $style) {
-        $styles[$style['slug']] = $style;
-      }
-    }
     $destinations = array_values($repository->destinationIndex());
     usort($destinations, static fn (array $a, array $b): int => [$b['count'], $a['title']] <=> [$a['count'], $b['title']]);
     $variables['tm_featured'] = $cards;
-    $variables['tm_styles'] = array_values($styles);
+    $variables['tm_styles'] = $variables['tm_discovery']['styles'];
     $variables['tm_has_examples'] = (bool) array_filter($cards, static fn (array $card): bool => $card['is_example']);
-    $variables['tm_discovery'] = $repository->filterOptions([]);
     $variables['tm_destinations'] = array_slice($destinations, 0, 5);
-    $variables['tm_cache'] = _trotamundos_cache(
-      ['config:trotamundos.settings', 'node_list:experiencia', 'node_list:destino', 'taxonomy_term_list:estilo_viaje', 'taxonomy_term_list:tipo_plan'],
-      ['url.path', 'url.query_args', 'languages:language_interface', 'languages:language_content'],
-    );
   }
 }
 
@@ -80,7 +84,7 @@ function trotamundos_theme_suggestions_page_alter(array &$suggestions, array $va
   }
   elseif ($route === 'entity.node.canonical') {
     $node = $route_match->getParameter('node');
-    if ($node instanceof NodeInterface && in_array($node->bundle(), ['experiencia', 'destino'], TRUE)) {
+    if ($node instanceof NodeInterface && in_array($node->bundle(), [...ProductTypes::BUNDLES, 'destino'], TRUE)) {
       $suggestions[] = 'page__full';
     }
   }
@@ -98,14 +102,14 @@ function trotamundos_preprocess_node(array &$variables): void {
   $variables['trotamundos_path'] = _trotamundos_path();
   $variables['tm'] = _trotamundos_site_data();
 
-  if ($node->bundle() === 'experiencia') {
+  if (in_array($node->bundle(), ProductTypes::BUNDLES, TRUE)) {
     $experience = $repository->detail($node);
     $variables['experience'] = $experience;
     $variables['related'] = $repository->related($node, 3);
     $variables['experience_whatsapp_url'] = _trotamundos_whatsapp_url($experience['whatsapp_text']);
     $variables['map'] = _trotamundos_map_point($experience['destination']);
     $variables['tm_cache'] = _trotamundos_cache(
-      ['config:trotamundos.settings', 'node_list:experiencia', 'node_list:destino', 'taxonomy_term_list:estilo_viaje', 'taxonomy_term_list:tipo_plan'],
+      array_merge(['config:trotamundos.settings'], ProductTypes::CACHE_TAGS),
       ['languages:language_interface', 'languages:language_content'],
       // Availability periods that already ended disappear at midnight.
       strtotime('tomorrow') - \Drupal::time()->getRequestTime(),
@@ -121,7 +125,7 @@ function trotamundos_preprocess_node(array &$variables): void {
       ? Url::fromRoute('trotamundos_experiences.catalog', [], ['query' => ['destino' => $destination['department_slug'] . '/' . $destination['municipality_slug']]])->toString()
       : NULL;
     $variables['destination_whatsapp_url'] = _trotamundos_whatsapp_url((string) t('Hola, me interesa viajar a @place. ¿Qué experiencias tienen?', ['@place' => $destination['title'] ?? $node->label()]));
-    $variables['tm_cache'] = _trotamundos_cache(['config:trotamundos.settings', 'node_list:experiencia', 'node_list:destino'], ['languages:language_interface', 'languages:language_content']);
+    $variables['tm_cache'] = _trotamundos_cache(array_merge(['config:trotamundos.settings'], ProductTypes::CACHE_TAGS), ['languages:language_interface', 'languages:language_content']);
   }
 }
 
@@ -194,10 +198,12 @@ function _trotamundos_site_data(): array {
   };
 
   $items = [
-    ['route' => 'trotamundos_experiences.catalog', 'label' => t('Experiencias'), 'bundle' => 'experiencia'],
-    ['route' => 'trotamundos_destinations.list', 'label' => t('Destinos'), 'bundle' => 'destino'],
-    ['route' => 'trotamundos_pages.esencia', 'label' => t('Nuestra esencia'), 'bundle' => NULL],
-    ['route' => 'trotamundos_pages.ayuda', 'label' => t('Ayuda'), 'bundle' => NULL],
+    ['route' => 'trotamundos_experiences.stays', 'label' => t('Alojamientos'), 'icon' => 'bed', 'bundle' => 'alojamiento'],
+    ['route' => 'trotamundos_experiences.experiences', 'label' => t('Experiencias'), 'icon' => 'compass', 'bundle' => 'experiencia'],
+    ['route' => 'trotamundos_experiences.packages', 'label' => t('Paquetes'), 'icon' => 'suitcase', 'bundle' => 'paquete'],
+    ['route' => 'trotamundos_destinations.list', 'label' => t('Destinos'), 'icon' => 'pin', 'bundle' => 'destino'],
+    ['route' => 'trotamundos_pages.esencia', 'label' => t('Nuestra esencia'), 'icon' => 'heart', 'bundle' => NULL],
+    ['route' => 'trotamundos_pages.ayuda', 'label' => t('Ayuda'), 'icon' => 'help', 'bundle' => NULL],
   ];
   $navigation = [];
   foreach ($items as $item) {
@@ -206,9 +212,30 @@ function _trotamundos_site_data(): array {
     }
     $navigation[] = [
       'label' => $item['label'],
+      'icon' => $item['icon'],
+      'secondary' => !in_array($item['bundle'], ProductTypes::BUNDLES, TRUE),
       'url' => Url::fromRoute($item['route'])->toString(),
       'current' => $route === $item['route'],
       'active' => $route === $item['route'] || ($item['bundle'] && $bundle === $item['bundle']),
+    ];
+  }
+
+  $explore_items = [
+    ['route' => 'trotamundos_experiences.stays', 'label' => t('Alojamientos'), 'icon' => 'bed', 'active' => $route === 'trotamundos_experiences.stays' || $bundle === 'alojamiento'],
+    ['route' => 'trotamundos_experiences.experiences', 'label' => t('Experiencias'), 'icon' => 'compass', 'active' => $route === 'trotamundos_experiences.experiences' || $bundle === 'experiencia'],
+    ['route' => 'trotamundos_experiences.packages', 'label' => t('Paquetes'), 'icon' => 'suitcase', 'active' => $route === 'trotamundos_experiences.packages' || $bundle === 'paquete'],
+  ];
+  $explore_navigation = [];
+  foreach ($explore_items as $item) {
+    if ($item['route'] !== '<front>' && !$exists($item['route'])) {
+      continue;
+    }
+    $explore_navigation[] = [
+      'label' => $item['label'],
+      'icon' => $item['icon'],
+      'url' => Url::fromRoute($item['route'], [], ['query' => $item['query'] ?? []])->toString(),
+      'active' => $item['active'],
+      'current' => $route === $item['route'],
     ];
   }
 
@@ -218,6 +245,7 @@ function _trotamundos_site_data(): array {
 
   $data = [
     'navigation' => $navigation,
+    'explore_navigation' => $explore_navigation,
     'languages' => _trotamundos_language_links(),
     'langcode' => \Drupal::languageManager()->getCurrentLanguage()->getId(),
     'whatsapp_number' => $number,
@@ -228,9 +256,15 @@ function _trotamundos_site_data(): array {
     'instagram' => $instagram,
     'instagram_url' => 'https://www.instagram.com/' . $instagram . '/',
     'catalog_url' => $exists('trotamundos_experiences.catalog') ? Url::fromRoute('trotamundos_experiences.catalog')->toString() : '#',
+    'cart_available' => $exists('commerce_cart.page'),
+    'discovery_url' => isset(ProductTypes::ROUTES[$bundle ?? ''])
+      ? Url::fromRoute(ProductTypes::ROUTES[$bundle])->toString()
+      : Url::fromRoute(in_array($route, ProductTypes::ROUTES, TRUE) ? $route : 'trotamundos_experiences.catalog')->toString(),
     'destinations_url' => $exists('trotamundos_destinations.list') ? Url::fromRoute('trotamundos_destinations.list')->toString() : '#',
     'esencia_url' => $exists('trotamundos_pages.esencia') ? Url::fromRoute('trotamundos_pages.esencia')->toString() : '#',
     'ayuda_url' => $exists('trotamundos_pages.ayuda') ? Url::fromRoute('trotamundos_pages.ayuda')->toString() : '#',
+    'account_label' => \Drupal::currentUser()->isAuthenticated() ? t('Mi cuenta') : t('Iniciar sesión'),
+    'registration_available' => \Drupal::config('user.settings')->get('register') !== 'admin_only' && \Drupal::currentUser()->isAnonymous(),
   ];
   return $data;
 }
@@ -313,7 +347,7 @@ function _trotamundos_map_point(?array $destination): ?array {
 function _trotamundos_cache(array $tags, array $contexts, ?int $max_age = NULL): array {
   $cache = ['tags' => $tags, 'contexts' => $contexts];
   if ($max_age !== NULL) {
-    $cache['max-age'] = max(60, $max_age);
+    $cache['max-age'] = max(1, $max_age);
   }
   return ['#markup' => '', '#cache' => $cache];
 }

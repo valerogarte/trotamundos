@@ -1,106 +1,82 @@
 {#
 /**
  * @file
- * Experience catalog. A GET form that works without JavaScript; with it,
- * filters apply as soon as they change.
+ * Catalog filters belong to the shared header form, including without JS.
  */
 #}
 {% import '@trotamundos/components/icons.html.twig' as icons %}
-{% set advanced = filters.destino or filters.tipo or filters.precio or filters.duracion or filters.fecha %}
-<div class="catalog" data-catalog>
+{% set editorial_catalog = product_type is not empty %}
+<div class="catalog{{ editorial_catalog ? ' catalog--editorial' : '' }}" data-catalog>
+  {% if editorial_catalog %}
+    <h1 class="visually-hidden">{{ catalog_title }}</h1>
+  {% else %}
   <header class="page-intro container">
     <p class="eyebrow">{{ 'Catálogo'|t }}</p>
-    <h1>{{ 'Experiencias'|t }}</h1>
+    <h1>{{ catalog_title }}</h1>
     <p class="lead">{{ 'Planes con anfitriones locales en destinos poco conocidos de Colombia. Filtra por lo que te gustaría descubrir, el destino, tu presupuesto, la duración o la fecha.'|t }}</p>
   </header>
+  {% endif %}
 
-  <form class="catalog-filters container" id="catalog-filters" method="get" action="{{ reset_url }}" data-catalog-form data-clean-query>
-    <fieldset class="catalog-filters__styles">
-      <legend>{{ '¿Qué te gustaría descubrir?'|t }}</legend>
-      <div class="experience-filters">
-        <label class="filter-chip">
-          <input type="radio" name="estilo" value=""{{ not filters.estilo ? ' checked' : '' }}>
-          <span class="filter-button">{{ 'Todas'|t }}</span>
-        </label>
+  <section class="catalog-filters container{{ not product_type ? ' catalog-filters--mixed' : '' }}" id="catalog-filters" aria-label="{{ 'Filtrar planes'|t }}" data-catalog-filters>
+    <div class="tm-field">
+      <label class="tm-label" for="filter-estilo">{{ 'Estilo de viaje'|t }}</label>
+      <select class="tm-input" id="filter-estilo" name="estilo" form="discovery-form">
+        <option value="">{{ 'Todas'|t }}</option>
         {% for style in options.styles %}
-          <label class="filter-chip">
-            <input type="radio" name="estilo" value="{{ style.slug }}"{{ style.selected ? ' checked' : '' }}>
-            <span class="filter-button">{{ icons.icon(style.icon) }} {{ style.label }} <small>{{ style.count }}</small></span>
-          </label>
+          <option value="{{ style.slug }}"{{ style.selected ? ' selected' : '' }}>{{ style.label }} ({{ style.count }})</option>
         {% endfor %}
-      </div>
-    </fieldset>
-
-    <details class="catalog-filters__more" data-catalog-more{{ advanced ? ' open' : '' }}>
-      <summary>{{ icons.icon('sliders') }} {{ 'Más filtros'|t }}<span class="catalog-filters__more-hint">{{ 'Destino, tipo de plan, precio, duración y fecha'|t }}</span>{{ icons.icon('chevron') }}</summary>
-      <div class="catalog-filters__grid">
-        <div class="tm-field">
-          <label class="tm-label" for="filter-destino">{{ 'Destino'|t }}</label>
-          <select class="tm-input" id="filter-destino" name="destino">
-            <option value="">{{ 'Todos los destinos'|t }}</option>
-            {% for region in options.destinations %}
-              <optgroup label="{{ region.label }}">
-                {% for department in region.departments %}
-                  <option value="{{ department.value }}"{{ filters.destino == department.value ? ' selected' : '' }}>{{ department.label }} ({{ department.count }})</option>
-                  {% for municipality in department.municipalities %}
-                    <option value="{{ municipality.value }}"{{ filters.destino == municipality.value ? ' selected' : '' }}>&nbsp;&nbsp;{{ municipality.label }} ({{ municipality.count }})</option>
-                  {% endfor %}
-                {% endfor %}
-              </optgroup>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="tm-field">
-          <label class="tm-label" for="filter-tipo">{{ 'Tipo de plan'|t }}</label>
-          <select class="tm-input" id="filter-tipo" name="tipo">
-            <option value="">{{ 'Todos'|t }}</option>
-            {% for type in options.types %}
-              <option value="{{ type.slug }}"{{ type.selected ? ' selected' : '' }}>{{ type.label }} ({{ type.count }})</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="tm-field">
-          <label class="tm-label" for="filter-precio">{{ 'Precio por persona'|t }}</label>
-          <select class="tm-input" id="filter-precio" name="precio">
-            <option value="">{{ 'Cualquier precio'|t }}</option>
-            {% for price in options.prices %}
-              <option value="{{ price.value }}"{{ filters.precio == price.value ? ' selected' : '' }}>{{ price.label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="tm-field">
-          <label class="tm-label" for="filter-duracion">{{ 'Duración'|t }}</label>
-          <select class="tm-input" id="filter-duracion" name="duracion">
-            <option value="">{{ 'Cualquier duración'|t }}</option>
-            {% for duration in options.durations %}
-              <option value="{{ duration.value }}"{{ filters.duracion == duration.value ? ' selected' : '' }}>{{ duration.label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="tm-field">
-          <label class="tm-label" for="filter-fecha">{{ 'Disponibilidad'|t }}</label>
-          <select class="tm-input" id="filter-fecha" name="fecha">
-            <option value="">{{ 'Cualquier fecha'|t }}</option>
-            {% for month in options.months %}
-              <option value="{{ month.value }}"{{ filters.fecha == month.value ? ' selected' : '' }}>{{ month.label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
-    </details>
-
-    {% if filters.region %}<input type="hidden" name="region" value="{{ filters.region }}">{% endif %}
-    <div class="catalog-filters__actions">
-      <button class="button button--primary" type="submit" data-catalog-submit>{{ 'Ver resultados'|t }}</button>
+      </select>
     </div>
-  </form>
+    <div class="tm-field">
+      <label class="tm-label" for="filter-precio">{{ 'Precio por persona'|t }}</label>
+      <select class="tm-input" id="filter-precio" name="precio" form="discovery-form">
+        <option value="">{{ 'Cualquier precio'|t }}</option>
+        {% for price in options.prices %}
+          <option value="{{ price.value }}"{{ filters.precio == price.value ? ' selected' : '' }}>{{ price.label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="tm-field">
+      <label class="tm-label" for="filter-duracion">{{ 'Duración'|t }}</label>
+      <select class="tm-input" id="filter-duracion" name="duracion" form="discovery-form">
+        <option value="">{{ 'Cualquier duración'|t }}</option>
+        {% for duration in options.durations %}
+          <option value="{{ duration.value }}"{{ filters.duracion == duration.value ? ' selected' : '' }}>{{ duration.label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% if not product_type %}
+      <div class="tm-field">
+        <label class="tm-label" for="filter-tipo">{{ 'Tipo de plan'|t }}</label>
+        <select class="tm-input" id="filter-tipo" name="tipo" form="discovery-form">
+          <option value="">{{ 'Todos'|t }}</option>
+          {% for type in options.types %}
+            <option value="{{ type.slug }}"{{ type.selected ? ' selected' : '' }}>{{ type.label }} ({{ type.count }})</option>
+          {% endfor %}
+        </select>
+      </div>
+    {% endif %}
+    {% if filters.region %}<input type="hidden" name="region" value="{{ filters.region }}" form="discovery-form">{% endif %}
+    <div class="catalog-filters__actions">
+      <button class="button button--primary" type="submit" form="discovery-form" data-catalog-submit>{{ 'Ver resultados'|t }}</button>
+    </div>
+  </section>
 
-  <section class="catalog-results container" aria-labelledby="catalog-results-title">
+  <p class="visually-hidden" role="status" aria-live="polite" data-catalog-status data-loading-message="{{ 'Cargando planes...'|t }}" data-timeout-message="{{ 'La carga está tardando demasiado. Puedes volver a intentarlo.'|t }}"></p>
+  <section class="catalog-results container" aria-labelledby="catalog-results-title" data-catalog-results>
     <div class="catalog-results__bar">
       <div class="catalog-results__summary">
         <h2 id="catalog-results-title" class="catalog-results__count">
           {% set count = total %}
-          {% trans %}1 experiencia{% plural count %}{{ count }} experiencias{% endtrans %}
+          {% if product_type == 'alojamiento' %}
+            {% trans %}1 alojamiento{% plural count %}{{ count }} alojamientos{% endtrans %}
+          {% elseif product_type == 'paquete' %}
+            {% trans %}1 paquete{% plural count %}{{ count }} paquetes{% endtrans %}
+          {% elseif product_type == 'experiencia' %}
+            {% trans %}1 experiencia{% plural count %}{{ count }} experiencias{% endtrans %}
+          {% else %}
+            {% trans %}1 plan{% plural count %}{{ count }} planes{% endtrans %}
+          {% endif %}
         </h2>
         {% if active %}
           <ul class="active-filters" aria-label="{{ 'Filtros activos'|t }}">
@@ -113,7 +89,7 @@
       </div>
       <div class="catalog-sort">
         <label class="tm-label" for="catalog-sort">{{ 'Ordenar'|t }}</label>
-        <select class="tm-input" id="catalog-sort" name="orden" form="catalog-filters" data-catalog-autosubmit>
+        <select class="tm-input" id="catalog-sort" name="orden" form="discovery-form" data-catalog-autosubmit>
           {% for sort in options.sorts %}
             <option value="{{ sort.value }}"{{ filters.orden == sort.value ? ' selected' : '' }}>{{ sort.label }}</option>
           {% endfor %}
@@ -126,18 +102,26 @@
     {% endif %}
 
     {% if cards %}
-      <div class="experience-grid">
+      <div class="experience-grid{{ editorial_catalog ? ' experience-grid--four' : '' }}" data-catalog-grid>
         {% for card in cards %}
           {% include '@trotamundos/components/experience-card.html.twig' with {card: card, heading: 'h3'} %}
         {% endfor %}
       </div>
       {{ pager }}
     {% else %}
+      <div class="experience-grid{{ editorial_catalog ? ' experience-grid--four' : '' }} catalog-skeleton-fallback" aria-hidden="true">
+        {% for i in 1..skeleton_count %}
+          <div class="experience-card">
+            <div class="experience-card__media"></div>
+            <div class="experience-card__body"></div>
+          </div>
+        {% endfor %}
+      </div>
       <div class="empty-state">
-        <h3>{{ 'No encontramos experiencias con esos filtros'|t }}</h3>
+        <h3>{{ 'No encontramos planes con esos filtros'|t }}</h3>
         <p>{{ 'Prueba con otra fecha o quita algún filtro. Si buscas algo concreto, cuéntanos y te ayudamos a encontrarlo.'|t }}</p>
         <div class="empty-state__actions">
-          <a class="button button--secondary" href="{{ reset_url }}">{{ 'Ver todas las experiencias'|t }}</a>
+          <a class="button button--secondary" href="{{ reset_url }}" data-catalog-reset>{{ 'Quitar filtros'|t }}</a>
           <a class="button button--whatsapp" href="{{ tm.whatsapp_url }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }} {{ 'Cuéntanos qué buscas'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
         </div>
       </div>

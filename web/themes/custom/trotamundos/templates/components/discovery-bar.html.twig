@@ -1,47 +1,163 @@
 {#
 /**
  * @file
- * Quick search on the edge of the home video: destination, style and month.
- * Submits to the catalog, which applies the same filters.
+ * Shared GET search with native controls and enhanced search panels.
  */
 #}
 {% import '@trotamundos/components/icons.html.twig' as icons %}
-<div class="discovery container">
-  <form class="discovery-bar" action="{{ tm.catalog_url }}" method="get" role="search" aria-label="{{ 'Buscar experiencias'|t }}" data-clean-query>
+{% set companion_selection = tm_discovery.companions|filter(companion => companion.selected)|first %}
+<div class="discovery" data-header-discovery data-today="{{ tm_discovery.today }}">
+  <button class="discovery-summary" type="button" data-discovery-toggle aria-controls="discovery-form" aria-expanded="false">
+    <span class="discovery-summary__icon">{{ icons.icon('search') }}</span>
+    <span class="discovery-summary__copy">
+      <span class="discovery-summary__destination" data-discovery-destination>{{ 'Explora Colombia'|t }}</span>
+      <span class="discovery-summary__details" data-discovery-details>{{ tm_date_label }} · {{ '¿Con quién?'|t }}</span>
+    </span>
+    {{ icons.icon('sliders') }}
+    <span class="visually-hidden">{{ 'Modificar búsqueda'|t }}</span>
+  </button>
+  <form class="discovery-bar" id="discovery-form" action="{{ tm.discovery_url }}" method="get" role="search" aria-label="{{ 'Buscar planes'|t }}" data-clean-query>
     <div class="discovery-bar__field">
-      <label for="discovery-destino">{{ icons.icon('pin') }} {{ 'Destino'|t }}</label>
-      <select id="discovery-destino" name="destino">
-        <option value="">{{ 'Todos los destinos'|t }}</option>
-        {% for region in tm_discovery.destinations %}
-          <optgroup label="{{ region.label }}">
-            {% for department in region.departments %}
-              <option value="{{ department.value }}">{{ department.label }}</option>
-              {% for municipality in department.municipalities %}
-                <option value="{{ municipality.value }}">&nbsp;&nbsp;{{ municipality.label }}</option>
+      <div class="discovery-native">
+        <label for="discovery-destino">{{ icons.icon('pin') }} {{ 'Destino'|t }}</label>
+        <select id="discovery-destino" name="destino">
+          <option value="">{{ 'Elige un destino'|t }}</option>
+          {% for region in tm_discovery.destinations %}
+            <optgroup label="{{ region.label }}">
+              {% for department in region.departments %}
+                <option value="{{ department.value }}"{{ tm_search_filters.destino == department.value ? ' selected' : '' }}>{{ department.label }}</option>
+                {% for municipality in department.municipalities %}
+                  <option value="{{ municipality.value }}"{{ tm_search_filters.destino == municipality.value ? ' selected' : '' }}>&nbsp;&nbsp;{{ municipality.label }}</option>
+                {% endfor %}
               {% endfor %}
+            </optgroup>
+          {% endfor %}
+        </select>
+      </div>
+      <button class="discovery-trigger" type="button" data-discovery-open="destination" aria-haspopup="dialog" aria-controls="discovery-destinations" aria-expanded="false">
+        <span class="discovery-trigger__label">{{ icons.icon('pin') }} {{ 'Destino'|t }}</span>
+        <span class="discovery-trigger__value" data-discovery-destination-value>{{ 'Elige un destino'|t }}</span>
+        {{ icons.icon('chevron') }}
+      </button>
+    </div>
+    <div class="discovery-bar__field">
+      <fieldset class="discovery-native discovery-native--dates">
+        <legend>{{ icons.icon('calendar') }} {{ 'Fechas'|t }}</legend>
+        {% if tm_search_filters.fecha %}
+          <label for="discovery-fecha">{{ 'Disponibilidad'|t }}</label>
+          <select id="discovery-fecha" name="fecha">
+            <option value="">{{ 'Cualquier fecha'|t }}</option>
+            {% for month in tm_discovery.months %}
+              <option value="{{ month.value }}"{{ tm_search_filters.fecha == month.value ? ' selected' : '' }}>{{ month.label }}</option>
             {% endfor %}
-          </optgroup>
-        {% endfor %}
-      </select>
+          </select>
+        {% else %}
+          <input type="hidden" id="discovery-fecha" name="fecha" value="">
+        {% endif %}
+        <label for="discovery-desde">{{ 'Inicio del viaje'|t }}</label>
+        <input type="date" id="discovery-desde" name="desde" min="{{ tm_discovery.today }}" value="{{ tm_search_filters.desde }}">
+        <label for="discovery-hasta">{{ 'Fin del viaje'|t }}</label>
+        <input type="date" id="discovery-hasta" name="hasta" min="{{ tm_search_filters.desde ?: tm_discovery.today }}" value="{{ tm_search_filters.hasta }}">
+        <label class="visually-hidden" for="discovery-margen">{{ 'Flexibilidad de fechas'|t }}</label>
+        <select id="discovery-margen" name="margen">
+          <option value="">{{ 'Fechas exactas'|t }}</option>
+          {% for margin in tm_discovery.margins %}
+            <option value="{{ margin }}"{{ tm_search_filters.margen == margin ? ' selected' : '' }}>{{ margin == 1 ? '±1 día'|t : '±@days días'|t({'@days': margin}) }}</option>
+          {% endfor %}
+        </select>
+      </fieldset>
+      <button class="discovery-trigger" type="button" data-discovery-open="dates" aria-haspopup="dialog" aria-controls="discovery-calendar" aria-expanded="false">
+        <span class="discovery-trigger__label">{{ icons.icon('calendar') }} {{ 'Fechas'|t }}</span>
+        <span class="discovery-trigger__value" data-discovery-date-value>{{ tm_date_label }}</span>
+        {{ icons.icon('chevron') }}
+      </button>
     </div>
     <div class="discovery-bar__field">
-      <label for="discovery-estilo">{{ icons.icon('leaf') }} {{ 'Estilo de viaje'|t }}</label>
-      <select id="discovery-estilo" name="estilo">
-        <option value="">{{ 'Todos los estilos'|t }}</option>
-        {% for style in tm_discovery.styles %}
-          <option value="{{ style.slug }}">{{ style.label }}</option>
-        {% endfor %}
-      </select>
+      <div class="discovery-native">
+        <label for="discovery-acompanamiento">{{ icons.icon('users') }} {{ 'Acompañamiento'|t }}</label>
+        <select id="discovery-acompanamiento" name="acompanamiento">
+          <option value="">{{ '¿Con quién?'|t }}</option>
+          {% for companion in tm_discovery.companions %}
+            <option value="{{ companion.value }}"{{ companion.selected ? ' selected' : '' }}>{{ companion.label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button class="discovery-trigger" type="button" data-discovery-open="companions" aria-haspopup="dialog" aria-controls="discovery-companions" aria-expanded="false">
+        <span class="discovery-trigger__label">{{ icons.icon('users') }} {{ 'Acompañamiento'|t }}</span>
+        <span class="discovery-trigger__value" data-discovery-companion-value>{{ companion_selection ? companion_selection.label : '¿Con quién?'|t }}</span>
+        {{ icons.icon('chevron') }}
+      </button>
     </div>
-    <div class="discovery-bar__field">
-      <label for="discovery-fecha">{{ icons.icon('calendar') }} {{ 'Fecha'|t }}</label>
-      <select id="discovery-fecha" name="fecha">
-        <option value="">{{ 'Cualquier fecha'|t }}</option>
-        {% for month in tm_discovery.months %}
-          <option value="{{ month.value }}">{{ month.label }}</option>
-        {% endfor %}
-      </select>
+    <button class="discovery-bar__submit" type="submit">{{ icons.icon('search') }}<span class="visually-hidden">{{ 'Buscar planes'|t }}</span></button>
+
+    <div class="discovery-panel discovery-companions" id="discovery-companions" data-discovery-panel="companions" role="dialog" aria-label="{{ 'Acompañamiento'|t }}" hidden>
+      <button class="discovery-companion" type="button" data-companion-value="" aria-pressed="false">{{ 'Sin preferencia'|t }} {{ icons.icon('check') }}</button>
+      {% for companion in tm_discovery.companions %}
+        <button class="discovery-companion" type="button" data-companion-value="{{ companion.value }}" aria-pressed="false">{{ companion.label }} {{ icons.icon('check') }}</button>
+      {% endfor %}
     </div>
-    <button class="button button--primary discovery-bar__submit" type="submit">{{ icons.icon('search') }} {{ 'Buscar experiencias'|t }}</button>
+
+    <div class="discovery-panel" id="discovery-destinations" data-discovery-panel="destination" role="dialog" aria-labelledby="discovery-destinations-title" hidden>
+      <div class="discovery-panel__heading">
+        <h2 id="discovery-destinations-title">{{ '¿Adónde vamos?'|t }}</h2>
+        <button class="discovery-panel__close" type="button" data-discovery-close aria-label="{{ 'Cerrar destinos'|t }}">{{ icons.icon('close') }}</button>
+      </div>
+      <div class="discovery-destinations">
+        <div class="discovery-destinations__choices">
+          <button class="discovery-destination" type="button" data-destination-value="" aria-pressed="false">
+            {{ icons.icon('globe') }}<span><strong>{{ 'Cualquier destino'|t }}</strong><small>{{ 'Déjate sorprender por Colombia'|t }}</small></span>{{ icons.icon('check') }}
+          </button>
+          {% for region in tm_discovery.destinations %}
+            <section class="discovery-destinations__region" aria-label="{{ region.label }}">
+              <h3>{{ region.label }}</h3>
+              {% for department in region.departments %}
+                <button class="discovery-destination" type="button" data-destination-value="{{ department.value }}" aria-pressed="false">
+                  {{ icons.icon('map') }}<span><strong>{{ department.label }}</strong><small>{{ 'Todo el departamento'|t }}</small></span>{{ icons.icon('check') }}
+                </button>
+                {% for municipality in department.municipalities %}
+                  <button class="discovery-destination discovery-destination--municipality" type="button" data-destination-value="{{ municipality.value }}" aria-pressed="false">
+                    {{ icons.icon('pin') }}<span><strong>{{ municipality.label }}</strong><small>{{ department.label }}{% if not municipality.count %} · {{ 'Próximamente'|t }}{% endif %}</small></span>{{ icons.icon('check') }}
+                  </button>
+                {% endfor %}
+              {% endfor %}
+            </section>
+          {% endfor %}
+        </div>
+        <aside class="discovery-destination-cta">
+          {{ icons.icon('map') }}
+          <p class="eyebrow">{{ 'Tu próxima historia'|t }}</p>
+          <h3>{{ 'Colombia te espera'|t }}</h3>
+          <p class="discovery-destination-cta__description">{{ 'Descubre pueblos, paisajes y anfitriones que hacen único cada viaje.'|t }}</p>
+          <a href="{{ tm.destinations_url }}">{{ 'Conocerlos todos'|t }} {{ icons.icon('arrow') }}</a>
+        </aside>
+      </div>
+    </div>
+
+    <div class="discovery-panel discovery-calendar" id="discovery-calendar" data-discovery-panel="dates" role="dialog" aria-labelledby="discovery-calendar-title" aria-describedby="discovery-calendar-status" hidden>
+      <div class="discovery-panel__heading">
+        <h2 id="discovery-calendar-title">{{ 'Elige tus fechas'|t }}</h2>
+        <button class="discovery-panel__close" type="button" data-discovery-close aria-label="{{ 'Cerrar calendario'|t }}">{{ icons.icon('close') }}</button>
+      </div>
+      <div class="discovery-calendar__navigation">
+        <button type="button" data-calendar-nav="-1" aria-label="{{ 'Mes anterior'|t }}">{{ icons.icon('arrow-left') }}</button>
+        <p id="discovery-calendar-status" data-calendar-status role="status" aria-live="polite"></p>
+        <button type="button" data-calendar-nav="1" aria-label="{{ 'Mes siguiente'|t }}">{{ icons.icon('arrow') }}</button>
+      </div>
+      <p class="visually-hidden" id="discovery-calendar-help">{{ 'Usa las flechas para moverte entre días y las teclas Re Pág y Av Pág para cambiar de mes.'|t }}</p>
+      <div class="discovery-calendar__months" data-calendar-months></div>
+      <div class="discovery-calendar__footer">
+        <p class="discovery-calendar__flex-label">{{ 'Un poco de flexibilidad'|t }}</p>
+        <div class="discovery-calendar__margins" role="group" aria-label="{{ 'Flexibilidad de fechas'|t }}">
+          <button type="button" data-calendar-margin="" aria-pressed="true">{{ 'Fechas exactas'|t }}</button>
+          {% for margin in tm_discovery.margins %}
+            <button type="button" data-calendar-margin="{{ margin }}" aria-pressed="false">{{ margin == 1 ? '±1 día'|t : '±@days días'|t({'@days': margin}) }}</button>
+          {% endfor %}
+        </div>
+        <div class="discovery-calendar__actions">
+          <button class="discovery-calendar__clear" type="button" data-calendar-clear>{{ 'Borrar fechas'|t }}</button>
+          <button class="button button--primary" type="button" data-calendar-apply>{{ 'Aplicar fechas'|t }}</button>
+        </div>
+      </div>
+    </div>
   </form>
 </div>

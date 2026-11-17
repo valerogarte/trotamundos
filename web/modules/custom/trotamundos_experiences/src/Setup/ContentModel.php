@@ -14,8 +14,8 @@ use Drupal\taxonomy\Entity\Vocabulary;
 /**
  * Creates the experience catalog content model in an idempotent way.
  *
- * Running ensure() again only adds what is missing, so it is safe to call
- * from hook_install() and from later update hooks.
+ * Reuses existing entities and identifiers. Explicit updates can also
+ * reorder the travel styles without changing their content references.
  */
 final class ContentModel {
 
@@ -44,6 +44,13 @@ final class ContentModel {
     'wave' => 'Agua',
   ];
 
+  public const COMPANIONS = [
+    'pareja' => 'Pareja',
+    'familia' => 'Familia',
+    'grupo' => 'Grupo',
+    'solo' => 'Solo',
+  ];
+
   /**
    * Builds or completes the whole content model.
    */
@@ -51,8 +58,93 @@ final class ContentModel {
     self::ensureVocabularies();
     self::ensureNodeType();
     self::ensureFields();
+    self::ensureAccompaniment();
     self::ensureDisplays();
+    ProductTypes::ensure();
     self::ensureImageStyles();
+  }
+
+  /**
+   * Adds optional travel companions without assigning existing experiences.
+   */
+  public static function ensureAccompaniment(): void {
+    self::ensureField('node', 'experiencia', 'field_acompanamiento', 'list_string', 'Acompañamiento', [
+      'cardinality' => -1,
+      'storage' => ['allowed_values' => self::COMPANIONS],
+      'description' => 'Con quién se puede disfrutar del plan. Selecciona las opciones confirmadas o déjalo vacío hasta revisarlo.',
+      'translatable' => FALSE,
+    ]);
+
+    $form = \Drupal::service('entity_display.repository')->getFormDisplay('node', 'experiencia', 'default');
+    if (!$form->getComponent('field_acompanamiento')) {
+      $form->setComponent('field_acompanamiento', ['type' => 'options_buttons', 'weight' => 7])->save();
+    }
+  }
+
+  /**
+   * Completes the travel styles, retaining the existing cultural term.
+   */
+  public static function ensureTravelStyles(bool $reorder = FALSE): void {
+    $definitions = [
+      'Pueblos con alma' => ['village', 'Villages with soul'],
+      'Café y tradición' => ['cup', 'Coffee and tradition'],
+      'Naturaleza' => ['leaf', 'Nature'],
+      'Gastronomía' => ['cup', 'Food and drink'],
+      'Aventura' => ['mountain', 'Adventure'],
+      'Bienestar' => ['sun', 'Wellness'],
+      'Cultura viva' => ['heart', 'Living culture'],
+    ];
+    $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+    $existing = [];
+    foreach ($storage->loadByProperties(['vid' => 'estilo_viaje']) as $term) {
+      $term = $term->getUntranslated();
+      $name = $term->getName();
+      if (!isset($definitions[$name]) && $name !== 'Cultura y tradición') {
+        continue;
+      }
+      if (isset($existing[$name])) {
+        throw new \RuntimeException('Hay estilos de viaje duplicados: ' . $name . '. Revísalos antes de actualizar.');
+      }
+      $existing[$name] = $term;
+    }
+    if (isset($existing['Cultura viva'], $existing['Cultura y tradición'])) {
+      throw new \RuntimeException('Existen Cultura viva y Cultura y tradición. Revisa sus asignaciones antes de actualizar.');
+    }
+    if (isset($existing['Cultura y tradición'])) {
+      $existing['Cultura viva'] = $existing['Cultura y tradición'];
+    }
+    $english = \Drupal::languageManager()->getLanguage('en') !== NULL;
+    $weight = 0;
+    foreach ($definitions as $name => [$icon, $translation]) {
+      $term = $existing[$name] ?? Term::create([
+        'vid' => 'estilo_viaje',
+        'name' => $name,
+        'field_icono' => $icon,
+        'weight' => $weight,
+        'langcode' => 'es',
+      ]);
+      $changed = $term->isNew();
+      if ($term->getName() !== $name) {
+        $term->setName($name);
+        $changed = TRUE;
+      }
+      if ($reorder && $term->getWeight() !== $weight) {
+        $term->setWeight($weight);
+        $changed = TRUE;
+      }
+      if ($english && !$term->hasTranslation('en')) {
+        $term->addTranslation('en', ['name' => $translation]);
+        $changed = TRUE;
+      }
+      elseif ($english && $name === 'Cultura viva' && $term->getTranslation('en')->getName() === 'Culture and tradition') {
+        $term->getTranslation('en')->setName($translation);
+        $changed = TRUE;
+      }
+      if ($changed) {
+        $term->save();
+      }
+      $weight++;
+    }
   }
 
   /**
@@ -68,14 +160,7 @@ final class ContentModel {
       'estilo_viaje' => [
         'name' => 'Estilo de viaje',
         'description' => 'Responde a «¿Qué te gustaría descubrir?» en la portada y en el catálogo.',
-        'terms' => [
-          'Pueblos con alma' => 'village',
-          'Naturaleza' => 'leaf',
-          'Bienestar' => 'sun',
-          'Aventura' => 'mountain',
-          'Cultura y tradición' => 'heart',
-          'Gastronomía' => 'cup',
-        ],
+        'terms' => [],
       ],
     ];
 
@@ -110,6 +195,7 @@ final class ContentModel {
         $weight++;
       }
     }
+    self::ensureTravelStyles();
   }
 
   /**
@@ -187,7 +273,6 @@ final class ContentModel {
         'translatable' => FALSE,
       ]],
       'field_tipo_plan' => ['entity_reference', 'Tipo de plan', [
-        'required' => TRUE,
         'storage' => ['target_type' => 'taxonomy_term'],
         'settings' => ['handler' => 'default:taxonomy_term', 'handler_settings' => ['target_bundles' => ['tipo_plan' => 'tipo_plan'], 'auto_create' => FALSE]],
         'translatable' => FALSE,
@@ -330,8 +415,8 @@ final class ContentModel {
       'field_galeria' => ['image_image', ['preview_image_style' => 'thumbnail', 'progress_indicator' => 'throbber']],
       'field_videos' => ['file_generic', ['progress_indicator' => 'throbber']],
       'field_destino' => ['options_select', []],
-      'field_tipo_plan' => ['options_select', []],
       'field_estilo' => ['options_buttons', []],
+      'field_acompanamiento' => ['options_buttons', []],
       'field_precio' => ['number', ['placeholder' => '320000']],
       'field_precio_nota' => ['string_textfield', []],
       'field_duracion' => ['string_textfield', []],

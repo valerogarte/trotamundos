@@ -16,8 +16,11 @@ function trotamundos_experiences_theme($existing, $type, $theme, $path): array {
   return [
     'trotamundos_catalog' => [
       'variables' => [
+        'product_type' => '',
+        'catalog_title' => '',
         'cards' => [],
         'total' => 0,
+        'skeleton_count' => 0,
         'filters' => [],
         'options' => [],
         'active' => [],
@@ -29,6 +32,16 @@ function trotamundos_experiences_theme($existing, $type, $theme, $path): array {
       'path' => \Drupal::service('extension.list.theme')->getPath('trotamundos') . '/templates/pages',
     ],
   ];
+}
+
+/**
+ * Implements hook_theme_suggestions_node_alter().
+ */
+function trotamundos_experiences_theme_suggestions_node_alter(array &$suggestions, array $variables): void {
+  $node = $variables['elements']['#node'];
+  if ($variables['elements']['#view_mode'] === 'full' && in_array($node->bundle(), ['alojamiento', 'paquete'], TRUE)) {
+    $suggestions[] = 'node__experiencia__full';
+  }
 }
 
 /**

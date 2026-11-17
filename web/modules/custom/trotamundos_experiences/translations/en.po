@@ -8,6 +8,174 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
+msgid "Alojamiento"
+msgstr "Stay"
+
+msgid "Paquete"
+msgstr "Package"
+
+msgid "Paquetes"
+msgstr "Packages"
+
+msgid "Planes"
+msgstr "Plans"
+
+msgid "Buscar planes"
+msgstr "Search plans"
+
+msgid "Fechas del viaje"
+msgstr "Travel dates"
+
+msgid "Inicio del viaje"
+msgstr "Trip start"
+
+msgid "Fin del viaje"
+msgstr "Trip end"
+
+msgid "Flexibilidad de fechas"
+msgstr "Date flexibility"
+
+msgid "Fechas exactas"
+msgstr "Exact dates"
+
+msgid "±1 día"
+msgstr "±1 day"
+
+msgid "±@days días"
+msgstr "±@days days"
+
+msgid "@dates (±1 día)"
+msgid_plural "@dates (±@count días)"
+msgstr[0] "@dates (±1 day)"
+msgstr[1] "@dates (±@count days)"
+
+msgid "Selecciona fechas válidas de inicio y fin."
+msgstr "Select valid start and end dates."
+
+msgid "El viaje debe empezar hoy o más adelante y no terminar antes de empezar."
+msgstr "Your trip must start today or later and cannot end before it starts."
+
+msgid "Elige un rango de fechas y un margen válido."
+msgstr "Choose a date range and a valid flexibility margin."
+
+msgid "¿Adónde vamos?"
+msgstr "Where shall we go?"
+
+msgid "Cerrar destinos"
+msgstr "Close destinations"
+
+msgid "Cualquier destino"
+msgstr "Any destination"
+
+msgid "Déjate sorprender por Colombia"
+msgstr "Let Colombia surprise you"
+
+msgid "Todo el departamento"
+msgstr "Entire department"
+
+msgid "Tu próxima historia"
+msgstr "Your next story"
+
+msgid "Colombia te espera"
+msgstr "Colombia is waiting"
+
+msgid "Descubre pueblos, paisajes y anfitriones que hacen único cada viaje."
+msgstr "Discover villages, landscapes and hosts that make every trip unique."
+
+msgid "Conocerlos todos"
+msgstr "Discover them all"
+
+msgid "Elige tus fechas"
+msgstr "Choose your dates"
+
+msgid "Cerrar calendario"
+msgstr "Close calendar"
+
+msgid "Mes anterior"
+msgstr "Previous month"
+
+msgid "Mes siguiente"
+msgstr "Next month"
+
+msgid "Usa las flechas para moverte entre días y las teclas Re Pág y Av Pág para cambiar de mes."
+msgstr "Use the arrow keys to move between days and Page Up and Page Down to change months."
+
+msgid "Un poco de flexibilidad"
+msgstr "A little flexibility"
+
+msgid "Borrar fechas"
+msgstr "Clear dates"
+
+msgid "Aplicar fechas"
+msgstr "Apply dates"
+
+msgid "Ahora elige la fecha de fin"
+msgstr "Now choose the end date"
+
+msgid "Elige el inicio de tu viaje"
+msgstr "Choose your trip's start date"
+
+msgid "No encontramos planes con esos filtros"
+msgstr "No plans match those filters"
+
+msgid "Quitar filtros"
+msgstr "Clear filters"
+
+msgid "Destino, acompañamiento, precio, duración y fechas"
+msgstr "Destination, companions, price, duration and dates"
+
+msgid "Destino, acompañamiento, tipo de plan, precio, duración y fechas"
+msgstr "Destination, companions, plan type, price, duration and dates"
+
+msgid "1 alojamiento"
+msgid_plural "@count alojamientos"
+msgstr[0] "1 stay"
+msgstr[1] "@count stays"
+
+msgid "1 paquete"
+msgid_plural "@count paquetes"
+msgstr[0] "1 package"
+msgstr[1] "@count packages"
+
+msgid "1 plan"
+msgid_plural "@count planes"
+msgstr[0] "1 plan"
+msgstr[1] "@count plans"
+
+msgid "Ver 1 plan"
+msgid_plural "Ver @count planes"
+msgstr[0] "View 1 plan"
+msgstr[1] "View @count plans"
+
+msgid "Ver 1 plan en @department_name"
+msgid_plural "Ver @count planes en @department_name"
+msgstr[0] "View 1 plan in @department_name"
+msgstr[1] "View @count plans in @department_name"
+
+msgid "Ver planes de la región"
+msgstr "View plans in this region"
+
+msgid "Ver otros planes"
+msgstr "View other plans"
+
+msgid "Ver planes"
+msgstr "View plans"
+
+msgid "Otros planes"
+msgstr "Other plans"
+
+msgid "Reserva tu alojamiento"
+msgstr "Book your stay"
+
+msgid "Reserva tu paquete"
+msgstr "Book your package"
+
+msgid "Busca planes por región, departamento y municipio. Cada destino reúne los planes que preparamos con sus anfitriones."
+msgstr "Find plans by region, department and town. Each destination brings together the plans we prepare with its hosts."
+
+msgid "Filtrar planes por estilo de viaje"
+msgstr "Filter plans by travel style"
+
 msgid "1 noche"
 msgstr "1 night"
 
@@ -19,6 +187,60 @@ msgstr "4 nights or more"
 
 msgid "Acompañamiento cercano"
 msgstr "Close support"
+
+msgid "Acompañamiento"
+msgstr "Travel companions"
+
+msgid "Pareja"
+msgstr "Couple"
+
+msgid "Familia"
+msgstr "Family"
+
+msgid "Grupo"
+msgstr "Group"
+
+msgid "Solo"
+msgstr "Solo"
+
+msgid "Todo"
+msgstr "All"
+
+msgid "Alojamientos"
+msgstr "Stays"
+
+msgid "Fechas"
+msgstr "Dates"
+
+msgid "Elige un destino"
+msgstr "Choose a destination"
+
+msgid "¿Con quién?"
+msgstr "Who with?"
+
+msgid "Modificar búsqueda"
+msgstr "Edit search"
+
+msgid "Más sobre Trotamundos"
+msgstr "More about Trotamundos"
+
+msgid "Compromiso con las comunidades y emprendedores locales"
+msgstr "Our commitment to local communities and entrepreneurs"
+
+msgid "Mi cuenta"
+msgstr "My account"
+
+msgid "Iniciar sesión"
+msgstr "Log in"
+
+msgid "Registrarse"
+msgstr "Sign up"
+
+msgid "Cualquiera"
+msgstr "Any"
+
+msgid "Destino, acompañamiento, tipo de plan, precio, duración y fecha"
+msgstr "Destination, travel companions, plan type, price, duration and date"
 
 msgid "Activar sonido"
 msgstr "Turn sound on"
@@ -439,6 +661,12 @@ msgstr "Stays in traditional farmhouses and walks with local guides."
 
 msgid "Idioma"
 msgstr "Language"
+
+msgid "Elegir idioma"
+msgstr "Choose language"
+
+msgid "Elige tu idioma"
+msgstr "Choose your language"
 
 msgid "Impulsar a los emprendedores turísticos"
 msgstr "Support tourism entrepreneurs"
@@ -999,3 +1227,198 @@ msgid "Ver 1 experiencia en @department_name"
 msgid_plural "Ver @count experiencias en @department_name"
 msgstr[0] "See 1 experience in @department_name"
 msgstr[1] "See @count experiences in @department_name"
+
+msgid "Filtrar planes"
+msgstr "Filter plans"
+
+msgid "Planes en Colombia"
+msgstr "Plans in Colombia"
+
+msgid "Elige una forma de viajar y descubre planes con anfitriones locales."
+msgstr "Choose your travel style and discover plans with local hosts."
+
+msgid "Estilos anteriores"
+msgstr "Previous travel styles"
+
+msgid "Más estilos de viaje"
+msgstr "More travel styles"
+
+msgid "Estilos de viaje"
+msgstr "Travel styles"
+
+msgid "Nuestro compromiso"
+msgstr "Our commitment"
+
+msgid "Detrás de cada viaje,"
+msgstr "Behind every trip,"
+
+msgid "hay una comunidad."
+msgstr "there is a community."
+
+msgid "Queremos que descubrir Colombia también signifique reconocer a quienes la hacen única: familias anfitrionas, guías, cocineras y emprendedores que comparten su territorio y sus saberes."
+msgstr "We want discovering Colombia to also mean recognising the people who make it unique: host families, guides, cooks and entrepreneurs who share their homeland and knowledge."
+
+msgid "Nuestro compromiso es dar visibilidad a sus proyectos, promover encuentros respetuosos y acercarte a propuestas con identidad local. Viajar con curiosidad, escuchar y cuidar también forman parte del camino."
+msgstr "Our commitment is to give their projects visibility, encourage respectful encounters and connect you with locally rooted experiences. Travelling with curiosity, listening and caring are part of the journey too."
+
+msgid "Conoce nuestro compromiso"
+msgstr "Discover our commitment"
+
+msgid "Mi perfil viajero"
+msgstr "My travel profile"
+
+msgid "Tu espacio privado"
+msgstr "Your private space"
+
+msgid "Compra online"
+msgstr "Online purchase"
+
+msgid "Contenido de demostración. El carrito no confirma una reserva ni disponibilidad."
+msgstr "Demonstration content. The cart does not confirm a booking or availability."
+
+msgid "Ver carrito"
+msgstr "View cart"
+
+msgid "El número de viajeros supera la capacidad de este plan."
+msgstr "The number of travelers exceeds this plan's capacity."
+
+msgid "Revisa las fechas: el viaje ya no cabe en un periodo disponible de este plan."
+msgstr "Check your dates: the trip no longer fits within an available period for this plan."
+
+msgid "Carrito"
+msgstr "Cart"
+
+msgid "Añadir al carrito"
+msgstr "Add to cart"
+
+msgid "¿Prefieres consultar fechas por WhatsApp?"
+msgstr "Prefer to ask about dates on WhatsApp?"
+
+msgid "La fecha se guarda en el carrito; la disponibilidad mostrada es provisional."
+msgstr "Your date is saved in the cart; the availability shown is provisional."
+
+msgid "Elige una fecha de llegada válida y no pasada."
+msgstr "Choose a valid arrival date that is not in the past."
+
+msgid "El viaje completo debe caber en un periodo disponible de este plan."
+msgstr "The whole trip must fit within an available period for this plan."
+
+msgid "Tienda en desarrollo: la dirección comercial y la pasarela online están pendientes. No se pueden finalizar compras ni confirmar reservas."
+msgstr "Store under development: the business address and online payment gateway are pending. Purchases cannot be completed and bookings cannot be confirmed."
+
+msgid "Completa y verifica la configuración comercial antes de aceptar pagos reales."
+msgstr "Complete and verify the store configuration before accepting real payments."
+
+msgid "No se puede comprar este plan en este momento. Contacta con el equipo."
+msgstr "This plan cannot be purchased right now. Please contact the team."
+
+msgid "Guarda lo que te inspira y ten tus próximos viajes a mano."
+msgstr "Save what inspires you and keep your next trips close at hand."
+
+msgid "Ajustes de cuenta"
+msgstr "Account settings"
+
+msgid "Ayuda para tu viaje"
+msgstr "Help with your trip"
+
+msgid "En tu perfil viajero"
+msgstr "In your travel profile"
+
+msgid "Mis pedidos"
+msgstr "My orders"
+
+msgid "Planes guardados"
+msgstr "Saved plans"
+
+msgid "Preferencias de viaje"
+msgstr "Travel preferences"
+
+msgid "Aquí aparecen tus pedidos de Commerce. Las solicitudes por WhatsApp se consultan con nuestro equipo."
+msgstr "Your Commerce orders appear here. Please contact our team about requests made through WhatsApp."
+
+msgid "Tu próxima historia está por empezar"
+msgstr "Your next story is about to begin"
+
+msgid "Todavía no hay pedidos registrados en tu cuenta. Las compras online están en preparación."
+msgstr "There are no orders on your account yet. Online shopping is being prepared."
+
+msgid "Descubrir planes"
+msgstr "Discover plans"
+
+msgid "Son opcionales y puedes cambiarlas cuando quieras. No modifican automáticamente tus búsquedas."
+msgstr "These are optional and you can change them whenever you like. They do not automatically change your searches."
+
+msgid "Seguir descubriendo"
+msgstr "Keep exploring"
+
+msgid "Plan no disponible"
+msgstr "Plan unavailable"
+
+msgid "Este plan ya no está publicado. Puedes quitarlo de tu lista."
+msgstr "This plan is no longer published. You can remove it from your list."
+
+msgid "Un lugar para los planes que te llaman"
+msgstr "A home for plans that speak to you"
+
+msgid "Abre una ficha y pulsa «Guardar en mis planes». La encontrarás aquí cuando quieras volver."
+msgstr "Open a plan and select “Save to my plans”. You will find it here whenever you want to return."
+
+msgid "Quitar de mis planes"
+msgstr "Remove from my plans"
+
+msgid "Guardar en mis planes"
+msgstr "Save to my plans"
+
+msgid "La acción de guardado no es válida."
+msgstr "The save action is invalid."
+
+msgid "Este plan ya no está disponible para guardar."
+msgstr "This plan is no longer available to save."
+
+msgid "Plan guardado en tu perfil."
+msgstr "Plan saved to your profile."
+
+msgid "Plan eliminado de tus guardados."
+msgstr "Plan removed from your saved plans."
+
+msgid "No se pudo actualizar este favorito. Vuelve a intentarlo."
+msgstr "This favourite could not be updated. Please try again."
+
+msgid "Cargando planes..."
+msgstr "Loading plans..."
+
+msgid "La carga está tardando demasiado. Puedes volver a intentarlo."
+msgstr "Loading is taking too long. You can try again."
+
+msgid "Estilos que te inspiran"
+msgstr "Styles that inspire you"
+
+msgid "Con quién te gusta viajar"
+msgstr "Who you like to travel with"
+
+msgid "Guardar preferencias"
+msgstr "Save preferences"
+
+msgid "Tus preferencias de viaje se han guardado."
+msgstr "Your travel preferences have been saved."
+
+msgid "Inicia sesión para guardar este plan"
+msgstr "Sign in to save this plan"
+
+msgid "Inicia sesión para guardar @plan"
+msgstr "Sign in to save @plan"
+
+msgid "Favorito: @plan"
+msgstr "Favourite: @plan"
+
+msgid "Actualizar plan guardado"
+msgstr "Update saved plan"
+
+msgid "Sin preferencia"
+msgstr "No preference"
+
+msgid "Pulsa el corazón de un plan para guardarlo. Lo encontrarás aquí cuando quieras volver."
+msgstr "Select a plan's heart to save it. You will find it here whenever you want to return."
+
+msgid "Una mesa con comida local y flores en Concepción."
+msgstr "A table with local food and flowers in Concepción."

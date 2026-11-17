@@ -20,7 +20,10 @@ use Drupal\image\Entity\ImageStyle;
 use Drupal\image\Plugin\Field\FieldType\ImageItem;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\TermInterface;
+use Drupal\trotamundos_experiences\Setup\ContentModel;
+use Drupal\trotamundos_experiences\Setup\ProductTypes;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Reads experiences and destinations and prepares them for presentation.
@@ -61,6 +64,8 @@ final class ExperienceRepository {
    * Sort options.
    */
   public const SORTS = ['recomendadas', 'precio-asc', 'precio-desc'];
+
+  public const DATE_MARGINS = [1, 2, 3, 7, 14];
 
   /**
    * Published experiences, loaded once per request for counts and options.
@@ -104,15 +109,24 @@ final class ExperienceRepository {
       'precio' => $read('precio'),
       'duracion' => $read('duracion'),
       'fecha' => $read('fecha'),
+      'desde' => $read('desde'),
+      'hasta' => $read('hasta'),
+      'margen' => $read('margen'),
+      'acompanamiento' => $read('acompanamiento'),
       'orden' => $read('orden'),
     ];
 
     $terms = $this->termIndex();
+    if ($filters['estilo'] === 'cultura-y-tradicion'
+      && !isset($terms['estilo_viaje']['cultura-y-tradicion'])
+      && isset($terms['estilo_viaje']['cultura-viva'])) {
+      $filters['estilo'] = 'cultura-viva';
+    }
     if (!isset($terms['estilo_viaje'][$filters['estilo']])) {
       $filters['estilo'] = '';
     }
-    if (!isset($terms['tipo_plan'][$filters['tipo']])) {
-      $filters['tipo'] = '';
+    if (!in_array($filters['tipo'], ProductTypes::BUNDLES, TRUE)) {
+      $filters['tipo'] = isset($terms['tipo_plan'][$filters['tipo']]) ? 'experiencia' : '';
     }
     if ($filters['destino'] !== '' && !$this->destinationIdsForSlug($filters['destino'])) {
       $filters['destino'] = '';
@@ -128,6 +142,28 @@ final class ExperienceRepository {
     }
     if (!preg_match('/^\d{4}-(0[1-9]|1[0-2])$/', $filters['fecha'])) {
       $filters['fecha'] = '';
+    }
+    if ($filters['desde'] !== '' || $filters['hasta'] !== '') {
+      foreach (['desde', 'hasta'] as $key) {
+        if (!preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $filters[$key], $parts)
+          || !checkdate((int) $parts[2], (int) $parts[3], (int) $parts[1])) {
+          throw new BadRequestHttpException((string) $this->t('Selecciona fechas válidas de inicio y fin.'));
+        }
+      }
+      if ($filters['desde'] < $this->today() || $filters['hasta'] < $filters['desde']) {
+        throw new BadRequestHttpException((string) $this->t('El viaje debe empezar hoy o más adelante y no terminar antes de empezar.'));
+      }
+      $filters['fecha'] = '';
+    }
+    if ($filters['margen'] === '0') {
+      $filters['margen'] = '';
+    }
+    if ($filters['margen'] !== ''
+      && (!in_array($filters['margen'], array_map('strval', self::DATE_MARGINS), TRUE) || $filters['desde'] === '')) {
+      throw new BadRequestHttpException((string) $this->t('Elige un rango de fechas y un margen válido.'));
+    }
+    if (!isset(ContentModel::COMPANIONS[$filters['acompanamiento']])) {
+      $filters['acompanamiento'] = '';
     }
     if (!in_array($filters['orden'], self::SORTS, TRUE)) {
       $filters['orden'] = '';
@@ -213,12 +249,12 @@ final class ExperienceRepository {
   public function card(NodeInterface $node): array {
     $node = $this->translated($node);
     $destination = $this->destinationFor($node);
-    $type = $this->referencedTerm($node, 'field_tipo_plan');
+    $type = $this->productType($node);
     $styles = $this->referencedTerms($node, 'field_estilo');
     $cover = $node->hasField('field_galeria') && !$node->get('field_galeria')->isEmpty() ? $node->get('field_galeria')->first() : NULL;
-    $price = (int) ($node->get('field_precio')->value ?? 0);
+    $price = (float) ($node->get($this->priceField())->value ?? 0);
 
-    return [
+    $card = [
       'id' => (int) $node->id(),
       'url' => $node->toUrl()->toString(),
       'title' => $node->label(),
@@ -238,6 +274,8 @@ final class ExperienceRepository {
       'nights' => (int) ($node->get('field_noches')->value ?? 0),
       'is_example' => (bool) ($node->get('field_ejemplo')->value ?? FALSE),
     ];
+    \Drupal::moduleHandler()->alter('trotamundos_experience_card', $card, $node);
+    return $card;
   }
 
   /**
@@ -272,24 +310,15 @@ final class ExperienceRepository {
       }
     }
 
-    $today = date('Y-m-d', $this->time->getRequestTime());
     $ranges = [];
-    foreach ($node->get('field_fechas') as $item) {
-      $start = (string) $item->value;
-      $end = (string) ($item->end_value ?: $item->value);
-      if ($end < $today) {
-        continue;
-      }
-      $start = max($start, $today);
-      $ranges[] = [
-        'start' => $start,
-        'end' => $end,
+    foreach ($this->availableRanges($node) as $range) {
+      ['start' => $start, 'end' => $end] = $range;
+      $ranges[] = $range + [
         'label' => $start === $end
           ? $this->formatDate($start, $langcode)
           : $this->t('Del @start al @end', ['@start' => $this->formatDate($start, $langcode), '@end' => $this->formatDate($end, $langcode)]),
       ];
     }
-    usort($ranges, static fn (array $a, array $b): int => strcmp($a['start'], $b['start']));
 
     $host_photo = NULL;
     if (!$node->get('field_anfitrion_foto')->isEmpty() && ($item = $node->get('field_anfitrion_foto')->first()) instanceof ImageItem) {
@@ -298,7 +327,7 @@ final class ExperienceRepository {
 
     $breadcrumb = [
       ['label' => $this->t('Inicio'), 'url' => Url::fromRoute('<front>')->toString()],
-      ['label' => $this->t('Experiencias'), 'url' => Url::fromRoute('trotamundos_experiences.catalog')->toString()],
+      ['label' => $card['type']['plural'], 'url' => $card['type']['url']],
     ];
     if ($destination) {
       $breadcrumb[] = ['label' => $destination['department'], 'url' => Url::fromRoute('trotamundos_experiences.catalog', [], ['query' => ['destino' => $destination['department_slug']]])->toString()];
@@ -337,18 +366,18 @@ final class ExperienceRepository {
   /**
    * Options for the catalog filters, with counts from published experiences.
    */
-  public function filterOptions(array $filters): array {
+  public function filterOptions(array $filters, string $product_type = ''): array {
     $styles = $types = $destinations = [];
     $destination_index = $this->destinationIndex();
 
     foreach ($this->published() as $node) {
+      if ($product_type !== '' && $node->bundle() !== $product_type) {
+        continue;
+      }
       foreach ($node->get('field_estilo') as $item) {
         $styles[(int) $item->target_id] = ($styles[(int) $item->target_id] ?? 0) + 1;
       }
-      $type_id = (int) ($node->get('field_tipo_plan')->target_id ?? 0);
-      if ($type_id) {
-        $types[$type_id] = ($types[$type_id] ?? 0) + 1;
-      }
+      $types[$node->bundle()] = ($types[$node->bundle()] ?? 0) + 1;
       $destination_id = (int) ($node->get('field_destino')->target_id ?? 0);
       if (isset($destination_index[$destination_id])) {
         $destinations[$destination_id] = ($destinations[$destination_id] ?? 0) + 1;
@@ -358,18 +387,15 @@ final class ExperienceRepository {
     $term_options = function (string $vid, array $counts, string $selected): array {
       $options = [];
       foreach ($this->termIndex()[$vid] as $slug => $term) {
-        if (empty($counts[$term['id']])) {
-          continue;
-        }
-        $options[] = $term + ['count' => $counts[$term['id']], 'selected' => $slug === $selected];
+        $options[] = $term + ['count' => $counts[$term['id']] ?? 0, 'selected' => $slug === $selected];
       }
       return $options;
     };
 
-    // Region > department > municipality, only where there are experiences.
+    // Include published destinations that do not have a bookable plan yet.
     $tree = [];
-    foreach ($destinations as $destination_id => $count) {
-      $destination = $destination_index[$destination_id];
+    foreach ($destination_index as $destination_id => $destination) {
+      $count = $destinations[$destination_id] ?? 0;
       $region = $destination['region'] ?: 'otras';
       $department = $destination['department_slug'];
       $tree[$region]['label'] ??= $destination['region_label'] ?: (string) $this->t('Otras regiones');
@@ -404,9 +430,28 @@ final class ExperienceRepository {
       $months[] = ['value' => $month->format('Y-m'), 'label' => $this->formatMonth($month)];
     }
 
+    $companions = [];
+    foreach (self::accompanimentLabels() as $value => $label) {
+      $companions[] = [
+        'value' => $value,
+        'label' => $label,
+        'selected' => ($filters['acompanamiento'] ?? '') === $value,
+      ];
+    }
+
+    $product_options = [];
+    foreach (self::productLabels() as $bundle => $label) {
+      $product_options[] = [
+        'slug' => $bundle,
+        'label' => $label,
+        'count' => $types[$bundle] ?? 0,
+        'selected' => ($filters['tipo'] ?? '') === $bundle,
+      ];
+    }
+
     return [
       'styles' => $term_options('estilo_viaje', $styles, $filters['estilo'] ?? ''),
-      'types' => $term_options('tipo_plan', $types, $filters['tipo'] ?? ''),
+      'types' => $product_options,
       'destinations' => array_values($tree),
       'prices' => [
         ['value' => 'hasta-300000', 'label' => $this->t('Hasta @amount', ['@amount' => $this->formatPrice(300000)])],
@@ -420,19 +465,22 @@ final class ExperienceRepository {
         ['value' => 'cuatro-noches', 'label' => $this->t('4 noches o más')],
       ],
       'months' => $months,
+      'companions' => $companions,
+      'today' => $this->today(),
+      'margins' => self::DATE_MARGINS,
       'sorts' => [
         ['value' => '', 'label' => $this->t('Recomendadas')],
         ['value' => 'precio-asc', 'label' => $this->t('Precio: de menor a mayor')],
         ['value' => 'precio-desc', 'label' => $this->t('Precio: de mayor a menor')],
       ],
-      'total' => count($this->published()),
+      'total' => array_sum($types),
     ];
   }
 
   /**
    * Human labels for the active filters, each with a link that removes it.
    */
-  public function activeFilters(array $filters, array $options): array {
+  public function activeFilters(array $filters, array $options, string $route = 'trotamundos_experiences.catalog'): array {
     $labels = [];
     foreach ($options['styles'] as $option) {
       $labels['estilo'][$option['slug']] = $option['label'];
@@ -449,7 +497,7 @@ final class ExperienceRepository {
       }
     }
     $labels['region'] = self::regionLabels();
-    foreach (['prices' => 'precio', 'durations' => 'duracion', 'months' => 'fecha'] as $group => $key) {
+    foreach (['prices' => 'precio', 'durations' => 'duracion', 'months' => 'fecha', 'companions' => 'acompanamiento'] as $group => $key) {
       foreach ($options[$group] as $option) {
         $labels[$key][$option['value']] = $option['label'];
       }
@@ -466,10 +514,58 @@ final class ExperienceRepository {
       $active[] = [
         'key' => $key,
         'label' => $labels[$key][$value],
-        'remove_url' => Url::fromRoute('trotamundos_experiences.catalog', [], ['query' => $remaining])->toString(),
+        'remove_url' => Url::fromRoute($route, [], ['query' => $remaining])->toString(),
+      ];
+    }
+    if (!empty($filters['desde'])) {
+      $remaining = array_diff_key($query, array_flip(['desde', 'hasta', 'margen']));
+      $active[] = [
+        'key' => 'fechas',
+        'label' => $this->dateLabel($filters),
+        'remove_url' => Url::fromRoute($route, [], ['query' => $remaining])->toString(),
       ];
     }
     return $active;
+  }
+
+  public static function productLabels(): array {
+    return [
+      'alojamiento' => (string) t('Alojamientos'),
+      'experiencia' => (string) t('Experiencias'),
+      'paquete' => (string) t('Paquetes'),
+    ];
+  }
+
+  public function today(): string {
+    return date('Y-m-d', $this->time->getRequestTime());
+  }
+
+  public function dateLabel(array $filters): string {
+    if (!empty($filters['desde']) && !empty($filters['hasta'])) {
+      $start = (new \DateTimeImmutable($filters['desde']))->format('d/m/Y');
+      $end = (new \DateTimeImmutable($filters['hasta']))->format('d/m/Y');
+      $label = $start === $end ? $start : $start . ' – ' . $end;
+      return !empty($filters['margen'])
+        ? (string) $this->formatPlural((int) $filters['margen'], '@dates (±1 día)', '@dates (±@count días)', ['@dates' => $label])
+        : $label;
+    }
+    return !empty($filters['fecha'])
+      ? $this->formatMonth(new \DateTimeImmutable($filters['fecha'] . '-01'))
+      : (string) $this->t('Cualquier fecha');
+  }
+
+  private function productType(NodeInterface $node): array {
+    $labels = [
+      'alojamiento' => $this->t('Alojamiento'),
+      'experiencia' => $this->t('Experiencia'),
+      'paquete' => $this->t('Paquete'),
+    ];
+    return [
+      'slug' => $node->bundle(),
+      'label' => $labels[$node->bundle()],
+      'plural' => self::productLabels()[$node->bundle()],
+      'url' => Url::fromRoute(ProductTypes::ROUTES[$node->bundle()])->toString(),
+    ];
   }
 
   /**
@@ -573,12 +669,18 @@ final class ExperienceRepository {
   /**
    * Formats a price in Colombian pesos for the current language.
    */
-  public function formatPrice(int $amount): string {
+  public function formatPrice(int|float $amount): string {
+    $decimals = floor($amount) === (float) $amount ? 0 : 2;
     // Templates add "COP" next to the amount; only the separators change.
     if ($this->currentLangcode() === 'en') {
-      return '$' . number_format($amount, 0, '.', ',');
+      return '$' . number_format($amount, $decimals, '.', ',');
     }
-    return '$' . number_format($amount, 0, ',', '.');
+    return '$' . number_format($amount, $decimals, ',', '.');
+  }
+
+  private function priceField(): string {
+    return $this->entityTypeManager->getStorage('field_storage_config')->load('node.field_tm_catalog_price')
+      ? 'field_tm_catalog_price' : 'field_precio';
   }
 
   /**
@@ -592,6 +694,18 @@ final class ExperienceRepository {
       'orinoquia' => (string) t('Orinoquía'),
       'amazonia' => (string) t('Amazonía'),
       'insular' => (string) t('Región Insular'),
+    ];
+  }
+
+  /**
+   * Translated labels for the optional travel companion choices.
+   */
+  public static function accompanimentLabels(): array {
+    return [
+      'pareja' => (string) t('Pareja'),
+      'familia' => (string) t('Familia'),
+      'grupo' => (string) t('Grupo'),
+      'solo' => (string) t('Solo'),
     ];
   }
 
@@ -620,7 +734,7 @@ final class ExperienceRepository {
     // original version so translations never reorder or duplicate results.
     return $this->nodeStorage()->getQuery()
       ->accessCheck(TRUE)
-      ->condition('type', 'experiencia')
+      ->condition('type', ProductTypes::BUNDLES, 'IN')
       ->condition('status', NodeInterface::PUBLISHED)
       ->condition('default_langcode', 1);
   }
@@ -634,7 +748,10 @@ final class ExperienceRepository {
       $query->condition('field_estilo', $terms['estilo_viaje'][$filters['estilo']]['id']);
     }
     if (!empty($filters['tipo'])) {
-      $query->condition('field_tipo_plan', $terms['tipo_plan'][$filters['tipo']]['id']);
+      $query->condition('type', $filters['tipo']);
+    }
+    if (!empty($filters['acompanamiento'])) {
+      $query->condition('field_acompanamiento', $filters['acompanamiento']);
     }
 
     $destination_ids = NULL;
@@ -654,9 +771,9 @@ final class ExperienceRepository {
 
     if (!empty($filters['precio'])) {
       [$min, $max] = self::PRICE_RANGES[$filters['precio']];
-      $query->condition('field_precio', $min, '>=');
+      $query->condition($this->priceField(), $min, '>=');
       if ($max !== NULL) {
-        $query->condition('field_precio', $max, '<=');
+        $query->condition($this->priceField(), $max, '<=');
       }
     }
     if (!empty($filters['duracion'])) {
@@ -675,7 +792,49 @@ final class ExperienceRepository {
       $query->condition('field_fechas.value', $month_end, '<=');
       $query->condition('field_fechas.end_value', max($month_start, $today), '>=');
     }
+    if (!empty($filters['desde'])) {
+      $ids = $this->matchingDateIds($filters);
+      if (!$ids) {
+        return FALSE;
+      }
+      $query->condition('nid', $ids, 'IN');
+    }
     return TRUE;
+  }
+
+  /**
+   * A flexible trip can move as a whole, but cannot shrink or bridge periods.
+   */
+  private function matchingDateIds(array $filters): array {
+    $start = new \DateTimeImmutable($filters['desde']);
+    $end = new \DateTimeImmutable($filters['hasta']);
+    $duration = (int) $start->diff($end)->days;
+    $margin = (int) ($filters['margen'] ?? 0);
+    $earliest = max($this->today(), $start->modify("-$margin days")->format('Y-m-d'));
+    $latest = $start->modify("+$margin days")->format('Y-m-d');
+    $ids = [];
+    foreach ($this->published() as $node) {
+      foreach ($this->availableRanges($node) as $range) {
+        $last_start = (new \DateTimeImmutable($range['end']))->modify("-$duration days")->format('Y-m-d');
+        if (max($earliest, $range['start']) <= min($latest, $last_start)) {
+          $ids[] = (int) $node->id();
+          break;
+        }
+      }
+    }
+    return $ids;
+  }
+
+  private function availableRanges(NodeInterface $node): array {
+    $ranges = [];
+    foreach ($node->get('field_fechas') as $item) {
+      $end = (string) ($item->end_value ?: $item->value);
+      if ($end >= $this->today()) {
+        $ranges[] = ['start' => max((string) $item->value, $this->today()), 'end' => $end];
+      }
+    }
+    usort($ranges, static fn (array $a, array $b): int => strcmp($a['start'], $b['start']));
+    return $ranges;
   }
 
   /**
@@ -683,8 +842,8 @@ final class ExperienceRepository {
    */
   private function applySort(QueryInterface $query, string $sort): void {
     match ($sort) {
-      'precio-asc' => $query->sort('field_precio', 'ASC')->sort('title', 'ASC'),
-      'precio-desc' => $query->sort('field_precio', 'DESC')->sort('title', 'ASC'),
+      'precio-asc' => $query->sort($this->priceField(), 'ASC')->sort('title', 'ASC'),
+      'precio-desc' => $query->sort($this->priceField(), 'DESC')->sort('title', 'ASC'),
       default => $query->sort('field_destacada', 'DESC')->sort('sticky', 'DESC')->sort('created', 'DESC')->sort('nid', 'DESC'),
     };
   }
@@ -738,14 +897,6 @@ final class ExperienceRepository {
       'label' => $translated->label(),
       'icon' => $term->hasField('field_icono') ? (string) ($term->get('field_icono')->value ?? 'sun') : '',
     ];
-  }
-
-  /**
-   * One referenced term as presentation data.
-   */
-  private function referencedTerm(NodeInterface $node, string $field): ?array {
-    $term = $node->get($field)->entity;
-    return $term instanceof TermInterface ? $this->termData($term) : NULL;
   }
 
   /**

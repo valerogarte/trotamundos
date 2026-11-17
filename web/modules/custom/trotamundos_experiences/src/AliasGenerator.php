@@ -17,7 +17,9 @@ final class AliasGenerator {
    * URL prefixes per bundle and language.
    */
   private const PREFIXES = [
+    'alojamiento' => ['es' => '/alojamientos/', 'en' => '/stays/'],
     'experiencia' => ['es' => '/experiencias/', 'en' => '/experiences/'],
+    'paquete' => ['es' => '/paquetes/', 'en' => '/packages/'],
     'destino' => ['es' => '/destinos/', 'en' => '/destinations/'],
   ];
 

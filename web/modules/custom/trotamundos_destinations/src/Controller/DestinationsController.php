@@ -7,6 +7,7 @@ namespace Drupal\trotamundos_destinations\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\trotamundos_experiences\ExperienceRepository;
+use Drupal\trotamundos_experiences\Setup\ProductTypes;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -38,7 +39,7 @@ final class DestinationsController extends ControllerBase {
       '#attached' => ['library' => ['trotamundos/pages']],
       '#cache' => [
         'contexts' => ['languages:language_interface', 'languages:language_content', 'user.permissions'],
-        'tags' => ['node_list:destino', 'node_list:experiencia'],
+        'tags' => ProductTypes::CACHE_TAGS,
       ],
     ];
   }

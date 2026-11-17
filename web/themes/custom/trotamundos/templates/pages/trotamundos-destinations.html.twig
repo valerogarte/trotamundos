@@ -10,7 +10,7 @@
   <header class="page-intro container">
     <p class="eyebrow">{{ 'Destinos'|t }}</p>
     <h1>{{ 'Explora Colombia'|t }} <em>{{ 'por destino'|t }}</em></h1>
-    <p class="lead">{{ 'Busca experiencias por región, departamento y municipio. Cada destino reúne los planes que preparamos con sus anfitriones.'|t }}</p>
+    <p class="lead">{{ 'Busca planes por región, departamento y municipio. Cada destino reúne los planes que preparamos con sus anfitriones.'|t }}</p>
     {% if tree|length > 1 %}
       <nav class="region-index" aria-label="{{ 'Regiones'|t }}">
         {% for region in tree %}
@@ -27,8 +27,8 @@
         <p>
           {% if region.count %}
             {% set count = region.count %}
-            <span>{% trans %}1 experiencia{% plural count %}{{ count }} experiencias{% endtrans %}</span>
-            <a class="text-link" href="{{ catalog_url }}?region={{ region.key }}">{{ 'Ver experiencias de la región'|t }} {{ icons.icon('arrow') }}</a>
+            <span>{% trans %}1 plan{% plural count %}{{ count }} planes{% endtrans %}</span>
+            <a class="text-link" href="{{ catalog_url }}?region={{ region.key }}">{{ 'Ver planes de la región'|t }} {{ icons.icon('arrow') }}</a>
           {% else %}
             <span>{{ 'Próximamente'|t }}</span>
           {% endif %}
@@ -43,7 +43,7 @@
               <a class="text-link" href="{{ catalog_url }}?destino={{ department.slug }}">
                 {% set count = department.count %}
                 {% set department_name = department.label %}
-                {% trans %}Ver 1 experiencia en {{ department_name }}{% plural count %}Ver {{ count }} experiencias en {{ department_name }}{% endtrans %}
+                {% trans %}Ver 1 plan en {{ department_name }}{% plural count %}Ver {{ count }} planes en {{ department_name }}{% endtrans %}
                 {{ icons.icon('arrow') }}
               </a>
             {% endif %}
@@ -59,7 +59,7 @@
                     <span class="destination-card__count">
                       {% if destination.count %}
                         {% set count = destination.count %}
-                        {% trans %}1 experiencia{% plural count %}{{ count }} experiencias{% endtrans %}
+                        {% trans %}1 plan{% plural count %}{{ count }} planes{% endtrans %}
                       {% else %}
                         {{ 'Próximamente'|t }}
                       {% endif %}
