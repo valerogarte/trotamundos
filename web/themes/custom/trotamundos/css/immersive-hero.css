@@ -1,6 +1,5 @@
 /**
- * Home video banner. It keeps the video as protagonist but leaves room for
- * the quick search and the experiences right below it.
+ * Full-screen video with room for the expanded exploration header.
  */
 .front-messages {
   padding-top: 0;
@@ -13,7 +12,7 @@
 .immersive-hero {
   position: relative;
   isolation: isolate;
-  height: clamp(560px, 72svh, 780px);
+  min-height: 100svh;
   overflow: hidden;
   color: var(--marfil);
   background: var(--selva);
@@ -49,8 +48,12 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100%;
-  padding-block: calc(var(--header-height) + 24px) 88px;
+  min-height: 100svh;
+  padding-block: 48px;
+}
+
+.trotamundos-js .immersive-hero__inner {
+  padding-block: calc(var(--home-header-space) + 32px) clamp(40px, 7svh, 88px);
 }
 
 .immersive-hero__copy {
@@ -95,24 +98,13 @@
   outline-color: var(--marfil);
 }
 
-@media (max-width: 1023px) {
-  .immersive-hero__inner {
-    padding-bottom: 104px;
-  }
-}
-
 @media (max-width: 639px) {
-  .immersive-hero {
-    height: clamp(520px, 76svh, 680px);
-  }
-
   .immersive-hero::after {
     background: linear-gradient(180deg, rgb(8 24 20 / 50%), rgb(8 24 20 / 30%) 30%, rgb(8 24 20 / 45%) 60%, rgb(8 24 20 / 82%));
   }
 
   .immersive-hero__inner {
     justify-content: flex-end;
-    padding-block: calc(var(--header-height) + 24px) 84px;
   }
 
   .immersive-hero__eyebrow {

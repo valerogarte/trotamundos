@@ -222,7 +222,8 @@
       link.addEventListener('click', (event) => {
         event.preventDefault();
         card.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
-        window.setTimeout(() => dateInput.focus({ preventScroll: true }), 400);
+        const target = card.querySelector('.commerce-purchase input[name="tm_trip_date"]') || dateInput;
+        window.setTimeout(() => target.focus({ preventScroll: true }), 400);
       });
     });
     if (bar && 'IntersectionObserver' in window) {

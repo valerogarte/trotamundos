@@ -4,14 +4,28 @@
  * Spanish / English switch for the current page.
  */
 #}
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+{% set language_selector = language_selector|default(false) %}
 {% if tm.languages|length > 1 %}
+  {% if language_selector %}
+    <details class="language-selector" data-language-selector>
+      <summary class="language-selector__toggle" title="{{ 'Idioma'|t }}">
+        {{ icons.icon('globe') }}<span class="visually-hidden">{{ 'Elegir idioma'|t }}</span>
+      </summary>
+      <div class="language-selector__panel">
+        <h2 class="language-selector__title">{{ 'Elige tu idioma'|t }}</h2>
+  {% endif %}
   <div class="language-switch" role="group" aria-label="{{ 'Idioma'|t }}">
     {% for language in tm.languages %}
       {% if language.current %}
-        <span aria-current="true" lang="{{ language.code }}" title="{{ language.name }}">{{ language.code|upper }}</span>
+        <span aria-current="true" lang="{{ language.code }}" title="{{ language.name }}">{{ language_selector ? language.name : language.code|upper }}{% if language_selector %}{{ icons.icon('check') }}{% endif %}</span>
       {% else %}
-        <a href="{{ language.url }}" hreflang="{{ language.code }}" lang="{{ language.code }}" aria-label="{{ language.name }}">{{ language.code|upper }}</a>
+        <a href="{{ language.url }}" hreflang="{{ language.code }}" lang="{{ language.code }}" aria-label="{{ language.name }}">{{ language_selector ? language.name : language.code|upper }}</a>
       {% endif %}
     {% endfor %}
   </div>
+  {% if language_selector %}
+      </div>
+    </details>
+  {% endif %}
 {% endif %}
