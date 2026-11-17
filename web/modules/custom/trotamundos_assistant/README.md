@@ -563,7 +563,44 @@ Drupal Commerce sigue siendo la fuente de verdad para precio, imagen, URL,
 publicación, favoritos y carrito. La capa vectorial aporta recuperación
 semántica para el assistant.
 
-### Multisite: una collection por site
+### Qdrant local en DDEV
+
+El proyecto incluye un servicio Qdrant con almacenamiento persistente en un
+volumen Docker y sin puertos publicados en el host. Está protegido con una
+clave local porque DDEV comparte una red entre proyectos. Es una configuración
+de desarrollo, no un despliegue de producción.
+
+En una copia nueva, antes de arrancar DDEV, genera la clave una sola vez:
+
+```bash
+test -e .ddev/qdrant.local.key || (umask 077; openssl rand -hex 32 > .ddev/qdrant.local.key)
+ddev start
+```
+
+El archivo está fuera del directorio web y está excluido de Git. No lo
+sobrescribas mientras el servicio esté en uso. Para conectar Drupal:
+
+- Crea la key `qdrant_local` con proveedor `File`, ruta
+  `/var/www/html/.ddev/qdrant.local.key` y eliminación de saltos de línea.
+- Configura el proveedor Qdrant con host `qdrant`, puerto `6333` y esa key.
+- Crea la key `openai` con proveedor `Environment` y variable
+  `OPENAI_API_KEY`, y selecciónala en el proveedor OpenAI.
+- Define una credencial OpenAI nueva en el entorno privado de DDEV, por ejemplo
+  en `.ddev/config.local.yaml`, y reinicia el proyecto para que PHP la lea.
+  No guardes credenciales en el repositorio ni las pegues en documentación.
+
+La integración usa `ai_vdb_provider_qdrant` y el módulo independiente
+`ai_search` 1.3.0-alpha6. Ambos deben evaluarse antes de un uso en producción.
+El modelo de embeddings previsto es `text-embedding-3-small` (1536 dimensiones).
+El assistant, el agente y el índice deben configurarse y verificarse por
+separado; disponer de Qdrant no significa que el contenido ya esté indexado.
+Antes de indexar, limita el contenido a datos publicados y autorizados y revisa
+los campos que se enviarán al proveedor externo.
+
+### Despliegues heredados con pgvector
+
+Esta sección describe la configuración anterior y no se aplica al Qdrant
+local de este proyecto.
 
 El provider `ai_vdb_provider_postgres` mapea `collection` a una tabla de
 Postgres y las búsquedas vectoriales no filtran por `server_id` ni `index_id`.
@@ -670,21 +707,15 @@ El módulo base requiere:
 - `key`,
 - `search_api`.
 
-La pantalla `Estado` comprueba además la receta operativa:
+La pantalla `Estado` valida:
 
-```text
-recipes/minsait_chatbot_pgvector_openai
-```
-
-Y valida:
-
-- módulos AI/Search/Key,
+- módulos AI/Search/Key, OpenAI y Qdrant,
 - configuración de assistant,
 - configuración de agent,
 - índice AI Search,
 - índice Search API,
 - servidor Search API,
-- keys `openai` y `pgvector_password`,
+- key `openai` y la key configurada en el proveedor Qdrant,
 - tabla `trotamundos_assistant_usage`.
 
 El submódulo ecommerce depende de `trotamundos_assistant` y sus skills declaran
@@ -707,18 +738,11 @@ ddev drush updb -y
 ddev drush cr
 ```
 
-Aplicar receta IA/RAG si falta configuración:
+Verificar la disponibilidad de las keys sin mostrar sus valores:
 
 ```bash
-ddev drush recipe recipes/minsait_chatbot_pgvector_openai
-ddev drush cr
-```
-
-Verificar keys:
-
-```bash
-ddev drush ev "echo \Drupal::service('key.repository')->getKey('openai')->getKeyValue() ? 'openai ok' : 'openai missing';"
-ddev drush ev "echo \Drupal::service('key.repository')->getKey('pgvector_password')->getKeyValue() ? 'pgvector password ok' : 'pgvector password missing';"
+ddev drush ev '$key = \Drupal::service("key.repository")->getKey("openai"); echo $key && $key->getKeyValue() ? "openai ok" : "openai missing";'
+ddev drush ev '$key = \Drupal::service("key.repository")->getKey("qdrant_local"); echo $key && $key->getKeyValue() ? "qdrant ok" : "qdrant missing";'
 ```
 
 Validación de calidad del proyecto:
@@ -732,16 +756,14 @@ ddev exec vendor/bin/grumphp git:pre-commit --skip-success-output
 Tests incluidos:
 
 ```text
-tests/src/Functional/AssistantEndpointAccessTest.php
-tests/src/Kernel/SkillBehaviorTest.php
-tests/src/Kernel/DocumentsBehaviorTest.php
+tests/dependency-status.php
 ```
 
-Cobertura principal:
+Ejecutar la comprobación de estado con Qdrant local configurado:
 
-- acceso a endpoints,
-- comportamiento de skills,
-- extracción/configuración documental.
+```bash
+ddev drush php:script modules/custom/trotamundos_assistant/tests/dependency-status.php
+```
 
 ## Evolución Recomendada
 

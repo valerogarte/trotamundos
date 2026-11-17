@@ -8,6 +8,7 @@
 
 # Local settings, generated files and credentials.
 /.local/
+/.ddev/qdrant.local.key
 /web/sites/*/files/
 /web/sites/*/private/
 /web/sites/*/settings.php

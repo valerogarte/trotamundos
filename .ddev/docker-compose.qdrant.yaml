@@ -1,0 +1,27 @@
+services:
+  qdrant:
+    container_name: ddev-${DDEV_SITENAME}-qdrant
+    image: qdrant/qdrant:v1.20.1
+    entrypoint:
+      - /bin/sh
+      - -ec
+      - |
+        test -s /run/secrets/qdrant_key
+        export QDRANT__SERVICE__API_KEY="$$(cat /run/secrets/qdrant_key)"
+        exec /qdrant/entrypoint.sh
+    volumes:
+      - qdrant_data:/qdrant/storage
+      - type: bind
+        source: ./qdrant.local.key
+        target: /run/secrets/qdrant_key
+        read_only: true
+        bind:
+          create_host_path: false
+    networks:
+      - default
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: ${DDEV_APPROOT}
+
+volumes:
+  qdrant_data:

@@ -21,18 +21,17 @@ final class DependencyStatusBuilder {
   use StringTranslationTrait;
 
   /**
-   * Modules required by the RAG recipe used by the block.
+   * Modules required by the RAG integration used by the block.
    */
   private const REQUIRED_MODULES = [
     'key' => 'Key',
     'search_api' => 'Search API',
     'ai' => 'AI',
     'ai_provider_openai' => 'AI Provider OpenAI',
-    'ai_vdb_provider_postgres' => 'AI VDB Provider Postgres',
+    'ai_vdb_provider_qdrant' => 'AI VDB Provider Qdrant',
     'ai_search' => 'AI Search',
     'ai_agents' => 'AI Agents',
     'ai_assistant_api' => 'AI Assistant API',
-    'ai_chatbot' => 'AI Chatbot',
   ];
 
   /**
@@ -68,7 +67,7 @@ final class DependencyStatusBuilder {
         'purpose' => $this->buildModulePurpose($module),
         'message' => $enabled
           ? ''
-          : $this->t('Falta este módulo. Instala las dependencias de la receta con Composer y activa la receta: ddev composer require -W drupal/ai drupal/ai_agents drupal/ai_provider_openai drupal/ai_vdb_provider_postgres drupal/key drupal/search_api && ddev drush recipe recipes/minsait_chatbot_pgvector_openai'),
+          : $this->t('Falta este módulo. Instala las dependencias con Composer y actívalo en Drupal.'),
       ];
     }
 
@@ -86,7 +85,7 @@ final class DependencyStatusBuilder {
         'wide' => $exists && $this->isFeaturedConfiguration($config_name),
         'message' => $exists
           ? ''
-          : $this->t('No existe esta configuración. Ejecuta la receta: ddev drush recipe recipes/minsait_chatbot_pgvector_openai && ddev drush cr'),
+          : $this->t('No existe esta configuración. Configúrala en Drupal antes de usar el asistente.'),
       ];
     }
 
@@ -102,16 +101,22 @@ final class DependencyStatusBuilder {
         : $this->t('No se puede leer la key openai. Define OPENAI_API_KEY en .ddev/config.local.yaml o en el entorno del servidor y reinicia DDEV/PHP.'),
     ];
 
+    $qdrant_key_id = trim((string) $this->configFactory
+      ->get('ai_vdb_provider_qdrant.settings')
+      ->get('api_key'));
+    $qdrant_key_available = $qdrant_key_id !== '' && $this->keyHasValue($qdrant_key_id);
     $checks[] = [
       'section' => 'credentials',
       'section_label' => $this->t('Credenciales'),
-      'label' => $this->t('Variable de entorno PGVECTOR_PASSWORD'),
-      'status' => $this->keyHasValue('pgvector_password'),
-      'url' => Url::fromRoute('entity.key.edit_form', ['key' => 'pgvector_password']),
-      'purpose' => $this->t('Permite conectar con el Postgres local que guarda y consulta los vectores del catálogo.'),
-      'message' => $this->keyHasValue('pgvector_password')
-        ? $this->t('Drupal puede leer el password de pgvector.')
-        : $this->t('No se puede leer la key pgvector_password. Define PGVECTOR_PASSWORD en .ddev/config.local.yaml o en el entorno del servidor y reinicia DDEV/PHP.'),
+      'label' => $this->t('Clave de Qdrant'),
+      'status' => $qdrant_key_available,
+      'url' => $qdrant_key_available
+        ? Url::fromRoute('entity.key.edit_form', ['key' => $qdrant_key_id])
+        : Url::fromRoute('entity.key.collection'),
+      'purpose' => $this->t('Permite autenticar la conexión con la base vectorial de Qdrant.'),
+      'message' => $qdrant_key_available
+        ? $this->t('Drupal puede leer la clave configurada para Qdrant.')
+        : $this->t('Configura una clave de Qdrant accesible para Drupal en los ajustes del proveedor.'),
     ];
 
     $checks[] = [
@@ -153,15 +158,14 @@ final class DependencyStatusBuilder {
    */
   private function buildModulePurpose(string $module): \Stringable|string {
     return match ($module) {
-      'key' => $this->t('Almacena y resuelve credenciales como OpenAI y pgvector sin dejarlas en código.'),
+      'key' => $this->t('Resuelve credenciales como OpenAI y Qdrant sin dejarlas en código.'),
       'search_api' => $this->t('Define el índice del catálogo y coordina qué entidades y campos se indexan.'),
       'ai' => $this->t('Aporta la capa base de proveedores, modelos y operaciones de IA.'),
       'ai_provider_openai' => $this->t('Conecta Drupal con los modelos de OpenAI usados por el asistente.'),
-      'ai_vdb_provider_postgres' => $this->t('Conecta AI Search con Postgres/pgvector como base de datos vectorial local.'),
+      'ai_vdb_provider_qdrant' => $this->t('Conecta AI Search con Qdrant como base de datos vectorial.'),
       'ai_search' => $this->t('Genera embeddings y habilita búsquedas RAG sobre el índice Search API.'),
       'ai_agents' => $this->t('Define el agente que decide cómo usar herramientas y contexto.'),
       'ai_assistant_api' => $this->t('Ejecuta el assistant conversacional reutilizado por el bloque embebido.'),
-      'ai_chatbot' => $this->t('Aporta piezas base del ecosistema chatbot del módulo AI.'),
       default => $this->t('Dependencia necesaria para el funcionamiento del módulo.'),
     };
   }
@@ -177,9 +181,9 @@ final class DependencyStatusBuilder {
       $agent_config_name => $this->t('Guarda las instrucciones del agente, herramientas disponibles y reglas para devolver JSON compatible con las skills.'),
       $assistant_config_name => $this->t('Configura el assistant que recibe los mensajes del bloque y mantiene el flujo conversacional.'),
       'ai_search.index.minsait_nodes_ai' => $this->t('Indica qué campos son contenido principal, contexto o atributos para embeddings y metadata.'),
-      'search_api.index.minsait_nodes_ai' => $this->t('Define entidades de catálogo, variaciones y campos que se preparan para pgvector.'),
+      'search_api.index.minsait_nodes_ai' => $this->t('Define entidades de catálogo, variaciones y campos que se preparan para el índice vectorial.'),
       'search_api.server.minsait_nodes_ai' => $this->t('Configura el backend vectorial, colección y conexión usada para indexar y consultar.'),
-      default => $this->t('Configuración requerida por la receta del módulo.'),
+      default => $this->t('Configuración requerida por el módulo.'),
     };
   }
 
@@ -336,7 +340,7 @@ final class DependencyStatusBuilder {
             '@id' => $index_id,
           ])
           : $this->t('No configurada'),
-        'help' => $this->t('Índice Search API que usa la herramienta RAG. En este proyecto apunta al índice de nodos/productos sincronizado con pgvector.'),
+        'help' => $this->t('Índice Search API que usa la herramienta RAG para consultar el contenido vectorizado.'),
       ],
       [
         'label' => $this->t('RAG threshold'),
@@ -463,7 +467,7 @@ final class DependencyStatusBuilder {
           [
             'label' => $this->t('Base de datos'),
             'value' => (string) ($backend_config['database'] ?? $this->t('No configurada')),
-            'help' => $this->t('Proveedor vectorial donde se guardan y consultan los embeddings. Ejemplo: postgres almacena los vectores del catálogo en una tabla pgvector para búsquedas RAG.'),
+            'help' => $this->t('Proveedor vectorial donde se guardan y consultan los embeddings. Ejemplo: Qdrant almacena los vectores del catálogo para búsquedas RAG.'),
           ],
           [
             'label' => $this->t('Database name'),
@@ -480,11 +484,11 @@ final class DependencyStatusBuilder {
             'value' => (string) ($database_settings['metric'] ?? $this->t('No configurada')),
             'help' => $this->t('Criterio de similitud usado al comparar el vector de la pregunta con los vectores indexados. Ejemplo: cosine_similarity mide cercanía semántica por orientación.'),
           ],
-          [
+          ...(isset($database_settings['vector_index_strategy']) ? [[
             'label' => $this->t('Estrategia de índice'),
-            'value' => (string) ($database_settings['vector_index_strategy'] ?? $this->t('No configurada')),
-            'help' => $this->t('Tipo de índice vectorial usado por pgvector. Ejemplo: none usa búsqueda exacta; hnsw mejora rendimiento en colecciones grandes.'),
-          ],
+            'value' => (string) $database_settings['vector_index_strategy'],
+            'help' => $this->t('Tipo de índice vectorial configurado para el proveedor.'),
+          ]] : []),
         ],
       ],
       [
@@ -494,12 +498,12 @@ final class DependencyStatusBuilder {
           [
             'label' => $this->t('Motor'),
             'value' => $this->formatProviderModel((string) ($backend_config['embeddings_engine'] ?? '')),
-            'help' => $this->t('Modelo que convierte texto del catálogo en vectores numéricos. Ejemplo: openai / text-embedding-3-small genera embeddings que se guardan en pgvector.'),
+            'help' => $this->t('Modelo que convierte texto del catálogo en vectores numéricos. Ejemplo: openai / text-embedding-3-small genera embeddings que se guardan en Qdrant.'),
           ],
           [
             'label' => $this->t('Dimensiones'),
             'value' => (string) ($embedding_configuration['dimensions'] ?? $this->t('No configuradas')),
-            'help' => $this->t('Tamaño del vector generado por el modelo de embeddings. Ejemplo: 1536 dimensiones deben ser compatibles con la tabla vectorial de pgvector.'),
+            'help' => $this->t('Tamaño del vector generado por el modelo de embeddings. Ejemplo: 1536 dimensiones deben coincidir con las de la colección de Qdrant.'),
           ],
           [
             'label' => $this->t('Fijar dimensiones'),
@@ -861,7 +865,7 @@ final class DependencyStatusBuilder {
         ]),
       ],
       default => [
-        'help' => $this->t('Esta configuración se gestiona desde sincronización de configuración. Revisa el fichero @name.yml y aplica la receta o importa configuración si falta.', [
+        'help' => $this->t('Esta configuración se gestiona desde sincronización de configuración. Revisa el fichero @name.yml o configúrala en Drupal si falta.', [
           '@name' => $config_name,
         ]),
       ],
@@ -869,7 +873,7 @@ final class DependencyStatusBuilder {
   }
 
   /**
-   * Gets configuration entities required by the RAG recipe used by the block.
+   * Gets configuration entities required by the RAG integration used by the block.
    *
    * @return array<string, \Stringable|string>
    *   Required config names keyed by config object name.
