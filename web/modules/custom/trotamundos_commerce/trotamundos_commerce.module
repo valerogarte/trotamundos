@@ -1,0 +1,252 @@
+<?php
+
+/**
+ * @file
+ * Private travel profiles and saved editorial plans.
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\commerce_product\Entity\ProductInterface;
+use Drupal\commerce_product\Entity\ProductVariationInterface;
+use Drupal\commerce_order\Entity\OrderItemInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
+use Drupal\trotamundos_commerce\Form\FavoritePlanForm;
+use Drupal\trotamundos_commerce\Setup\TravelProfileModel;
+use Drupal\trotamundos_commerce\Setup\CatalogPrice;
+use Drupal\trotamundos_commerce\Setup\CatalogImport;
+use Drupal\trotamundos_experiences\Setup\ProductTypes;
+
+/**
+ * Implements hook_theme().
+ */
+function trotamundos_commerce_theme($existing, $type, $theme, $path): array {
+  return [
+    'trotamundos_travel_profile' => [
+      'variables' => [
+        'saved' => [],
+        'orders' => [],
+        'pager' => NULL,
+        'preferences' => NULL,
+        'edit_url' => NULL,
+        'help_url' => NULL,
+        'catalog_url' => NULL,
+      ],
+      'template' => 'trotamundos-travel-profile',
+      'path' => \Drupal::service('extension.list.theme')->getPath('trotamundos') . '/templates/pages',
+    ],
+    'trotamundos_favorite_control' => [
+      'render element' => 'element',
+      'template' => 'trotamundos-favorite-control',
+      'path' => \Drupal::service('extension.list.theme')->getPath('trotamundos') . '/templates/components',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_trotamundos_experience_card_alter().
+ */
+function trotamundos_commerce_trotamundos_experience_card_alter(array &$card, NodeInterface $node): void {
+  $card['favorite'] = [
+    '#lazy_builder' => [FavoritePlanForm::class . '::buildCard', [(int) $node->id()]],
+    '#create_placeholder' => TRUE,
+  ];
+}
+
+/**
+ * Implements hook_entity_field_access().
+ */
+function trotamundos_commerce_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, ?FieldItemListInterface $items = NULL): AccessResult {
+  if ($field_definition->getTargetEntityTypeId() !== 'user' || !in_array($field_definition->getName(), TravelProfileModel::FIELDS, TRUE)) {
+    return AccessResult::neutral();
+  }
+  $owner = $items?->getEntity();
+  $allowed = $account->hasPermission('administer users')
+    || ($account->isAuthenticated() && $owner && (int) $account->id() === (int) $owner->id());
+  $result = ($allowed ? AccessResult::allowed() : AccessResult::forbidden())->cachePerUser()->cachePerPermissions();
+  return $owner ? $result->addCacheableDependency($owner) : $result;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for nodes.
+ */
+function trotamundos_commerce_node_view(array &$build, NodeInterface $node, EntityViewDisplayInterface $display, $view_mode): void {
+  if ($view_mode !== 'full' || !$node->isPublished() || !in_array($node->bundle(), ProductTypes::BUNDLES, TRUE)) {
+    return;
+  }
+  $build['trotamundos_favorite'] = \Drupal::currentUser()->isAuthenticated()
+    ? \Drupal::formBuilder()->getForm(new FavoritePlanForm((int) $node->id()))
+    : [
+      '#type' => 'link',
+      '#title' => t('Inicia sesión para guardar este plan'),
+      '#url' => Url::fromRoute('user.login', [], ['query' => ['destination' => $node->toUrl()->toString()]]),
+      '#attributes' => ['class' => ['button', 'button--secondary']],
+    ];
+  $build['trotamundos_favorite']['#cache']['contexts'][] = 'user';
+  $product = $node->get('field_commerce_product')->entity;
+  if (\Drupal::moduleHandler()->moduleExists('commerce_cart') && $product instanceof ProductInterface && $product->isPublished() && $product->getDefaultVariation()) {
+    $product = \Drupal::service('entity.repository')->getTranslationFromContext($product);
+    $build['trotamundos_purchase'] = \Drupal::entityTypeManager()->getViewBuilder('commerce_product')->viewField($product->get('variations'), [
+      'type' => 'commerce_add_to_cart', 'label' => 'hidden', 'settings' => ['combine' => FALSE],
+    ]);
+    $build['trotamundos_purchase']['#attached']['library'][] = 'trotamundos/commerce';
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function trotamundos_commerce_page_attachments(array &$attachments): void {
+  if (in_array(\Drupal::routeMatch()->getRouteName(), ['commerce_cart.page', 'commerce_checkout.form'], TRUE)) {
+    $attachments['#attached']['library'][] = 'trotamundos/commerce';
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for native add-to-cart forms.
+ */
+function trotamundos_commerce_form_commerce_order_item_add_to_cart_form_alter(array &$form, FormStateInterface $form_state): void {
+  $item = $form_state->getFormObject()->getEntity();
+  $variation = $item->getPurchasedEntity();
+  if (!$variation instanceof ProductVariationInterface || !in_array($variation->bundle(), ProductTypes::BUNDLES, TRUE)) {
+    return;
+  }
+  $node = _trotamundos_commerce_plan_for_variation($variation);
+  if (!$node || (int) $node->get('field_capacidad')->value < 1) {
+    $form['#access'] = FALSE;
+    \Drupal::logger('trotamundos_commerce')->error('Travel variation @id has no unique published editorial plan.', ['@id' => $variation->id()]);
+    \Drupal::messenger()->addError(t('No se puede comprar este plan en este momento. Contacta con el equipo.'));
+    return;
+  }
+  $form['tm_trip_date'] = [
+    '#type' => 'date',
+    '#title' => t('Fecha de llegada'),
+    '#required' => TRUE,
+    '#min' => (new \DateTimeImmutable('today', new \DateTimeZone('America/Bogota')))->format('Y-m-d'),
+    '#weight' => -5,
+    '#element_validate' => ['trotamundos_commerce_validate_trip_date'],
+    '#description' => t('La fecha se guarda en el carrito; la disponibilidad mostrada es provisional.'),
+  ];
+  $form['actions']['submit']['#value'] = t('Añadir al carrito');
+  if (isset($form['quantity']['widget'][0]['value'])) {
+    $form['quantity']['widget'][0]['value']['#title'] = t('Viajeros');
+    $form['quantity']['widget'][0]['value']['#min'] = 1;
+    $form['quantity']['widget'][0]['value']['#max'] = (int) $node->get('field_capacidad')->value;
+    $form['quantity']['widget'][0]['value']['#step'] = 1;
+  }
+}
+
+/**
+ * Finds the single editorial owner instead of choosing an ambiguous itinerary.
+ */
+function _trotamundos_commerce_plan_for_variation(ProductVariationInterface $variation): ?NodeInterface {
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+  $ids = $storage->getQuery()->accessCheck(TRUE)
+    ->condition('type', ProductTypes::BUNDLES, 'IN')->condition('status', 1)
+    ->condition('field_commerce_product', $variation->getProductId())->range(0, 2)->execute();
+  return count($ids) === 1 ? $storage->load(reset($ids)) : NULL;
+}
+
+/**
+ * Validates the complete stay and retains its date in native order-item data.
+ */
+function trotamundos_commerce_validate_trip_date(array &$element, FormStateInterface $form_state): void {
+  $value = $element['#value'];
+  $item = $form_state->getFormObject()->getEntity();
+  $variation = $item->getPurchasedEntity();
+  $node = $variation instanceof ProductVariationInterface ? _trotamundos_commerce_plan_for_variation($variation) : NULL;
+  $end = $node ? \Drupal::service('trotamundos_commerce.availability')->tripEnd($node, $value) : NULL;
+  if (!$end) {
+    $form_state->setError($element, t('El viaje completo debe caber en un periodo disponible de este plan.'));
+    return;
+  }
+  $item->setData('tm_trip_date', $value);
+  $item->setData('tm_trip_end', $end);
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for the native cart view.
+ */
+function trotamundos_commerce_form_views_form_commerce_cart_form_default_alter(array &$form, FormStateInterface $form_state): void {
+  $view = $form_state->getBuildInfo()['args'][0];
+  foreach ($view->result as $index => $row) {
+    $item = $row->_relationship_entities['order_items'] ?? NULL;
+    if (!isset($form['edit_quantity'][$index]) || !$item instanceof OrderItemInterface) {
+      continue;
+    }
+    $variation = $item->getPurchasedEntity();
+    if ($variation instanceof ProductVariationInterface && in_array($variation->bundle(), ProductTypes::BUNDLES, TRUE)) {
+      $node = _trotamundos_commerce_plan_for_variation($variation);
+      if ($node) {
+        $form['edit_quantity'][$index]['#max'] = (int) $node->get('field_capacidad')->value;
+        $form['edit_quantity'][$index]['#title'] = t('Viajeros');
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for order items.
+ */
+function trotamundos_commerce_commerce_order_item_presave(OrderItemInterface $item): void {
+  if ($item->getOrder() && $item->getOrder()->getState()->getId() !== 'draft') {
+    return;
+  }
+  if ($date = $item->getData('tm_trip_date')) {
+    $purchased = $item->getPurchasedEntity();
+    if ($purchased instanceof ProductVariationInterface) {
+      $purchased = \Drupal::service('entity.repository')->getTranslationFromContext($purchased);
+      $suffix = ' · ' . $date;
+      $item->setTitle(mb_substr($purchased->getOrderItemTitle(), 0, 255 - mb_strlen($suffix)) . $suffix);
+    }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for nodes.
+ */
+function trotamundos_commerce_node_presave(NodeInterface $node): void {
+  CatalogPrice::project($node);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update() for nodes.
+ */
+function trotamundos_commerce_node_update(NodeInterface $node): void {
+  CatalogImport::syncTitle($node);
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for editorial forms.
+ */
+function trotamundos_commerce_form_node_form_alter(array &$form, FormStateInterface $form_state): void {
+  $node = $form_state->getFormObject()->getEntity();
+  if (in_array($node->bundle(), ProductTypes::BUNDLES, TRUE) && !$node->get('field_commerce_product')->isEmpty()) {
+    $form['field_precio']['#access'] = FALSE;
+    $form['field_commerce_product']['#description'] = t('El precio de venta se gestiona en la variación de Commerce. El catálogo se actualiza automáticamente.');
+  }
+  if ($node->hasField(CatalogPrice::FIELD)) {
+    $form[CatalogPrice::FIELD]['#access'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update() for product variations.
+ */
+function trotamundos_commerce_commerce_product_variation_update(ProductVariationInterface $variation): void {
+  if ($variation->getProductId()) {
+    CatalogPrice::refreshProduct((int) $variation->getProductId());
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update() for products.
+ */
+function trotamundos_commerce_commerce_product_update(ProductInterface $product): void {
+  CatalogPrice::refreshProduct((int) $product->id());
+}

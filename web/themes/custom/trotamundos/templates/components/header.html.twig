@@ -1,36 +1,67 @@
 {#
 /**
  * @file
- * Site header: larger wordmark, four-item menu, language and WhatsApp.
+ * Shared exploration header with a compact search on scroll.
  */
 #}
 {% import '@trotamundos/components/icons.html.twig' as icons %}
+{{ tm_cache }}
+<div class="site-header-shell{{ header_overlay|default(false) ? ' site-header-shell--overlay' : '' }}">
 <header class="site-header{{ header_overlay|default(false) ? ' site-header--overlay' : '' }}" data-site-header>
-  <div class="site-header__inner container">
+  <div class="site-header__inner">
     <a class="wordmark" href="{{ path('<front>') }}" aria-label="{{ 'Trotamundos, inicio'|t }}">
       <span class="wordmark__name" aria-hidden="true">trota<span class="wordmark__italic">mundos</span><span class="wordmark__dot">.</span></span>
       <span class="wordmark__signature" aria-hidden="true">{{ 'POR JUAN TROTA MUNDOS'|t }}</span>
     </a>
 
-    <nav class="primary-navigation" id="trotamundos-navigation" aria-label="{{ 'Navegación principal'|t }}">
-      {% for item in tm.navigation %}
-        <a class="primary-navigation__link{{ item.active ? ' is-active' : '' }}" href="{{ item.url }}"{% if item.current %} aria-current="page"{% endif %}>{{ item.label }}</a>
+    <nav class="explore-navigation" aria-label="{{ 'Navegación principal'|t }}">
+      {% for item in tm.explore_navigation %}
+        <a class="explore-navigation__link{{ item.active ? ' is-active' : '' }}" href="{{ item.url }}"{% if item.current %} aria-current="page"{% endif %}>
+          <span class="explore-navigation__icon">{{ icons.icon(item.icon) }}</span>
+          <span>{{ item.label }}</span>
+        </a>
       {% endfor %}
-      <div class="primary-navigation__extra">
-        {% include '@trotamundos/components/language-switch.html.twig' %}
-        <a class="button button--whatsapp" href="{{ tm.whatsapp_url }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }} {{ 'Escríbenos por WhatsApp'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
-      </div>
     </nav>
 
     <div class="header-tools">
-      {% include '@trotamundos/components/language-switch.html.twig' %}
+      {% include '@trotamundos/components/language-switch.html.twig' with { language_selector: true } %}
       <a class="whatsapp-button" href="{{ tm.whatsapp_url }}" target="_blank" rel="noopener">
         {{ icons.icon('whatsapp') }}<span class="whatsapp-button__label">WhatsApp</span><span class="visually-hidden"> {{ 'Escríbenos por WhatsApp'|t }} ({{ 'se abre en una pestaña nueva'|t }})</span>
       </a>
       <button class="menu-toggle" type="button" data-menu-toggle aria-controls="trotamundos-navigation" aria-expanded="false">
-        <span class="menu-toggle__label">{{ 'Menú'|t }}</span>
+        <span class="menu-toggle__label visually-hidden">{{ 'Menú'|t }}</span>
         <span class="menu-toggle__lines" aria-hidden="true"></span>
       </button>
     </div>
   </div>
+
+  <nav class="primary-navigation" id="trotamundos-navigation" aria-label="{{ 'Más sobre Trotamundos'|t }}">
+    <div class="primary-navigation__explore">
+      {% for item in tm.explore_navigation %}
+        <a class="primary-navigation__link{{ item.active ? ' is-active' : '' }}" href="{{ item.url }}"{% if item.current %} aria-current="page"{% endif %}>{{ icons.icon(item.icon) }}<span>{{ item.label }}</span></a>
+      {% endfor %}
+    </div>
+    {% for item in tm.navigation %}
+      {% if item.secondary %}
+        <a class="primary-navigation__link{{ item.active ? ' is-active' : '' }}" href="{{ item.url }}"{% if item.current %} aria-current="page"{% endif %}>{{ icons.icon(item.icon) }}<span>{{ item.label }}</span></a>
+        {% if item.url == tm.esencia_url %}
+          <a class="primary-navigation__link" href="{{ tm.esencia_url }}#comunidades">{{ icons.icon('sprout') }}<span>{{ 'Compromiso con las comunidades y emprendedores locales'|t }}</span></a>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    <div class="primary-navigation__account">
+      {% if tm.cart_available %}
+        <a class="primary-navigation__link" href="{{ path('commerce_cart.page') }}">{{ icons.icon('bag') }}<span>{{ 'Carrito'|t }}</span></a>
+      {% endif %}
+      <a class="primary-navigation__link" href="{{ path('user.page') }}">{{ icons.icon('users') }}<span>{{ tm.account_label }}</span></a>
+      {% if tm.registration_available %}
+        <a class="primary-navigation__link" href="{{ path('user.register') }}">{{ icons.icon('plus') }}<span>{{ 'Registrarse'|t }}</span></a>
+      {% endif %}
+    </div>
+    <div class="primary-navigation__extra">
+      {% include '@trotamundos/components/language-switch.html.twig' %}
+    </div>
+  </nav>
+  {% include '@trotamundos/components/discovery-bar.html.twig' %}
 </header>
+</div>

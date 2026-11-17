@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Installs the Commerce preparation model without converting example prices.
+ */
+
+use Drupal\trotamundos_commerce\Setup\CommerceModel;
+use Drupal\trotamundos_commerce\Setup\CatalogPrice;
+use Drupal\trotamundos_commerce\Setup\TravelProfileModel;
+
+/**
+ * Implements hook_install().
+ */
+function trotamundos_commerce_install(bool $is_syncing): void {
+  if (!$is_syncing) {
+    CommerceModel::ensure();
+    TravelProfileModel::ensure();
+    CatalogPrice::ensure();
+  }
+}
+
+/**
+ * Adds private preferences and saved plans without assigning user data.
+ */
+function trotamundos_commerce_update_11001(): string {
+  TravelProfileModel::ensure();
+  return (string) t('Se preparó el perfil viajero privado, sin asignar preferencias a las cuentas existentes.');
+}
+
+/**
+ * Adds a decimal catalog-price index without changing editorial prices.
+ */
+function trotamundos_commerce_update_11002(): string {
+  CatalogPrice::ensure();
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+  $ids = $storage->getQuery()->accessCheck(FALSE)
+    ->condition('type', \Drupal\trotamundos_experiences\Setup\ProductTypes::BUNDLES, 'IN')->execute();
+  foreach ($storage->loadMultiple($ids) as $node) {
+    CatalogPrice::project($node);
+    $node->save();
+  }
+  return (string) t('Se preparó el índice de precios de Commerce. La importación del catálogo es una operación explícita.');
+}

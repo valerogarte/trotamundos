@@ -1,0 +1,9 @@
+services:
+  trotamundos_commerce.availability:
+    class: Drupal\trotamundos_commerce\Availability\TravelAvailabilityChecker
+    tags:
+      - { name: commerce_order.availability_checker }
+  trotamundos_commerce.route_subscriber:
+    class: Drupal\trotamundos_commerce\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }

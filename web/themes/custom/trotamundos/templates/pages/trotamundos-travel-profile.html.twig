@@ -1,0 +1,82 @@
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+<div class="travel-profile">
+  <div class="travel-profile__intro">
+    <div>
+      <p class="eyebrow">{{ 'Tu espacio privado'|t }}</p>
+      <p class="travel-profile__lead">{{ 'Guarda lo que te inspira y ten tus próximos viajes a mano.'|t }}</p>
+    </div>
+    <div class="travel-profile__account">
+      <a href="{{ edit_url }}">{{ 'Ajustes de cuenta'|t }}</a>
+      <a href="{{ help_url }}">{{ 'Ayuda para tu viaje'|t }} {{ icons.icon('arrow') }}</a>
+    </div>
+  </div>
+  <nav class="travel-profile__nav" aria-label="{{ 'En tu perfil viajero'|t }}">
+    <a href="#travel-orders">{{ icons.icon('calendar') }} {{ 'Mis pedidos'|t }}</a>
+    <a href="#saved-plans">{{ icons.icon('heart') }} {{ 'Planes guardados'|t }}</a>
+    <a href="#travel-preferences">{{ icons.icon('users') }} {{ 'Preferencias de viaje'|t }}</a>
+  </nav>
+
+  <div class="travel-profile__panels">
+    <section class="travel-profile__panel" id="travel-orders" aria-labelledby="travel-orders-title">
+      <h2 id="travel-orders-title">{{ 'Mis pedidos'|t }}</h2>
+      <p class="travel-profile__note">{{ 'Aquí aparecen tus pedidos de Commerce. Las solicitudes por WhatsApp se consultan con nuestro equipo.'|t }}</p>
+      {% if orders %}
+        <ul class="travel-orders">
+          {% for order in orders %}
+            <li>
+              <div>
+                <a href="{{ order.url }}">{{ order.label }}</a>
+                <span>{{ order.date }}</span>
+              </div>
+              <div>
+                <span class="travel-orders__state">{{ order.state }}</span>
+                {{ order.total }}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+        {{ pager }}
+      {% else %}
+        <div class="travel-profile__empty">
+          <h3>{{ 'Tu próxima historia está por empezar'|t }}</h3>
+          <p>{{ 'Todavía no hay pedidos registrados en tu cuenta. Las compras online están en preparación.'|t }}</p>
+          <a class="button button--primary" href="{{ catalog_url }}">{{ 'Descubrir planes'|t }} {{ icons.icon('arrow') }}</a>
+        </div>
+      {% endif %}
+    </section>
+
+    <section class="travel-profile__panel" id="travel-preferences" aria-labelledby="travel-preferences-title">
+      <h2 id="travel-preferences-title">{{ 'Preferencias de viaje'|t }}</h2>
+      <p class="travel-profile__note">{{ 'Son opcionales y puedes cambiarlas cuando quieras. No modifican automáticamente tus búsquedas.'|t }}</p>
+      {{ preferences }}
+    </section>
+  </div>
+
+  <section class="travel-profile__saved" id="saved-plans" aria-labelledby="saved-plans-title">
+    <div class="travel-profile__section-heading">
+      <h2 id="saved-plans-title" tabindex="-1">{{ 'Planes guardados'|t }}</h2>
+      <a href="{{ catalog_url }}">{{ 'Seguir descubriendo'|t }} {{ icons.icon('arrow') }}</a>
+    </div>
+    {% if saved %}
+      <ul class="travel-saved-grid">
+        {% for plan in saved %}
+          <li>
+            {% if plan.card %}
+              {% include '@trotamundos/components/experience-card.html.twig' with {card: plan.card, heading: 'h3'} only %}
+            {% else %}
+              <div class="travel-profile__empty">
+                <h3>{{ 'Plan no disponible'|t }}</h3>
+                <p>{{ 'Este plan ya no está publicado. Puedes quitarlo de tu lista.'|t }}</p>
+              </div>
+              {{ plan.form }}
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <div class="travel-profile__empty" data-saved-empty{% if saved %} hidden{% endif %}>
+      <h3>{{ 'Un lugar para los planes que te llaman'|t }}</h3>
+      <p>{{ 'Pulsa el corazón de un plan para guardarlo. Lo encontrarás aquí cuando quieras volver.'|t }}</p>
+    </div>
+  </section>
+</div>

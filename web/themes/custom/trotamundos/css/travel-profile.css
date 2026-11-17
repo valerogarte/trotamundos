@@ -1,0 +1,232 @@
+.content-page [id$="-local-tasks"] > ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 32px;
+  padding: 0;
+  border-bottom: 1px solid var(--line);
+  list-style: none;
+}
+
+.content-page [id$="-local-tasks"] > ul a {
+  display: block;
+  padding: 10px 16px;
+  color: var(--selva);
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+}
+
+.content-page [id$="-local-tasks"] > ul a.is-active {
+  border-color: var(--selva);
+  font-weight: 700;
+}
+
+.travel-profile__intro,
+.travel-profile__section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+.travel-profile__lead {
+  max-width: 640px;
+  margin-top: 8px;
+  font-size: var(--type-lead);
+}
+
+.travel-profile__account {
+  display: grid;
+  gap: 12px;
+  font-size: var(--type-small);
+}
+
+.travel-profile a:not(.button, .experience-card__title a) {
+  color: var(--selva);
+}
+
+.travel-profile__account a,
+.travel-profile__section-heading > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.travel-profile__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-block: 32px;
+}
+
+.travel-profile__nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--panel);
+  font-size: var(--type-small);
+  text-decoration: none;
+}
+
+.travel-profile__nav a:hover {
+  border-color: var(--selva);
+}
+
+.travel-profile__panels {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-6);
+}
+
+.travel-profile__panel {
+  min-width: 0;
+  padding: clamp(20px, 3vw, 36px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--panel);
+}
+
+.content-page .travel-profile h2 {
+  margin: 0 0 16px;
+  font-size: 34px;
+}
+
+.travel-profile__note {
+  color: var(--muted);
+  font-size: var(--type-small);
+}
+
+.travel-profile__empty {
+  padding: 28px 0;
+}
+
+.travel-profile__empty h3 {
+  font-size: 30px;
+}
+
+.travel-profile__empty p {
+  max-width: 620px;
+  margin-block: 12px 20px;
+  color: var(--muted);
+  font-size: var(--type-small);
+}
+
+.travel-profile fieldset {
+  min-width: 0;
+  margin-block: 24px;
+  padding: 0;
+  border: 0;
+}
+
+.travel-profile legend {
+  margin-bottom: 12px;
+  color: var(--selva);
+  font-size: var(--type-small);
+  font-weight: 700;
+}
+
+.travel-profile .form-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+}
+
+.travel-profile .form-type-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.travel-profile .form-type-checkbox label {
+  margin: 0;
+  font-weight: 500;
+}
+
+.travel-profile input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--selva);
+}
+
+.travel-orders {
+  margin-block: 24px;
+  padding: 0;
+  list-style: none;
+}
+
+.travel-orders > li {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-block: 20px;
+  border-block-end: 1px solid var(--line);
+  font-size: var(--type-small);
+}
+
+.travel-orders > li > div {
+  display: grid;
+  gap: 8px;
+}
+
+.travel-orders__state {
+  color: var(--terracota-text);
+  font-weight: 650;
+}
+
+.travel-profile__saved {
+  margin-block-start: 48px;
+}
+
+.travel-saved-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px 24px;
+  margin-block-start: 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.travel-saved-grid > li {
+  min-width: 0;
+}
+
+.travel-saved-grid .favorite-plan-form:not(.favorite-plan-form--compact) {
+  margin-top: 16px;
+}
+
+.travel-profile .favorite-plan-form:not(.favorite-plan-form--compact) input[type="submit"] {
+  width: 100%;
+  padding-inline: 12px;
+  color: var(--selva);
+  border: 1px solid var(--line-strong);
+  background: transparent;
+}
+
+.travel-profile .favorite-plan-form:not(.favorite-plan-form--compact) input[type="submit"]:hover {
+  color: var(--marfil);
+  background: var(--selva);
+}
+
+@media (max-width: 1023px) {
+  .travel-profile__panels {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .travel-saved-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 639px) {
+  .travel-saved-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

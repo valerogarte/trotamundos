@@ -1,0 +1,13 @@
+trotamundos_commerce.favorite_card:
+  path: '/mis-planes/{node}/favorito'
+  defaults:
+    _form: '\Drupal\trotamundos_commerce\Form\FavoritePlanForm'
+    _title: 'Actualizar plan guardado'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+    _entity_access: 'node.view'
+  methods: [POST]
+  options:
+    parameters:
+      node:
+        type: entity:node

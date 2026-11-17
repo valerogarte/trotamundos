@@ -1,0 +1,12 @@
+name: Trotamundos Commerce
+type: module
+description: 'Connects editorial travel plans to native Commerce products, cart/checkout and private profiles.'
+package: Trotamundos
+core_version_requirement: ^11
+configure: entity.commerce_product_type.collection
+dependencies:
+  - drupal:user
+  - commerce:commerce_order
+  - commerce:commerce_product
+  - trotamundos_experiences:trotamundos_experiences
+  - trotamundos_pages:trotamundos_pages
