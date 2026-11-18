@@ -11,3 +11,46 @@ trotamundos_commerce.favorite_card:
     parameters:
       node:
         type: entity:node
+
+trotamundos_commerce.account_settings:
+  path: '/user/{user}/ajustes'
+  defaults:
+    _entity_form: 'user.default'
+    _title: 'Ajustes de cuenta'
+  requirements:
+    user: '\d+'
+    _user_is_logged_in: 'TRUE'
+    _entity_access: 'user.update'
+    _custom_access: '\Drupal\trotamundos_commerce\Controller\TravelProfileController::access'
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+trotamundos_commerce.saved_plans:
+  path: '/user/{user}/planes-guardados'
+  defaults:
+    _controller: '\Drupal\trotamundos_commerce\Controller\TravelProfileController::view'
+    _title_callback: '\Drupal\trotamundos_commerce\Controller\TravelProfileController::title'
+    section: 'saved'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+    _custom_access: '\Drupal\trotamundos_commerce\Controller\TravelProfileController::access'
+  options:
+    parameters:
+      user:
+        type: entity:user
+
+trotamundos_commerce.travel_preferences:
+  path: '/user/{user}/preferencias-viaje'
+  defaults:
+    _controller: '\Drupal\trotamundos_commerce\Controller\TravelProfileController::view'
+    _title_callback: '\Drupal\trotamundos_commerce\Controller\TravelProfileController::title'
+    section: 'preferences'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+    _custom_access: '\Drupal\trotamundos_commerce\Controller\TravelProfileController::access'
+  options:
+    parameters:
+      user:
+        type: entity:user

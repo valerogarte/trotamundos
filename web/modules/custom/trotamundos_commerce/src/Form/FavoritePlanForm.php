@@ -127,7 +127,7 @@ final class FavoritePlanForm extends FormBase implements TrustedCallbackInterfac
         'query' => $this->getRedirectDestination()->getAsArray(),
       ])->toString();
       $query = [FormBuilderInterface::AJAX_FORM_REQUEST => 1];
-      if ($this->getRouteMatch()->getRouteName() === 'entity.user.canonical') {
+      if ($this->getRouteMatch()->getRouteName() === 'trotamundos_commerce.saved_plans') {
         $query['favorite_profile'] = 1;
       }
       $form['submit']['#ajax'] = [

@@ -74,7 +74,7 @@ final class TravelPreferencesForm extends FormBase {
     }
     $user->save();
     $this->messenger()->addStatus($this->t('Tus preferencias de viaje se han guardado.'));
-    $form_state->setRedirectUrl(Url::fromRoute('entity.user.canonical', ['user' => $user->id()], ['fragment' => 'travel-preferences']));
+    $form_state->setRedirectUrl(Url::fromRoute('trotamundos_commerce.travel_preferences', ['user' => $user->id()]));
   }
 
   private function values(FormStateInterface $form_state): array {

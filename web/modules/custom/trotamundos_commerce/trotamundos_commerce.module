@@ -29,10 +29,14 @@ function trotamundos_commerce_theme($existing, $type, $theme, $path): array {
   return [
     'trotamundos_travel_profile' => [
       'variables' => [
+        'section' => 'orders',
         'saved' => [],
         'orders' => [],
         'pager' => NULL,
         'preferences' => NULL,
+        'orders_url' => NULL,
+        'saved_url' => NULL,
+        'preferences_url' => NULL,
         'edit_url' => NULL,
         'help_url' => NULL,
         'catalog_url' => NULL,
@@ -105,6 +109,53 @@ function trotamundos_commerce_page_attachments(array &$attachments): void {
   if (in_array(\Drupal::routeMatch()->getRouteName(), ['commerce_cart.page', 'commerce_checkout.form'], TRUE)) {
     $attachments['#attached']['library'][] = 'trotamundos/commerce';
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for the front-end account settings.
+ */
+function trotamundos_commerce_form_user_form_alter(array &$form, FormStateInterface $form_state): void {
+  if (\Drupal::routeMatch()->getRouteName() !== 'trotamundos_commerce.account_settings') {
+    return;
+  }
+
+  $form['#attributes']['class'][] = 'account-settings-form';
+  $form['#attached']['library'][] = 'trotamundos/travel-profile';
+  $form['account_settings_intro'] = [
+    '#type' => 'container',
+    '#weight' => -100,
+    '#attributes' => ['class' => ['account-settings__intro']],
+    'copy' => [
+      '#type' => 'container',
+      'eyebrow' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => t('Tu espacio privado'),
+        '#attributes' => ['class' => ['eyebrow']],
+      ],
+      'lead' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => t('Actualiza tus datos y mantén tu cuenta segura.'),
+        '#attributes' => ['class' => ['account-settings__lead']],
+      ],
+    ],
+    'back' => [
+      '#type' => 'link',
+      '#title' => t('Volver a mi perfil'),
+      '#url' => Url::fromRoute('entity.user.canonical', [
+        'user' => $form_state->getFormObject()->getEntity()->id(),
+      ]),
+      '#attributes' => ['class' => ['account-settings__back']],
+    ],
+  ];
+  $form['account']['account_settings_heading'] = [
+    '#type' => 'html_tag',
+    '#tag' => 'h2',
+    '#value' => t('Datos de acceso'),
+    '#weight' => -10,
+  ];
+  $form['actions']['submit']['#value'] = t('Guardar cambios');
 }
 
 /**
