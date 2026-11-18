@@ -13,103 +13,42 @@
   <header class="page-intro container">
     <p class="eyebrow">{{ 'Catálogo'|t }}</p>
     <h1>{{ catalog_title }}</h1>
-    <p class="lead">{{ 'Planes con anfitriones locales en destinos poco conocidos de Colombia. Filtra por lo que te gustaría descubrir, el destino, tu presupuesto, la duración o la fecha.'|t }}</p>
+    <p class="lead">{{ 'Planes con anfitriones locales en destinos poco conocidos de Colombia. Filtra por lo que te gustaría descubrir, el destino, tu presupuesto o la fecha.'|t }}</p>
   </header>
   {% endif %}
 
-  <section class="catalog-filters container{{ not product_type ? ' catalog-filters--mixed' : '' }}" id="catalog-filters" aria-label="{{ 'Filtrar planes'|t }}" data-catalog-filters>
-    <div class="tm-field">
-      <label class="tm-label" for="filter-estilo">{{ 'Estilo de viaje'|t }}</label>
-      <select class="tm-input" id="filter-estilo" name="estilo" form="discovery-form">
-        <option value="">{{ 'Todas'|t }}</option>
-        {% for style in options.styles %}
-          <option value="{{ style.slug }}"{{ style.selected ? ' selected' : '' }}>{{ style.label }} ({{ style.count }})</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="tm-field">
-      <label class="tm-label" for="filter-precio">{{ 'Precio por persona'|t }}</label>
-      <select class="tm-input" id="filter-precio" name="precio" form="discovery-form">
-        <option value="">{{ 'Cualquier precio'|t }}</option>
-        {% for price in options.prices %}
-          <option value="{{ price.value }}"{{ filters.precio == price.value ? ' selected' : '' }}>{{ price.label }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="tm-field">
-      <label class="tm-label" for="filter-duracion">{{ 'Duración'|t }}</label>
-      <select class="tm-input" id="filter-duracion" name="duracion" form="discovery-form">
-        <option value="">{{ 'Cualquier duración'|t }}</option>
-        {% for duration in options.durations %}
-          <option value="{{ duration.value }}"{{ filters.duracion == duration.value ? ' selected' : '' }}>{{ duration.label }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    {% if not product_type %}
-      <div class="tm-field">
-        <label class="tm-label" for="filter-tipo">{{ 'Tipo de plan'|t }}</label>
-        <select class="tm-input" id="filter-tipo" name="tipo" form="discovery-form">
-          <option value="">{{ 'Todos'|t }}</option>
-          {% for type in options.types %}
-            <option value="{{ type.slug }}"{{ type.selected ? ' selected' : '' }}>{{ type.label }} ({{ type.count }})</option>
-          {% endfor %}
-        </select>
-      </div>
-    {% endif %}
-    {% if filters.region %}<input type="hidden" name="region" value="{{ filters.region }}" form="discovery-form">{% endif %}
-    <div class="catalog-filters__actions">
-      <button class="button button--primary" type="submit" form="discovery-form" data-catalog-submit>{{ 'Ver resultados'|t }}</button>
-    </div>
-  </section>
-
-  <p class="visually-hidden" role="status" aria-live="polite" data-catalog-status data-loading-message="{{ 'Cargando planes...'|t }}" data-timeout-message="{{ 'La carga está tardando demasiado. Puedes volver a intentarlo.'|t }}"></p>
+  <p class="visually-hidden" role="status" aria-live="polite" data-catalog-status data-loading-message="{{ 'Cargando planes...'|t }}" data-timeout-message="{{ 'La carga está tardando demasiado. Puedes volver a intentarlo.'|t }}" data-error-message="{{ 'No se pudieron cargar los planes. Vuelve a intentarlo.'|t }}"></p>
   <section class="catalog-results container" aria-labelledby="catalog-results-title" data-catalog-results>
-    <div class="catalog-results__bar">
-      <div class="catalog-results__summary">
-        <h2 id="catalog-results-title" class="catalog-results__count">
-          {% set count = total %}
-          {% if product_type == 'alojamiento' %}
-            {% trans %}1 alojamiento{% plural count %}{{ count }} alojamientos{% endtrans %}
-          {% elseif product_type == 'paquete' %}
-            {% trans %}1 paquete{% plural count %}{{ count }} paquetes{% endtrans %}
-          {% elseif product_type == 'experiencia' %}
-            {% trans %}1 experiencia{% plural count %}{{ count }} experiencias{% endtrans %}
-          {% else %}
-            {% trans %}1 plan{% plural count %}{{ count }} planes{% endtrans %}
-          {% endif %}
-        </h2>
-        {% if active %}
-          <ul class="active-filters" aria-label="{{ 'Filtros activos'|t }}">
-            {% for item in active %}
-              <li><a href="{{ item.remove_url }}"><span class="visually-hidden">{{ 'Quitar el filtro'|t }}</span> {{ item.label }} {{ icons.icon('close') }}</a></li>
-            {% endfor %}
-            <li><a class="active-filters__reset" href="{{ reset_url }}">{{ 'Quitar todos'|t }}</a></li>
-          </ul>
-        {% endif %}
-      </div>
-      <div class="catalog-sort">
-        <label class="tm-label" for="catalog-sort">{{ 'Ordenar'|t }}</label>
-        <select class="tm-input" id="catalog-sort" name="orden" form="discovery-form" data-catalog-autosubmit>
-          {% for sort in options.sorts %}
-            <option value="{{ sort.value }}"{{ filters.orden == sort.value ? ' selected' : '' }}>{{ sort.label }}</option>
-          {% endfor %}
-        </select>
-      </div>
-    </div>
-
-    {% if has_examples %}
-      <p class="tm-notice tm-notice--example catalog-results__notice"><strong>{{ icons.icon('info') }} {{ 'Fichas de ejemplo'|t }}</strong> {{ 'Los precios, las fechas y algunos textos son provisionales mientras confirmamos los detalles con nuestros aliados.'|t }}</p>
+    <h2 id="catalog-results-title" class="visually-hidden">
+      {% set count = total %}
+      {% if product_type == 'alojamiento' %}
+        {% trans %}1 alojamiento{% plural count %}{{ count }} alojamientos{% endtrans %}
+      {% elseif product_type == 'paquete' %}
+        {% trans %}1 paquete{% plural count %}{{ count }} paquetes{% endtrans %}
+      {% elseif product_type == 'experiencia' %}
+        {% trans %}1 experiencia{% plural count %}{{ count }} experiencias{% endtrans %}
+      {% else %}
+        {% trans %}1 plan{% plural count %}{{ count }} planes{% endtrans %}
+      {% endif %}
+    </h2>
+    {% if active %}
+      <ul class="active-filters" aria-label="{{ 'Filtros activos'|t }}">
+        {% for item in active %}
+          <li><a href="{{ item.remove_url }}"><span class="visually-hidden">{{ 'Quitar el filtro'|t }}</span> {{ item.label }} {{ icons.icon('close') }}</a></li>
+        {% endfor %}
+        <li><a class="active-filters__reset" href="{{ reset_url }}">{{ 'Quitar todos'|t }}</a></li>
+      </ul>
     {% endif %}
 
     {% if cards %}
-      <div class="experience-grid{{ editorial_catalog ? ' experience-grid--four' : '' }}" data-catalog-grid>
+      <div class="experience-grid experience-grid--four" data-catalog-grid>
         {% for card in cards %}
           {% include '@trotamundos/components/experience-card.html.twig' with {card: card, heading: 'h3'} %}
         {% endfor %}
       </div>
       {{ pager }}
     {% else %}
-      <div class="experience-grid{{ editorial_catalog ? ' experience-grid--four' : '' }} catalog-skeleton-fallback" aria-hidden="true">
+      <div class="experience-grid experience-grid--four catalog-skeleton-fallback" aria-hidden="true">
         {% for i in 1..skeleton_count %}
           <div class="experience-card">
             <div class="experience-card__media"></div>

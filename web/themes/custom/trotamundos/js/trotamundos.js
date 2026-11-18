@@ -9,7 +9,7 @@
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const desktopNavigation = window.matchMedia('(min-width: 1024px)');
   const navigationCleanup = new WeakMap();
-  const styleSliderCleanup = new WeakMap();
+  const sliderCleanup = new WeakMap();
   let revealObserver;
 
   /**
@@ -83,31 +83,289 @@
     }
   }
 
-  function initializeStyleSlider(slider) {
-    const track = slider.querySelector('[data-style-track]');
-    const controls = slider.querySelector('[data-style-controls]');
-    const previous = controls.querySelector('[data-style-scroll="-1"]');
-    const next = controls.querySelector('[data-style-scroll="1"]');
+  function initializeLoopingSlider(slider) {
+    const viewport = slider.querySelector('[data-slider-viewport]');
+    const track = slider.querySelector('[data-slider-track]');
+    const controls = slider.querySelector('[data-slider-controls]');
+    const previous = controls.querySelector('[data-slider-scroll="-1"]');
+    const next = controls.querySelector('[data-slider-scroll="1"]');
+    // The pause button is optional: without it the rotation still stops on
+    // hover, focus, hidden tabs and reduced motion.
+    const autoplay = controls.querySelector('[data-slider-autoplay]');
+    const cards = Array.from(track.children).map((card) => {
+      const link = card.querySelector('a');
+      return {
+        card,
+        link,
+        hidden: card.getAttribute('aria-hidden'),
+        tabindex: link?.getAttribute('tabindex'),
+      };
+    });
+    const controller = new AbortController();
+    const { signal } = controller;
+    let canMove = false;
+    let paused = false;
+    let pointerInside = slider.matches(':hover');
+    let trackFocused = track.contains(document.activeElement);
+    let timer = 0;
+    let motion = null;
+
+    const restoreAttribute = (element, name, value) => {
+      if (value === null || value === undefined) {
+        element.removeAttribute(name);
+      }
+      else {
+        element.setAttribute(name, value);
+      }
+    };
+    const syncVisibility = (revealFocus = false, focusTarget = document.activeElement) => {
+      const bounds = viewport.getBoundingClientRect();
+      const focusedCard = focusTarget instanceof Node
+        ? cards.find(({ card }) => card.contains(focusTarget))?.card
+        : null;
+      if (revealFocus && canMove && focusedCard) {
+        const focusedBounds = focusedCard.getBoundingClientRect();
+        if (focusedBounds.left < bounds.left - 1 || focusedBounds.right > bounds.right + 1) {
+          while (track.firstElementChild !== focusedCard) {
+            track.append(track.firstElementChild);
+          }
+        }
+      }
+      cards.forEach(({ card, link, hidden, tabindex }) => {
+        const cardBounds = card.getBoundingClientRect();
+        const visible = !canMove || card === focusedCard
+          || (cardBounds.left >= bounds.left - 1 && cardBounds.right <= bounds.right + 1)
+          || (card === track.firstElementChild && cardBounds.left < bounds.right && cardBounds.right > bounds.left);
+        if (visible) {
+          restoreAttribute(card, 'aria-hidden', hidden);
+          if (link) {
+            restoreAttribute(link, 'tabindex', tabindex);
+          }
+        }
+        else {
+          card.setAttribute('aria-hidden', 'true');
+          link?.setAttribute('tabindex', '-1');
+        }
+      });
+    };
+    const cancelMotion = () => {
+      if (!motion) {
+        return;
+      }
+      const current = motion;
+      motion = null;
+      current.animation.cancel();
+      current.clone.remove();
+      syncVisibility();
+    };
+    const finishMotion = () => {
+      if (!motion) {
+        return;
+      }
+      const current = motion;
+      motion = null;
+      if (current.direction > 0) {
+        track.append(current.original);
+      }
+      else {
+        track.prepend(current.original);
+      }
+      current.clone.remove();
+      current.animation.cancel();
+      syncVisibility();
+    };
+    const move = (direction) => {
+      if (!canMove) {
+        return;
+      }
+      finishMotion();
+      const first = track.children[0];
+      const second = track.children[1];
+      const distance = second.getBoundingClientRect().left - first.getBoundingClientRect().left;
+      const original = direction > 0 ? first : track.lastElementChild;
+      if (reducedMotion.matches || typeof track.animate !== 'function') {
+        if (direction > 0) {
+          track.append(original);
+        }
+        else {
+          track.prepend(original);
+        }
+        syncVisibility();
+        return;
+      }
+
+      const clone = original.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      clone.setAttribute('inert', '');
+      clone.removeAttribute('id');
+      clone.querySelectorAll('[id]').forEach((element) => element.removeAttribute('id'));
+      clone.querySelectorAll('a, button, input, select, textarea, [tabindex]').forEach((element) => element.setAttribute('tabindex', '-1'));
+      if (direction > 0) {
+        track.append(clone);
+      }
+      else {
+        track.prepend(clone);
+      }
+      const animation = track.animate(
+        direction > 0
+          ? [{ transform: 'translateX(0)' }, { transform: `translateX(-${distance}px)` }]
+          : [{ transform: `translateX(-${distance}px)` }, { transform: 'translateX(0)' }],
+        { duration: 480, easing: 'cubic-bezier(0.22, 1, 0.36, 1)', fill: 'both' },
+      );
+      motion = { animation, clone, direction, original };
+      animation.addEventListener('finish', finishMotion, { once: true });
+    };
+    const stopTimer = () => {
+      if (timer) {
+        window.clearInterval(timer);
+        timer = 0;
+      }
+    };
+    const updateAutoplay = () => {
+      if (autoplay) {
+        autoplay.hidden = !canMove || reducedMotion.matches;
+        autoplay.classList.toggle('is-paused', paused);
+        autoplay.setAttribute('aria-label', paused ? autoplay.dataset.resumeLabel : autoplay.dataset.pauseLabel);
+      }
+      if (!canMove || reducedMotion.matches || paused || pointerInside || trackFocused || document.hidden) {
+        stopTimer();
+      }
+      else if (!timer) {
+        timer = window.setInterval(() => move(1), 2500);
+      }
+    };
+    const restartAutoplay = () => {
+      stopTimer();
+      updateAutoplay();
+    };
+    const sync = () => {
+      finishMotion();
+      canMove = cards.length > 1 && track.scrollWidth > viewport.clientWidth + 1;
+      previous.disabled = !canMove;
+      next.disabled = !canMove;
+      syncVisibility(true);
+      updateAutoplay();
+    };
+
+    controls.querySelectorAll('[data-slider-scroll]').forEach((button) => {
+      button.addEventListener('click', () => {
+        move(Number(button.dataset.sliderScroll));
+        restartAutoplay();
+      }, { signal });
+    });
+    autoplay?.addEventListener('click', () => {
+      paused = !paused;
+      updateAutoplay();
+    }, { signal });
+    track.addEventListener('keydown', (event) => {
+      if (event.defaultPrevented || event.target !== track || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+        return;
+      }
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault();
+        move(event.key === 'ArrowRight' ? 1 : -1);
+        restartAutoplay();
+      }
+    }, { signal });
+    track.addEventListener('focusin', (event) => {
+      trackFocused = true;
+      cancelMotion();
+      syncVisibility(false, event.target);
+      updateAutoplay();
+    }, { signal });
+    track.addEventListener('focusout', (event) => {
+      syncVisibility(false, event.relatedTarget);
+      if (!track.contains(event.relatedTarget)) {
+        trackFocused = false;
+        updateAutoplay();
+      }
+    }, { signal });
+    slider.addEventListener('pointerenter', () => {
+      pointerInside = true;
+      updateAutoplay();
+    }, { signal });
+    slider.addEventListener('pointerleave', () => {
+      pointerInside = false;
+      updateAutoplay();
+    }, { signal });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        cancelMotion();
+      }
+      updateAutoplay();
+    }, { signal });
+    reducedMotion.addEventListener('change', () => {
+      if (reducedMotion.matches) {
+        cancelMotion();
+      }
+      updateAutoplay();
+    }, { signal });
+    window.addEventListener('resize', sync, { signal });
+
+    viewport.scrollLeft = 0;
+    slider.classList.add('is-looping');
+    controls.hidden = false;
+    const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(sync) : null;
+    observer?.observe(viewport);
+    sync();
+    sliderCleanup.set(slider, () => {
+      controller.abort();
+      observer?.disconnect();
+      stopTimer();
+      cancelMotion();
+      cards.forEach(({ card, link, hidden, tabindex }) => {
+        track.append(card);
+        restoreAttribute(card, 'aria-hidden', hidden);
+        if (link) {
+          restoreAttribute(link, 'tabindex', tabindex);
+        }
+      });
+      slider.classList.remove('is-looping');
+      controls.hidden = true;
+    });
+  }
+
+  function initializeSlider(slider) {
+    if (slider.hasAttribute('data-slider-loop')) {
+      initializeLoopingSlider(slider);
+      return;
+    }
+    const track = slider.querySelector('[data-slider-track]');
+    const controls = slider.querySelector('[data-slider-controls]');
+    const previous = controls.querySelector('[data-slider-scroll="-1"]');
+    const next = controls.querySelector('[data-slider-scroll="1"]');
     const controller = new AbortController();
     const { signal } = controller;
     const sync = () => {
       previous.disabled = track.scrollLeft <= 1;
       next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 1;
     };
-    controls.querySelectorAll('[data-style-scroll]').forEach((button) => {
+    const scroll = (direction) => {
+      track.scrollBy({
+        left: direction * track.clientWidth * 0.85,
+        behavior: reducedMotion.matches ? 'auto' : 'smooth',
+      });
+    };
+    controls.querySelectorAll('[data-slider-scroll]').forEach((button) => {
       button.addEventListener('click', () => {
-        track.scrollBy({
-          left: Number(button.dataset.styleScroll) * track.clientWidth * 0.85,
-          behavior: reducedMotion.matches ? 'auto' : 'smooth',
-        });
+        scroll(Number(button.dataset.sliderScroll));
       }, { signal });
     });
+    track.addEventListener('keydown', (event) => {
+      if (event.defaultPrevented || event.target !== track || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
+        return;
+      }
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault();
+        scroll(event.key === 'ArrowRight' ? 1 : -1);
+      }
+    }, { signal });
     track.addEventListener('scroll', sync, { passive: true, signal });
     const observer = new ResizeObserver(sync);
     observer.observe(track);
     controls.hidden = false;
     sync();
-    styleSliderCleanup.set(slider, () => {
+    sliderCleanup.set(slider, () => {
       controller.abort();
       observer.disconnect();
       controls.hidden = true;
@@ -134,14 +392,22 @@
     const destination = header.querySelector('#discovery-destino');
     const date = header.querySelector('[data-discovery-date-value]');
     const companion = header.querySelector('#discovery-acompanamiento');
+    const navigationLinks = header.querySelectorAll('[data-discovery-navigation]');
+    const searchNames = ['destino', 'fecha', 'desde', 'hasta', 'margen', 'acompanamiento'];
     const mobileSearch = window.matchMedia('(max-width: 639px)');
     let frame = 0;
     let focusTimer = 0;
     let searchMotion = null;
+    const notifyHeaderLayout = () => header.dispatchEvent(new Event('trotamundosHeaderLayoutChanged'));
+    const discoveryObserver = discovery && typeof ResizeObserver !== 'undefined'
+      ? new ResizeObserver(notifyHeaderLayout)
+      : null;
+    discoveryObserver?.observe(discovery);
     const stopSearchMotion = () => {
       if (searchMotion) {
         searchMotion.cancel();
         searchMotion = null;
+        notifyHeaderLayout();
       }
     };
     // Keep a moving control under the pointer until its click is dispatched.
@@ -161,7 +427,7 @@
       if (header.classList.contains('header-is-scrolled') === compact) {
         return;
       }
-      const previous = animate && discovery && !reducedMotion.matches ? discovery.getBoundingClientRect() : null;
+      const previous = animate && discovery && !mobileSearch.matches && !reducedMotion.matches ? discovery.getBoundingClientRect() : null;
       stopSearchMotion();
       header.classList.toggle('header-is-scrolled', compact);
       if (previous && previous.width && previous.height) {
@@ -171,7 +437,15 @@
           { width: `${previous.width}px`, translate: `${x}px ${previous.top - next.top}px` },
           { width: `${next.width}px`, translate: '0px 0px' },
         ], { duration: 420, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+        const motion = searchMotion;
+        motion.addEventListener('finish', () => {
+          if (searchMotion === motion) {
+            searchMotion = null;
+            notifyHeaderLayout();
+          }
+        }, { once: true });
       }
+      notifyHeaderLayout();
     };
     const onScroll = () => {
       resumeSearchMotion();
@@ -206,10 +480,20 @@
       if (!discoveryToggle) {
         return;
       }
+      const changed = header.classList.contains('search-is-open') !== open;
       header.classList.toggle('search-is-open', open);
       discoveryToggle.setAttribute('aria-expanded', String(open));
+      if (!open && mobileSearch.matches) {
+        const filters = header.querySelector('[data-discovery-controls] > details:not([data-discovery-assistant])');
+        if (filters) {
+          filters.open = false;
+        }
+      }
       if (restoreFocus) {
         discoveryToggle.focus({ preventScroll: true });
+      }
+      if (changed) {
+        notifyHeaderLayout();
       }
     };
     const updateDiscoverySummary = () => {
@@ -218,6 +502,20 @@
       }
       summaryDestination.textContent = destination.value ? destination.selectedOptions[0].textContent.trim() : defaultDestination;
       summaryDetails.textContent = `${date.textContent} \u00b7 ${companion.selectedOptions[0].textContent}`;
+      navigationLinks.forEach((link) => {
+        const url = new URL(link.href);
+        searchNames.forEach((name) => {
+          const field = discoveryForm.elements.namedItem(name);
+          const value = field ? field.value : '';
+          if (value) {
+            url.searchParams.set(name, value);
+          }
+          else {
+            url.searchParams.delete(name);
+          }
+        });
+        link.href = url.href;
+      });
     };
     const onSearchToggle = () => {
       const open = !header.classList.contains('search-is-open');
@@ -283,9 +581,17 @@
         if (languageSelector && !languageSelector.contains(document.activeElement)) {
           closeLanguage();
         }
+        if (header.classList.contains('menu-is-open')
+          && !navigation.contains(document.activeElement)
+          && !toggle.contains(document.activeElement)) {
+          closeNavigation();
+        }
         if (!header.contains(document.activeElement)) {
           closeNavigation();
-          setSearchOpen(false);
+          const panelOpen = discovery && discovery.querySelector('[data-discovery-panel]:not([hidden]), details[data-discovery-control][open]');
+          if (document.activeElement !== document.body && !panelOpen) {
+            setSearchOpen(false);
+          }
         }
       }, 0);
     };
@@ -293,7 +599,9 @@
       stopSearchMotion();
       closeLanguage(Boolean(languageSelector && languageSelector.contains(document.activeElement)));
       closeNavigation(navigation.contains(document.activeElement));
-      setSearchOpen(mobileSearch.matches && Boolean(discoveryForm && discoveryForm.contains(document.activeElement)));
+      const panelOpen = discoveryForm && discoveryForm.querySelector('[data-discovery-panel]:not([hidden])');
+      const filtersOpen = discovery && discovery.querySelector('details[data-discovery-control]:not([data-discovery-assistant])[open]');
+      setSearchOpen(mobileSearch.matches && Boolean(discoveryForm && (discoveryForm.contains(document.activeElement) || panelOpen || filtersOpen)));
     };
 
     toggle.addEventListener('click', onToggle);
@@ -328,6 +636,7 @@
     updateHeader();
 
     navigationCleanup.set(header, () => {
+      discoveryObserver?.disconnect();
       stopSearchMotion();
       closeLanguage();
       closeNavigation();
@@ -371,7 +680,7 @@
       document.documentElement.classList.add('trotamundos-js');
 
       once('trotamundos-navigation', '[data-site-header]', context).forEach(initializeNavigation);
-      once('trotamundos-style-slider', '[data-style-slider]', context).forEach(initializeStyleSlider);
+      once('trotamundos-slider', '[data-trotamundos-slider]', context).forEach(initializeSlider);
 
       once('trotamundos-filter', '[data-experience-filter]', context).forEach((button) => {
         button.addEventListener('click', () => {
@@ -382,19 +691,15 @@
 
       // GET forms submit only the filters that have a value.
       once('trotamundos-clean-query', 'form[data-clean-query]', context).forEach((form) => {
-        form.addEventListener('submit', () => {
+        form.addEventListener('submit', (event) => {
+          if (event.defaultPrevented) {
+            return;
+          }
           // form.elements includes fields linked with the "form" attribute.
           Array.from(form.elements).forEach((field) => {
-            if (field.name && field.value === '' && field.type !== 'radio') {
+            if (field.name && field.value === '') {
               field.dataset.cleanName = field.name;
               field.removeAttribute('name');
-            }
-            // An empty radio choice ("Todas") is dropped the same way.
-            if (field.type === 'radio' && field.checked && field.value === '') {
-              form.querySelectorAll(`input[type="radio"][name="${field.name}"]`).forEach((radio) => {
-                radio.dataset.cleanName = radio.name;
-                radio.removeAttribute('name');
-              });
             }
           });
           // Restore names if the page is shown again from the history cache.
@@ -423,11 +728,11 @@
           navigationCleanup.delete(header);
         }
       });
-      once.remove('trotamundos-style-slider', '[data-style-slider]', context).forEach((slider) => {
-        const cleanup = styleSliderCleanup.get(slider);
+      once.remove('trotamundos-slider', '[data-trotamundos-slider]', context).forEach((slider) => {
+        const cleanup = sliderCleanup.get(slider);
         if (cleanup) {
           cleanup();
-          styleSliderCleanup.delete(slider);
+          sliderCleanup.delete(slider);
         }
       });
       if (revealObserver) {

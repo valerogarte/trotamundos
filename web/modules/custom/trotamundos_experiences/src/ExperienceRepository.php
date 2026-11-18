@@ -50,6 +50,8 @@ final class ExperienceRepository {
     'desde-600000' => [600000, NULL],
   ];
 
+  public const PRICE_FILTER_MAX = 999999999999999;
+
   /**
    * Duration ranges, in nights.
    */
@@ -107,6 +109,8 @@ final class ExperienceRepository {
       'destino' => $read('destino'),
       'region' => $read('region'),
       'precio' => $read('precio'),
+      'precio_min' => $read('precio_min'),
+      'precio_max' => $read('precio_max'),
       'duracion' => $read('duracion'),
       'fecha' => $read('fecha'),
       'desde' => $read('desde'),
@@ -135,6 +139,21 @@ final class ExperienceRepository {
       $filters['region'] = '';
     }
     if (!isset(self::PRICE_RANGES[$filters['precio']])) {
+      $filters['precio'] = '';
+    }
+    foreach (['precio_min', 'precio_max'] as $key) {
+      if ($filters[$key] !== '' && !preg_match('/^\d{1,15}$/D', $filters[$key])) {
+        throw new BadRequestHttpException((string) $this->t('Introduce precios válidos en pesos colombianos.'));
+      }
+      if ($filters[$key] !== '') {
+        $filters[$key] = (string) (int) $filters[$key];
+      }
+    }
+    if ($filters['precio_min'] !== '' && $filters['precio_max'] !== ''
+      && (int) $filters['precio_min'] > (int) $filters['precio_max']) {
+      throw new BadRequestHttpException((string) $this->t('El precio mínimo no puede superar el precio máximo.'));
+    }
+    if ($filters['precio_min'] !== '' || $filters['precio_max'] !== '') {
       $filters['precio'] = '';
     }
     if (!isset(self::DURATIONS[$filters['duracion']])) {
@@ -478,6 +497,56 @@ final class ExperienceRepository {
   }
 
   /**
+   * Builds a price histogram for the other active catalog filters.
+   */
+  public function priceDistribution(array $filters): array {
+    $without_price = $filters;
+    unset($without_price['precio'], $without_price['precio_min'], $without_price['precio_max']);
+    $query = $this->baseQuery();
+    $ids = $this->applyFilters($query, $without_price) ? $query->execute() : [];
+    $price_field = $this->priceField();
+    $prices = [];
+    foreach ($this->nodeStorage()->loadMultiple($ids) as $node) {
+      if ($node->hasField($price_field) && !$node->get($price_field)->isEmpty()) {
+        $price = $node->get($price_field)->value;
+        if (is_numeric($price) && (float) $price >= 0) {
+          $prices[] = (float) $price;
+        }
+      }
+    }
+
+    $minimum = $filters['precio_min'] ?? '';
+    $maximum = $filters['precio_max'] ?? '';
+    if ($minimum === '' && $maximum === '' && !empty($filters['precio'])) {
+      [$legacy_min, $legacy_max] = self::PRICE_RANGES[$filters['precio']];
+      $minimum = $legacy_min > 0 ? (string) $legacy_min : '';
+      $maximum = $legacy_max === NULL ? '' : (string) $legacy_max;
+    }
+    $extent = max([100000, (float) $minimum, (float) $maximum, ...$prices]);
+    $step = max(1000, (int) pow(10, max(0, floor(log10($extent)) - 2)));
+    $ceiling = min(self::PRICE_FILTER_MAX, (int) (ceil($extent / ($step * 10)) * $step * 10));
+    $counts = array_fill(0, 24, 0);
+    foreach ($prices as $price) {
+      $index = min(count($counts) - 1, (int) floor($price / $ceiling * count($counts)));
+      $counts[$index]++;
+    }
+    $largest = max($counts);
+
+    return [
+      'minimum' => $minimum,
+      'maximum' => $maximum,
+      'ceiling' => $ceiling,
+      'step' => $step,
+      'limit' => self::PRICE_FILTER_MAX,
+      'count' => count($prices),
+      'bars' => array_map(static fn (int $count): array => [
+        'count' => $count,
+        'height' => $largest ? round($count / $largest * 100, 1) : 0,
+      ], $counts),
+    ];
+  }
+
+  /**
    * Human labels for the active filters, each with a link that removes it.
    */
   public function activeFilters(array $filters, array $options, string $route = 'trotamundos_experiences.catalog'): array {
@@ -514,6 +583,21 @@ final class ExperienceRepository {
       $active[] = [
         'key' => $key,
         'label' => $labels[$key][$value],
+        'remove_url' => Url::fromRoute($route, [], ['query' => $remaining])->toString(),
+      ];
+    }
+    $minimum = $filters['precio_min'] ?? '';
+    $maximum = $filters['precio_max'] ?? '';
+    if ($minimum !== '' || $maximum !== '') {
+      $remaining = array_diff_key($query, array_flip(['precio_min', 'precio_max']));
+      $label = $minimum !== '' && $maximum !== ''
+        ? $this->t('De @min a @max', ['@min' => $this->formatPrice((int) $minimum), '@max' => $this->formatPrice((int) $maximum)])
+        : ($minimum !== ''
+          ? $this->t('Desde @amount', ['@amount' => $this->formatPrice((int) $minimum)])
+          : $this->t('Hasta @amount', ['@amount' => $this->formatPrice((int) $maximum)]));
+      $active[] = [
+        'key' => 'precio',
+        'label' => $label,
         'remove_url' => Url::fromRoute($route, [], ['query' => $remaining])->toString(),
       ];
     }
@@ -775,6 +859,12 @@ final class ExperienceRepository {
       if ($max !== NULL) {
         $query->condition($this->priceField(), $max, '<=');
       }
+    }
+    if (($filters['precio_min'] ?? '') !== '') {
+      $query->condition($this->priceField(), (int) $filters['precio_min'], '>=');
+    }
+    if (($filters['precio_max'] ?? '') !== '') {
+      $query->condition($this->priceField(), (int) $filters['precio_max'], '<=');
     }
     if (!empty($filters['duracion'])) {
       [$min, $max] = self::DURATIONS[$filters['duracion']];

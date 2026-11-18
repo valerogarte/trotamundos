@@ -24,7 +24,6 @@ function trotamundos_experiences_theme($existing, $type, $theme, $path): array {
         'filters' => [],
         'options' => [],
         'active' => [],
-        'has_examples' => FALSE,
         'reset_url' => NULL,
         'pager' => NULL,
       ],

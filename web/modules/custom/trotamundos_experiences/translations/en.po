@@ -191,6 +191,9 @@ msgstr "Close support"
 msgid "Acompañamiento"
 msgstr "Travel companions"
 
+msgid "Cerrar acompañamiento"
+msgstr "Close travel companions"
+
 msgid "Pareja"
 msgstr "Couple"
 
@@ -232,6 +235,9 @@ msgstr "My account"
 
 msgid "Iniciar sesión"
 msgstr "Log in"
+
+msgid "Cerrar sesión"
+msgstr "Log out"
 
 msgid "Registrarse"
 msgstr "Sign up"
@@ -587,15 +593,6 @@ msgstr "Arrival date"
 msgid "Fecha disponible para solicitar."
 msgstr "This date is available to request."
 
-msgid "Ficha de ejemplo: precios y fechas provisionales"
-msgstr "Sample listing: provisional prices and dates"
-
-msgid "Fichas de ejemplo"
-msgstr "Sample listings"
-
-msgid "Fichas de ejemplo: los precios y las fechas son provisionales mientras cerramos los detalles con nuestros aliados."
-msgstr "Sample listings: prices and dates are provisional while we finalise the details with our partners."
-
 msgid "Filtrar en el catálogo"
 msgstr "Filter in the catalogue"
 
@@ -671,6 +668,9 @@ msgstr "Choose your language"
 msgid "Impulsar a los emprendedores turísticos"
 msgstr "Support tourism entrepreneurs"
 
+msgid "Imágenes de archivo, no necesariamente del catálogo"
+msgstr "Stock footage, not necessarily from our catalogue"
+
 msgid "Información clara"
 msgstr "Clear information"
 
@@ -697,9 +697,6 @@ msgstr "I have spent more than nine years travelling around Colombia and sharing
 
 msgid "Lo que suelen preguntarnos"
 msgstr "What people often ask us"
-
-msgid "Los precios, las fechas y algunos textos son provisionales mientras confirmamos los detalles con nuestros aliados."
-msgstr "Prices, dates and some texts are provisional while we confirm the details with our partners."
 
 msgid "Menú"
 msgstr "Menu"
@@ -1246,6 +1243,21 @@ msgstr "More travel styles"
 msgid "Estilos de viaje"
 msgstr "Travel styles"
 
+msgid "Una Colombia por descubrir"
+msgstr "A Colombia to discover"
+
+msgid "Pausar el carrusel"
+msgstr "Pause carousel"
+
+msgid "Reanudar el carrusel"
+msgstr "Resume carousel"
+
+msgid "Destinos anteriores"
+msgstr "Previous destinations"
+
+msgid "Más destinos"
+msgstr "More destinations"
+
 msgid "Nuestro compromiso"
 msgstr "Our commitment"
 
@@ -1273,8 +1285,8 @@ msgstr "Your private space"
 msgid "Compra online"
 msgstr "Online purchase"
 
-msgid "Contenido de demostración. El carrito no confirma una reserva ni disponibilidad."
-msgstr "Demonstration content. The cart does not confirm a booking or availability."
+msgid "El carrito no confirma una reserva ni disponibilidad."
+msgstr "The cart does not confirm a booking or availability."
 
 msgid "Ver carrito"
 msgstr "View cart"
@@ -1317,6 +1329,18 @@ msgstr "Save what inspires you and keep your next trips close at hand."
 
 msgid "Ajustes de cuenta"
 msgstr "Account settings"
+
+msgid "Actualiza tus datos y mantén tu cuenta segura."
+msgstr "Update your details and keep your account secure."
+
+msgid "Volver a mi perfil"
+msgstr "Back to my profile"
+
+msgid "Datos de acceso"
+msgstr "Sign-in details"
+
+msgid "Guardar cambios"
+msgstr "Save changes"
 
 msgid "Ayuda para tu viaje"
 msgstr "Help with your trip"
@@ -1422,3 +1446,234 @@ msgstr "Select a plan's heart to save it. You will find it here whenever you wan
 
 msgid "Una mesa con comida local y flores en Concepción."
 msgstr "A table with local food and flowers in Concepción."
+
+msgid "Filtros"
+msgstr "Filters"
+
+msgid "Asistente"
+msgstr "Assistant"
+
+msgid "Asistente de viaje"
+msgstr "Travel assistant"
+
+msgid "Nuevo chat"
+msgstr "New chat"
+
+msgid "Cerrar asistente"
+msgstr "Close assistant"
+
+msgid "Mensaje"
+msgstr "Message"
+
+msgid "Enviar"
+msgstr "Send"
+
+msgid "Activa JavaScript para hablar con el asistente."
+msgstr "Enable JavaScript to chat with the assistant."
+
+msgid "Política de privacidad"
+msgstr "Privacy policy"
+
+msgid "Aviso legal"
+msgstr "Legal notice"
+
+msgid "Política de cookies"
+msgstr "Cookie policy"
+
+msgid "Información legal"
+msgstr "Legal information"
+
+msgid "Contenido provisional, pendiente de revisión."
+msgstr "Provisional content, pending review."
+
+msgid "Información pendiente"
+msgstr "Information pending"
+
+msgid "La información sobre el responsable, los datos tratados, sus finalidades y el ejercicio de tus derechos está pendiente de revisión y publicación."
+msgstr "Information about the data controller, the data processed, its purposes and how to exercise your rights is pending review and publication."
+
+msgid "Las consultas que envías al asistente se procesan para generar una respuesta. No incluyas datos personales, confidenciales o de pago."
+msgstr "Messages you send to the assistant are processed to generate a response. Do not include personal, confidential or payment information."
+
+msgid "La información sobre el titular del sitio y sus condiciones de uso está pendiente de revisión y publicación."
+msgstr "Information about the site owner and its terms of use is pending review and publication."
+
+msgid "La información sobre las cookies y tecnologías similares está pendiente de revisión y publicación."
+msgstr "Information about cookies and similar technologies is pending review and publication."
+
+msgid "¿Tienes dudas? Contacta con nosotros."
+msgstr "Have questions? Contact us."
+
+msgid "No se ha encontrado el panel de respuestas del asistente."
+msgstr "The assistant's response panel could not be found."
+
+msgid "No se pudo recuperar la conversación. Vuelve a cargar la página para intentarlo de nuevo."
+msgstr "The conversation could not be restored. Reload the page to try again."
+
+msgid "Ordenar planes"
+msgstr "Sort plans"
+
+msgid "Compromiso local"
+msgstr "Local commitment"
+
+msgid "Viajar también es conocer a quienes cuidan cada lugar. Trabajamos junto a familias anfitrionas, guías y emprendedores para dar visibilidad a sus proyectos y compartir sus historias con respeto."
+msgstr "Travel also means meeting the people who care for each place. We work with host families, guides and entrepreneurs to give their projects visibility and share their stories with respect."
+
+msgid "Hablemos de tu proyecto"
+msgstr "Tell us about your project"
+
+msgid "Nuestra forma de viajar"
+msgstr "Our way of travelling"
+
+msgid "Juntos hacemos"
+msgstr "Together we make"
+
+msgid "camino."
+msgstr "the journey."
+
+msgid "Protagonismo local"
+msgstr "Local voices"
+
+msgid "Conectamos a viajeros con las personas que conocen y cuidan su territorio."
+msgstr "We connect travellers with the people who know and care for their homeland."
+
+msgid "Oportunidades cercanas"
+msgstr "Local opportunities"
+
+msgid "Damos visibilidad a pequeños negocios y proyectos turísticos de las comunidades."
+msgstr "We give visibility to small businesses and community tourism projects."
+
+msgid "Encuentros respetuosos"
+msgstr "Respectful encounters"
+
+msgid "Escuchamos a nuestros anfitriones y compartimos sus historias con cuidado."
+msgstr "We listen to our hosts and share their stories with care."
+
+msgid "Descubrir Colombia"
+msgstr "Discovering Colombia"
+
+msgid "es hacerlo en compañía."
+msgstr "is a shared journey."
+
+msgid "Conoce a las comunidades y aliados que forman parte de nuestra historia."
+msgstr "Meet the communities and partners who are part of our story."
+
+msgid "Conocer a nuestros aliados"
+msgstr "Meet our partners"
+
+msgid "Explorar planes"
+msgstr "Explore plans"
+
+msgid "Cerrar filtros"
+msgstr "Close filters"
+
+msgid "Distribución de precios para estos filtros"
+msgstr "Price distribution for these filters"
+
+msgid "No hay precios para mostrar con estos filtros."
+msgstr "There are no prices to show for these filters."
+
+msgid "Ajustar precio mínimo"
+msgstr "Adjust minimum price"
+
+msgid "Ajustar precio máximo"
+msgstr "Adjust maximum price"
+
+msgid "Precio mínimo"
+msgstr "Minimum price"
+
+msgid "Precio máximo"
+msgstr "Maximum price"
+
+msgid "Sin mínimo"
+msgstr "No minimum"
+
+msgid "Sin máximo"
+msgstr "No maximum"
+
+msgid "El precio mínimo no puede superar el precio máximo."
+msgstr "The minimum price cannot be greater than the maximum price."
+
+msgid "Introduce precios válidos en pesos colombianos."
+msgstr "Enter valid prices in Colombian pesos."
+
+msgid "Desde @amount"
+msgstr "From @amount"
+
+msgid "Planes con anfitriones locales en destinos poco conocidos de Colombia. Filtra por lo que te gustaría descubrir, el destino, tu presupuesto o la fecha."
+msgstr "Plans with local hosts in lesser-known Colombian destinations. Filter by what you would like to discover, destination, budget or date."
+
+msgid "No se pudieron cargar los planes. Vuelve a intentarlo."
+msgstr "The plans could not be loaded. Please try again."
+
+msgid "Colombia"
+msgstr "Colombia"
+
+msgid "Colombia, un lugar"
+msgstr "Colombia, one place"
+
+msgid "a la vez."
+msgstr "at a time."
+
+msgid "Hay lugares que se descubren con calma. Encuentra en el mapa pueblos, paisajes y experiencias para tu próxima historia."
+msgstr "Some places are best discovered slowly. Find villages, landscapes and experiences for your next story on the map."
+
+msgid "Explorar el mapa"
+msgstr "Explore the map"
+
+msgid "Un país, muchas formas de viajar"
+msgstr "One country, many ways to travel"
+
+msgid "destino"
+msgstr "destination"
+
+msgid "destinos"
+msgstr "destinations"
+
+msgid "plan"
+msgstr "plan"
+
+msgid "planes"
+msgstr "plans"
+
+msgid "Tu mapa de Colombia"
+msgstr "Your map of Colombia"
+
+msgid "Empieza por un lugar"
+msgstr "Start with a place"
+
+msgid "Elige un punto del mapa o un destino de la lista para conocerlo."
+msgstr "Choose a point on the map or a destination from the list to discover it."
+
+msgid "Ubicación aproximada"
+msgstr "Approximate location"
+
+msgid "Conocer @place"
+msgstr "Discover @place"
+
+msgid "Todavía no hay ubicaciones en el mapa. Puedes descubrir todos los destinos en la lista."
+msgstr "There are no locations on the map yet. You can discover every destination in the list."
+
+msgid "Las líneas indican la ubicación aproximada de cada destino."
+msgstr "The lines indicate each destination's approximate location."
+
+msgid "Para descubrir"
+msgstr "Places to discover"
+
+msgid "Ubicación pendiente"
+msgstr "Location not yet available"
+
+msgid "El viaje empieza aquí"
+msgstr "The journey starts here"
+
+msgid "Encuentra tu lugar"
+msgstr "Find your place"
+
+msgid "Explora cada región y descubre lo que la hace especial."
+msgstr "Explore each region and discover what makes it special."
+
+msgid "Explora por región"
+msgstr "Explore by region"
+
+msgid "Conocer destino"
+msgstr "Discover destination"

@@ -57,6 +57,7 @@ function trotamundos_preprocess_page(array &$variables): void {
   if (\Drupal::hasService('trotamundos_experiences.repository')) {
     $repository = \Drupal::service('trotamundos_experiences.repository');
     $filters = \Drupal::request()->attributes->get('_trotamundos_catalog_filters', []);
+    $variables['tm_catalog_controls'] = \Drupal::request()->attributes->get('_trotamundos_catalog_controls');
     $variables['tm_search_filters'] = $filters;
     $variables['tm_discovery'] = $repository->filterOptions($filters);
     $variables['tm_date_label'] = $repository->dateLabel($filters);
@@ -72,7 +73,6 @@ function trotamundos_preprocess_page(array &$variables): void {
     usort($destinations, static fn (array $a, array $b): int => [$b['count'], $a['title']] <=> [$a['count'], $b['title']]);
     $variables['tm_featured'] = $cards;
     $variables['tm_styles'] = $variables['tm_discovery']['styles'];
-    $variables['tm_has_examples'] = (bool) array_filter($cards, static fn (array $card): bool => $card['is_example']);
     $variables['tm_destinations'] = array_slice($destinations, 0, 5);
   }
 }
@@ -161,6 +161,7 @@ function trotamundos_preprocess_trotamundos_catalog(array &$variables): void {
 function trotamundos_preprocess_trotamundos_destinations(array &$variables): void {
   $variables['trotamundos_path'] = _trotamundos_path();
   $variables['tm'] = _trotamundos_site_data();
+  $variables['atlas'] = _trotamundos_destination_atlas($variables['tree']);
 }
 
 /**
@@ -241,6 +242,9 @@ function _trotamundos_site_data(): array {
     ['route' => 'trotamundos_experiences.experiences', 'label' => t('Experiencias'), 'icon' => 'compass', 'active' => $route === 'trotamundos_experiences.experiences' || $bundle === 'experiencia'],
     ['route' => 'trotamundos_experiences.packages', 'label' => t('Paquetes'), 'icon' => 'suitcase', 'active' => $route === 'trotamundos_experiences.packages' || $bundle === 'paquete'],
   ];
+  $search_filters = \Drupal::request()->attributes->get('_trotamundos_catalog_filters', []);
+  $search_query = array_intersect_key($search_filters, array_flip(['destino', 'fecha', 'desde', 'hasta', 'margen', 'acompanamiento']));
+  $search_query = array_filter($search_query, static fn ($value): bool => $value !== '');
   $explore_navigation = [];
   foreach ($explore_items as $item) {
     if ($item['route'] !== '<front>' && !$exists($item['route'])) {
@@ -249,7 +253,7 @@ function _trotamundos_site_data(): array {
     $explore_navigation[] = [
       'label' => $item['label'],
       'icon' => $item['icon'],
-      'url' => Url::fromRoute($item['route'], [], ['query' => $item['query'] ?? []])->toString(),
+      'url' => Url::fromRoute($item['route'], [], ['query' => $search_query])->toString(),
       'active' => $item['active'],
       'current' => $route === $item['route'],
     ];
@@ -354,6 +358,102 @@ function _trotamundos_map_point(?array $destination): ?array {
     'x' => round($x / 600 * 100, 2),
     'y' => round($y / 660 * 100, 2),
     'label' => $destination['place'],
+  ];
+}
+
+/**
+ * Lays out destination links around their approximate geographic positions.
+ */
+function _trotamundos_destination_atlas(array $tree): array {
+  $places = [];
+  $bounds = ['left' => 0.0, 'top' => 0.0, 'right' => 600.0, 'bottom' => 660.0];
+  $mapped = 0;
+  foreach ($tree as $region) {
+    foreach ($region['departments'] as $department) {
+      foreach ($department['destinations'] as $destination) {
+        $destination['number'] = count($places) + 1;
+        $destination['map'] = NULL;
+        $latitude = $destination['latitude'] ?? NULL;
+        $longitude = $destination['longitude'] ?? NULL;
+        // Include Colombia's offshore islands, but not invalid coordinates.
+        if (is_numeric($latitude) && is_numeric($longitude)
+          && (float) $latitude >= -5 && (float) $latitude <= 16
+          && (float) $longitude >= -83 && (float) $longitude <= -66) {
+          $point = _trotamundos_map_point($destination);
+          $x = $point['x'] * 6;
+          $y = $point['y'] * 6.6;
+          $destination['map'] = ['raw_x' => $x, 'raw_y' => $y];
+          $bounds['left'] = min($bounds['left'], $x - 48);
+          $bounds['right'] = max($bounds['right'], $x + 48);
+          $bounds['top'] = min($bounds['top'], $y - 48);
+          $bounds['bottom'] = max($bounds['bottom'], $y + 48);
+          $mapped++;
+        }
+        $places[] = $destination;
+      }
+    }
+  }
+
+  $width = $bounds['right'] - $bounds['left'];
+  $height = $bounds['bottom'] - $bounds['top'];
+  $margin = 42.0;
+  $available_width = $width - 2 * $margin;
+  $available_height = $height - 2 * $margin;
+  // Separate nearby labels; their leader lines still point to the real places.
+  $columns = max(2, (int) floor($available_width / 78) + 1);
+  $rows = max(2, (int) floor($available_height / 78) + 1);
+  while ($columns * $rows < $mapped) {
+    if ($available_width / $columns >= $available_height / $rows) {
+      $columns++;
+    }
+    else {
+      $rows++;
+    }
+  }
+  $slots = [];
+  for ($row = 0; $row < $rows; $row++) {
+    for ($column = 0; $column < $columns; $column++) {
+      $slots[] = [
+        'x' => $bounds['left'] + $margin + $column * $available_width / ($columns - 1),
+        'y' => $bounds['top'] + $margin + $row * $available_height / ($rows - 1),
+      ];
+    }
+  }
+
+  foreach ($places as &$place) {
+    if ($place['map'] === NULL) {
+      continue;
+    }
+    $x = $place['map']['raw_x'];
+    $y = $place['map']['raw_y'];
+    $nearest = NULL;
+    $distance = INF;
+    foreach ($slots as $index => $slot) {
+      $candidate_distance = ($slot['x'] - $x) ** 2 + ($slot['y'] - $y) ** 2;
+      if ($candidate_distance < $distance) {
+        $nearest = $index;
+        $distance = $candidate_distance;
+      }
+    }
+    $slot = $slots[$nearest];
+    unset($slots[$nearest]);
+    $place['map'] = [
+      'x' => round(($x - $bounds['left']) / $width * 100, 3),
+      'y' => round(($y - $bounds['top']) / $height * 100, 3),
+      'label_x' => round(($slot['x'] - $bounds['left']) / $width * 100, 3),
+      'label_y' => round(($slot['y'] - $bounds['top']) / $height * 100, 3),
+    ];
+  }
+  unset($place);
+
+  return [
+    'places' => $places,
+    'mapped' => $mapped,
+    'width' => round($width, 3),
+    'height' => round($height, 3),
+    'outline_left' => round(-$bounds['left'] / $width * 100, 3),
+    'outline_top' => round(-$bounds['top'] / $height * 100, 3),
+    'outline_width' => round(600 / $width * 100, 3),
   ];
 }
 

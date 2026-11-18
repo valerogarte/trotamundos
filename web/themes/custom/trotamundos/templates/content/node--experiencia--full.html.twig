@@ -38,9 +38,6 @@
       {% if content.trotamundos_favorite %}
         <div class="experience-header__save">{{ content.trotamundos_favorite }}</div>
       {% endif %}
-      {% if e.is_example %}
-        <p class="example-badge">{{ icons.icon('info') }} {{ 'Ficha de ejemplo: precios y fechas provisionales'|t }}</p>
-      {% endif %}
     </header>
   </div>
 
@@ -216,7 +213,7 @@
         {% if content.trotamundos_purchase %}
           <section class="commerce-purchase" aria-label="{{ 'Compra online'|t }}">
             <h3>{{ 'Compra online'|t }}</h3>
-            {% if e.is_example %}<p class="tm-notice">{{ 'Contenido de demostración. El carrito no confirma una reserva ni disponibilidad.'|t }}</p>{% endif %}
+            {% if e.is_example %}<p class="tm-notice">{{ 'El carrito no confirma una reserva ni disponibilidad.'|t }}</p>{% endif %}
             {{ content.trotamundos_purchase }}
             <a class="text-link" href="{{ path('commerce_cart.page') }}">{{ 'Ver carrito'|t }} {{ icons.icon('bag') }}</a>
           </section>

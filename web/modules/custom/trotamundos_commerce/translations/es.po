@@ -1,0 +1,12 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+
+msgid "Order @order_number"
+msgstr "Pedido @order_number"
+
+msgctxt "workflow state"
+msgid "Completed"
+msgstr "Completado"

@@ -1,0 +1,11 @@
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+<details class="discovery-control" data-discovery-control>
+  <summary class="discovery-control__toggle" aria-controls="catalog-filters">{{ icons.icon('sliders') }}<span>{{ 'Filtros'|t }}</span></summary>
+  <section class="discovery-panel discovery-control__panel catalog-filters" id="catalog-filters" aria-label="{{ 'Filtrar planes'|t }}" data-catalog-filters>
+    <div class="discovery-panel__heading">
+      <h2>{{ 'Filtros'|t }}</h2>
+      <button class="discovery-panel__close catalog-filters__close" type="button" data-discovery-control-close aria-label="{{ 'Cerrar filtros'|t }}">{{ icons.icon('close') }}</button>
+    </div>
+    {% include '@trotamundos/components/catalog-filter-fields.html.twig' %}
+  </section>
+</details>

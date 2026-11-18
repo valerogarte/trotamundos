@@ -36,7 +36,7 @@ final class DestinationsController extends ControllerBase {
       '#tree' => $tree,
       '#total' => array_sum(array_column($tree, 'count')),
       '#catalog_url' => Url::fromRoute('trotamundos_experiences.catalog')->toString(),
-      '#attached' => ['library' => ['trotamundos/pages']],
+      '#attached' => ['library' => ['trotamundos/destinations']],
       '#cache' => [
         'contexts' => ['languages:language_interface', 'languages:language_content', 'user.permissions'],
         'tags' => ProductTypes::CACHE_TAGS,

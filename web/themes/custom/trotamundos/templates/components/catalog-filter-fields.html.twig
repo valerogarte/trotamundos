@@ -1,0 +1,73 @@
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+{% set illustrated_styles = ['pueblos-con-alma', 'cafe-y-tradicion', 'naturaleza', 'gastronomia', 'aventura', 'bienestar', 'cultura-viva'] %}
+<fieldset class="catalog-filter-group">
+  <legend class="catalog-filter-group__title">{{ 'Estilo de viaje'|t }}</legend>
+  <div class="catalog-styles__all">
+    <input class="visually-hidden" type="radio" id="filter-estilo-todos" name="estilo" value="" form="discovery-form"{{ not filters.estilo ? ' checked' : '' }}>
+    <label for="filter-estilo-todos">{{ 'Todas'|t }}</label>
+  </div>
+  <div class="catalog-styles" role="group" aria-label="{{ 'Estilos de viaje'|t }}" tabindex="0">
+    {% for style in options.styles %}
+      <div class="catalog-style">
+        <input class="visually-hidden" type="radio" id="filter-estilo-{{ style.id }}" name="estilo" value="{{ style.slug }}" form="discovery-form"{{ style.selected ? ' checked' : '' }}>
+        <label class="catalog-style__card" for="filter-estilo-{{ style.id }}">
+          <span class="catalog-style__art" aria-hidden="true">
+            {% if style.slug in illustrated_styles %}
+              <svg viewBox="0 0 120 90" focusable="false"><use href="{{ trotamundos_path }}/assets/images/travel-styles.svg#{{ style.slug }}"></use></svg>
+            {% else %}
+              {{ icons.icon(style.icon ?: 'sun') }}
+            {% endif %}
+          </span>
+          <span class="catalog-style__name">{{ style.label }}</span>
+          <span class="catalog-style__count">({{ style.count }})</span>
+        </label>
+      </div>
+    {% endfor %}
+  </div>
+</fieldset>
+{% set price = options.price_distribution %}
+<fieldset class="catalog-filter-group">
+  <legend class="catalog-filter-group__title">{{ 'Precio por persona'|t }} <span class="catalog-filter-group__currency">COP</span></legend>
+  <div class="catalog-price" data-price-range data-price-ceiling="{{ price.ceiling }}" data-price-step="{{ price.step }}" data-price-limit="{{ price.limit }}">
+    <p class="catalog-price__caption" id="filter-price-caption">{{ price.count ? 'Distribución de precios para estos filtros'|t : 'No hay precios para mostrar con estos filtros.'|t }}</p>
+    <div class="catalog-price__histogram" aria-hidden="true">
+      <div class="catalog-price__bars">
+        {% for bar in price.bars %}
+          <span data-price-count="{{ bar.count }}" style="--bar-height: {{ bar.height }}%"></span>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="catalog-price__sliders">
+      <span class="catalog-price__track" aria-hidden="true"><span></span></span>
+      <input type="range" min="0" max="{{ price.ceiling }}" step="{{ price.step }}" value="{{ price.minimum is not same as('') ? price.minimum : 0 }}" data-price-slider="min" aria-label="{{ 'Ajustar precio mínimo'|t }}">
+      <input type="range" min="0" max="{{ price.ceiling }}" step="{{ price.step }}" value="{{ price.maximum is not same as('') ? price.maximum : price.ceiling }}" data-price-slider="max" aria-label="{{ 'Ajustar precio máximo'|t }}">
+    </div>
+    <div class="catalog-price__inputs">
+      <label for="filter-precio-min">{{ 'Precio mínimo'|t }}
+        <span class="catalog-price__amount"><span aria-hidden="true">$</span><input id="filter-precio-min" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="15" name="precio_min" form="discovery-form" value="{{ price.minimum }}" placeholder="{{ 'Sin mínimo'|t }}" data-price-input="min" aria-describedby="filter-price-caption filter-price-error"><span aria-hidden="true">COP</span></span>
+      </label>
+      <label for="filter-precio-max">{{ 'Precio máximo'|t }}
+        <span class="catalog-price__amount"><span aria-hidden="true">$</span><input id="filter-precio-max" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="15" name="precio_max" form="discovery-form" value="{{ price.maximum }}" placeholder="{{ 'Sin máximo'|t }}" data-price-input="max" aria-describedby="filter-price-caption filter-price-error"><span aria-hidden="true">COP</span></span>
+      </label>
+    </div>
+    <p class="catalog-price__error" id="filter-price-error" data-price-error hidden>{{ 'El precio mínimo no puede superar el precio máximo.'|t }}</p>
+  </div>
+</fieldset>
+{% if not product_type %}
+  <fieldset class="catalog-filter-group">
+    <legend class="catalog-filter-group__title">{{ 'Tipo de plan'|t }}</legend>
+    <div class="catalog-choices">
+      <input class="visually-hidden" type="radio" id="filter-tipo-todos" name="tipo" value="" form="discovery-form"{{ not filters.tipo ? ' checked' : '' }}>
+      <label class="catalog-choice" for="filter-tipo-todos">{{ 'Todos'|t }}</label>
+      {% for type in options.types %}
+        <input class="visually-hidden" type="radio" id="filter-tipo-{{ type.slug }}" name="tipo" value="{{ type.slug }}" form="discovery-form"{{ type.selected ? ' checked' : '' }}>
+        <label class="catalog-choice" for="filter-tipo-{{ type.slug }}">{{ icons.icon(type.slug == 'alojamiento' ? 'bed' : (type.slug == 'paquete' ? 'suitcase' : 'compass')) }} {{ type.label }} ({{ type.count }})</label>
+      {% endfor %}
+    </div>
+  </fieldset>
+{% endif %}
+{% include '@trotamundos/components/catalog-sort-field.html.twig' %}
+{% if filters.region %}<input type="hidden" name="region" value="{{ filters.region }}" form="discovery-form">{% endif %}
+<div class="catalog-filters__actions">
+  <button class="button button--primary" type="submit" form="discovery-form" data-catalog-submit>{{ 'Ver resultados'|t }}</button>
+</div>

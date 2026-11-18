@@ -1,7 +1,7 @@
 {#
 /**
  * @file
- * Experience card: photo, plan type, place, title, duration and price.
+ * Experience card: photo, place, title, summary, duration and price.
  * The title link covers the card; the optional favorite is a separate control.
  *
  * Variables:
@@ -11,19 +11,21 @@
 #}
 {% import '@trotamundos/components/icons.html.twig' as icons %}
 {% set heading = heading|default('h3') %}
+{% set summary = card.summary|default('')|trim %}
 <article class="experience-card" data-experience-card data-styles="{{ card.style_slugs }}">
   {% if card.favorite %}
     <div class="experience-card__favorite">{{ card.favorite }}</div>
   {% endif %}
-  <div class="experience-card__media">
+  <div class="experience-card__media{{ card.image ? '' : ' experience-card__media--empty' }}">
     {% if card.image %}
       <img src="{{ card.image.src }}" alt="{{ card.image.alt }}" width="{{ card.image.width }}" height="{{ card.image.height }}" loading="lazy" decoding="async">
     {% endif %}
-    {% if card.type %}<span class="experience-card__type">{{ card.type.label }}{% if card.is_example %} · DEMO{% endif %}</span>{% endif %}
+    {% if summary %}<p class="experience-card__summary" aria-hidden="true"><span>{{ summary }}</span></p>{% endif %}
   </div>
   <div class="experience-card__body">
     {% if card.location %}<p class="experience-card__location">{{ icons.icon('pin') }} {{ card.location }}</p>{% endif %}
     <{{ heading }} class="experience-card__title"><a href="{{ card.url }}">{{ card.title }}</a></{{ heading }}>
+    {% if summary %}<p class="visually-hidden">{{ summary }}</p>{% endif %}
     <p class="experience-card__meta">
       {% if card.duration %}<span>{{ icons.icon('clock') }} {{ card.duration }}</span>{% endif %}
       {% if card.styles %}<span>{{ card.styles|slice(0, 2)|map(style => style.label)|join(' · ') }}</span>{% endif %}
@@ -31,8 +33,6 @@
     <p class="experience-card__price">
       <span>{{ 'Desde'|t }}</span>
       <strong>{{ card.price_label }}</strong>
-      <span>{{ 'COP por persona'|t }}</span>
-      {{ icons.icon('arrow') }}
     </p>
   </div>
 </article>

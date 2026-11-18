@@ -5,7 +5,7 @@ header-layout:
     js/header-layout.js: {}
 
 global:
-  version: 2.2.8
+  version: 2.2.43
   css:
     theme:
       css/tokens.css: { weight: -10 }
@@ -22,7 +22,7 @@ global:
     - core/once
 
 front:
-  version: 2.2.4
+  version: 2.2.14
   css:
     theme:
       css/front.css: {}
@@ -30,7 +30,7 @@ front:
     - trotamundos/global
 
 immersive-hero:
-  version: 2.1.0
+  version: 2.1.8
   css:
     theme:
       css/immersive-hero.css: {}
@@ -46,7 +46,7 @@ catalog-bootstrap:
     js/catalog-bootstrap.js: {}
 
 catalog:
-  version: 2.2.3
+  version: 2.2.14
   css:
     theme:
       css/catalog.css: {}
@@ -55,9 +55,11 @@ catalog:
   dependencies:
     - trotamundos/global
     - trotamundos/catalog-bootstrap
+    - core/drupal.ajax
+    - core/drupalSettings
 
 experience:
-  version: 2.0.3
+  version: 2.0.4
   css:
     theme:
       css/experience.css: {}
@@ -67,7 +69,7 @@ experience:
     - trotamundos/global
 
 travel-profile:
-  version: 1.0.1
+  version: 1.0.5
   css:
     theme:
       css/travel-profile.css: {}
@@ -83,10 +85,20 @@ commerce:
     - trotamundos/global
 
 pages:
-  version: 2.0.0
+  version: 2.0.1
   css:
     theme:
       css/pages.css: {}
+  dependencies:
+    - trotamundos/global
+
+destinations:
+  version: 1.0.1
+  css:
+    theme:
+      css/destinations.css: {}
+  js:
+    js/destinations.js: {}
   dependencies:
     - trotamundos/global
 

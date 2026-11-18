@@ -90,7 +90,11 @@
     </div>
     <button class="discovery-bar__submit" type="submit">{{ icons.icon('search') }}<span class="visually-hidden">{{ 'Buscar planes'|t }}</span></button>
 
-    <div class="discovery-panel discovery-companions" id="discovery-companions" data-discovery-panel="companions" role="dialog" aria-label="{{ 'Acompañamiento'|t }}" hidden>
+    <div class="discovery-panel discovery-companions" id="discovery-companions" data-discovery-panel="companions" role="dialog" aria-labelledby="discovery-companions-title" hidden>
+      <div class="discovery-panel__heading">
+        <h2 id="discovery-companions-title">{{ 'Acompañamiento'|t }}</h2>
+        <button class="discovery-panel__close" type="button" data-discovery-close aria-label="{{ 'Cerrar acompañamiento'|t }}">{{ icons.icon('close') }}</button>
+      </div>
       <button class="discovery-companion" type="button" data-companion-value="" aria-pressed="false">{{ 'Sin preferencia'|t }} {{ icons.icon('check') }}</button>
       {% for companion in tm_discovery.companions %}
         <button class="discovery-companion" type="button" data-companion-value="{{ companion.value }}" aria-pressed="false">{{ companion.label }} {{ icons.icon('check') }}</button>
@@ -160,4 +164,19 @@
       </div>
     </div>
   </form>
+  {% if tm_catalog_controls or tm_assistant %}
+    <div class="discovery-controls" data-discovery-controls>
+      {% if tm_catalog_controls %}
+        {% include '@trotamundos/components/catalog-controls.html.twig' with tm_catalog_controls %}
+      {% endif %}
+      {% if tm_assistant %}
+        <details class="discovery-control discovery-control--assistant" data-discovery-control data-discovery-assistant>
+          <summary class="discovery-control__toggle" aria-controls="discovery-assistant">{{ icons.icon('assistant') }}<span>{{ 'Asistente'|t }}</span></summary>
+          <section class="discovery-panel discovery-control__panel discovery-assistant__panel" id="discovery-assistant" aria-label="{{ 'Asistente de viaje'|t }}">
+            {{ tm_assistant }}
+          </section>
+        </details>
+      {% endif %}
+    </div>
+  {% endif %}
 </div>

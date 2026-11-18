@@ -1,83 +1,182 @@
 {#
 /**
  * @file
- * Destinations by region > department > municipality. Works the same with a
- * handful of places or with many: regions without experiences go last.
+ * Destination atlas and directory, grouped by region.
  */
 #}
 {% import '@trotamundos/components/icons.html.twig' as icons %}
 <div class="destinations-page">
-  <header class="page-intro container">
-    <p class="eyebrow">{{ 'Destinos'|t }}</p>
-    <h1>{{ 'Explora Colombia'|t }} <em>{{ 'por destino'|t }}</em></h1>
-    <p class="lead">{{ 'Busca planes por región, departamento y municipio. Cada destino reúne los planes que preparamos con sus anfitriones.'|t }}</p>
-    {% if tree|length > 1 %}
-      <nav class="region-index" aria-label="{{ 'Regiones'|t }}">
-        {% for region in tree %}
-          <a class="filter-button" href="#region-{{ region.key }}">{{ region.label }}</a>
-        {% endfor %}
-      </nav>
+  <header class="destinations-intro container">
+    <div class="destinations-intro__copy">
+      <p class="eyebrow">{{ 'Destinos'|t }} · {{ 'Colombia'|t }}</p>
+      <h1>{{ 'Colombia, un lugar'|t }} <em>{{ 'a la vez.'|t }}</em></h1>
+      <p>{{ 'Hay lugares que se descubren con calma. Encuentra en el mapa pueblos, paisajes y experiencias para tu próxima historia.'|t }}</p>
+      {% if atlas.places %}
+        <a class="button button--primary" href="#mapa-destinos">{{ 'Explorar el mapa'|t }} {{ icons.icon('down') }}</a>
+      {% endif %}
+    </div>
+    {% if atlas.places %}
+      <div class="destinations-intro__note">
+        {{ icons.icon('compass') }}
+        <p>{{ 'Un país, muchas formas de viajar'|t }}</p>
+        <div class="destinations-intro__stats">
+          <div>
+            <strong>{{ atlas.places|length }}</strong>
+            <span>{% if atlas.places|length == 1 %}{{ 'destino'|t }}{% else %}{{ 'destinos'|t }}{% endif %}</span>
+          </div>
+          <div>
+            <strong>{{ total }}</strong>
+            <span>{% if total == 1 %}{{ 'plan'|t }}{% else %}{{ 'planes'|t }}{% endif %}</span>
+          </div>
+        </div>
+      </div>
     {% endif %}
   </header>
 
-  {% for region in tree %}
-    <section class="region container" id="region-{{ region.key }}" aria-labelledby="region-{{ region.key }}-title">
-      <div class="region__heading">
-        <h2 id="region-{{ region.key }}-title">{{ region.label }}</h2>
-        <p>
-          {% if region.count %}
-            {% set count = region.count %}
-            <span>{% trans %}1 plan{% plural count %}{{ count }} planes{% endtrans %}</span>
-            <a class="text-link" href="{{ catalog_url }}?region={{ region.key }}">{{ 'Ver planes de la región'|t }} {{ icons.icon('arrow') }}</a>
-          {% else %}
-            <span>{{ 'Próximamente'|t }}</span>
-          {% endif %}
-        </p>
+  {% if atlas.places %}
+    <section class="destination-atlas container" id="mapa-destinos" aria-labelledby="destination-atlas-title" data-destination-atlas>
+      <div class="destination-atlas__heading">
+        <div>
+          <p class="eyebrow">{{ 'Tu mapa de Colombia'|t }}</p>
+          <h2 id="destination-atlas-title">{{ 'Empieza por un lugar'|t }}</h2>
+        </div>
+        <p>{{ 'Elige un punto del mapa o un destino de la lista para conocerlo.'|t }}</p>
       </div>
 
-      {% for department in region.departments %}
-        <div class="department">
-          <div class="department__heading">
-            <h3>{{ department.label }}</h3>
-            {% if department.count %}
-              <a class="text-link" href="{{ catalog_url }}?destino={{ department.slug }}">
-                {% set count = department.count %}
-                {% set department_name = department.label %}
-                {% trans %}Ver 1 plan en {{ department_name }}{% plural count %}Ver {{ count }} planes en {{ department_name }}{% endtrans %}
-                {{ icons.icon('arrow') }}
-              </a>
-            {% endif %}
+      <div class="destination-atlas__body">
+        <div class="destination-atlas__map">
+          <div class="destination-atlas__map-heading" aria-hidden="true">
+            <span>{{ icons.icon('compass') }}</span>
+            <span>COLOMBIA<br><small>{{ 'Ubicación aproximada'|t }}</small></span>
           </div>
-          <ul class="destination-grid">
-            {% for destination in department.destinations %}
+          <div class="destination-atlas__canvas" style="aspect-ratio: {{ atlas.width }} / {{ atlas.height }};">
+            <div class="destination-atlas__outline" style="left: {{ atlas.outline_left }}%; top: {{ atlas.outline_top }}%; width: {{ atlas.outline_width }}%;">
+              {% include '@trotamundos/components/colombia-map.html.twig' with {point: null, outline_only: true} only %}
+            </div>
+            <svg class="destination-atlas__leaders" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+              {% for destination in atlas.places %}
+                {% if destination.map %}
+                  <line x1="{{ destination.map.x }}" y1="{{ destination.map.y }}" x2="{{ destination.map.label_x }}" y2="{{ destination.map.label_y }}"></line>
+                  <circle cx="{{ destination.map.x }}" cy="{{ destination.map.y }}" r="0.8"></circle>
+                {% endif %}
+              {% endfor %}
+            </svg>
+            {% for destination in atlas.places %}
+              {% if destination.map %}
+                <a class="destination-atlas__marker" data-atlas-place="{{ destination.id }}" href="{{ destination.url }}" style="left: {{ destination.map.label_x }}%; top: {{ destination.map.label_y }}%;" aria-label="{{ 'Conocer @place'|t({'@place': destination.title}) }}">{{ '%02d'|format(destination.number) }}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% if not atlas.mapped %}
+            <p class="destination-atlas__map-empty">{{ 'Todavía no hay ubicaciones en el mapa. Puedes descubrir todos los destinos en la lista.'|t }}</p>
+          {% endif %}
+          <p class="destination-atlas__map-caption">{{ 'Las líneas indican la ubicación aproximada de cada destino.'|t }}</p>
+        </div>
+
+        <div class="destination-atlas__directory">
+          <div class="destination-atlas__directory-heading">
+            <div>
+              <p class="eyebrow">{{ 'Para descubrir'|t }}</p>
+              <h3>{{ 'Todos los destinos'|t }}</h3>
+            </div>
+            <span>{{ '%02d'|format(atlas.places|length) }}</span>
+          </div>
+          <ol class="destination-atlas__list">
+            {% for destination in atlas.places %}
               <li>
-                <a class="destination-card{{ destination.count ? '' : ' destination-card--soon' }}" href="{{ destination.url }}">
-                  <span class="destination-card__media">
+                <a class="destination-atlas__place" data-atlas-place="{{ destination.id }}" href="{{ destination.url }}">
+                  <span class="destination-atlas__number">{{ '%02d'|format(destination.number) }}</span>
+                  <span class="destination-atlas__thumbnail">
                     {% if destination.image %}
                       <img src="{{ destination.image.src }}" alt="" width="{{ destination.image.width }}" height="{{ destination.image.height }}" loading="lazy" decoding="async">
+                    {% else %}
+                      {{ icons.icon('mountain') }}
                     {% endif %}
-                    <span class="destination-card__count">
-                      {% if destination.count %}
-                        {% set count = destination.count %}
-                        {% trans %}1 plan{% plural count %}{{ count }} planes{% endtrans %}
-                      {% else %}
-                        {{ 'Próximamente'|t }}
-                      {% endif %}
-                    </span>
                   </span>
-                  <span class="destination-card__body">
-                    <span class="destination-card__name">{{ destination.place }}</span>
-                    <span class="destination-card__location">{{ icons.icon('pin') }} {{ destination.municipality }} · {{ destination.department }}</span>
-                    {% if destination.summary %}<span class="destination-card__summary">{{ destination.summary }}</span>{% endif %}
+                  <span class="destination-atlas__place-copy">
+                    <strong>{{ destination.place }}</strong>
+                    <span>{{ destination.department }} · {% if destination.count %}{% set count = destination.count %}{% trans %}1 plan{% plural count %}{{ count }} planes{% endtrans %}{% else %}{{ 'Próximamente'|t }}{% endif %}</span>
+                    {% if not destination.map %}<span class="destination-atlas__missing">{{ 'Ubicación pendiente'|t }}</span>{% endif %}
                   </span>
+                  {{ icons.icon('arrow') }}
                 </a>
               </li>
             {% endfor %}
-          </ul>
+          </ol>
         </div>
+      </div>
+    </section>
+
+    <section class="destination-collection container" aria-labelledby="destination-collection-title">
+      <div class="destination-collection__heading">
+        <div>
+          <p class="eyebrow">{{ 'El viaje empieza aquí'|t }}</p>
+          <h2 id="destination-collection-title">{{ 'Encuentra tu lugar'|t }}</h2>
+          <p>{{ 'Explora cada región y descubre lo que la hace especial.'|t }}</p>
+        </div>
+        {% if tree|length > 1 %}
+          <nav class="destination-collection__regions" aria-label="{{ 'Regiones'|t }}">
+            {% for region in tree %}<a href="#region-{{ region.key }}">{{ region.label }}</a>{% endfor %}
+          </nav>
+        {% endif %}
+      </div>
+
+      {% for region in tree %}
+        <section class="destination-region" id="region-{{ region.key }}" aria-labelledby="region-{{ region.key }}-title">
+          <div class="destination-region__heading">
+            <div>
+              <p class="eyebrow">{{ 'Explora por región'|t }}</p>
+              <h3 id="region-{{ region.key }}-title">{{ region.label }}</h3>
+            </div>
+            {% if region.count %}
+              <a class="text-link" href="{{ catalog_url }}?region={{ region.key|url_encode }}">{{ 'Ver planes de la región'|t }} {{ icons.icon('arrow') }}</a>
+            {% else %}
+              <span>{{ 'Próximamente'|t }}</span>
+            {% endif %}
+          </div>
+          <div class="destination-region__departments">
+            {% for department in region.departments %}
+              {% if department.count %}
+                {% set count = department.count %}
+                {% set department_name = department.label %}
+                <a href="{{ catalog_url }}?destino={{ department.slug|url_encode }}" aria-label="{% trans %}Ver 1 plan en {{ department_name }}{% plural count %}Ver {{ count }} planes en {{ department_name }}{% endtrans %}">
+                  {{ department.label }} <span aria-hidden="true">{{ department.count }}</span>
+                </a>
+              {% else %}
+                <span>{{ department.label }} · {{ 'Próximamente'|t }}</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <ul class="destination-collection__grid">
+            {% for department in region.departments %}
+              {% for destination in department.destinations %}
+                <li>
+                  <a class="destination-tile" href="{{ destination.url }}">
+                    <span class="destination-tile__image">
+                      {% if destination.image %}
+                        <img src="{{ destination.image.src }}" alt="" width="{{ destination.image.width }}" height="{{ destination.image.height }}" loading="lazy" decoding="async">
+                      {% else %}
+                        {{ icons.icon('mountain') }}
+                      {% endif %}
+                      <span class="destination-tile__count">
+                        {% if destination.count %}{% set count = destination.count %}{% trans %}1 plan{% plural count %}{{ count }} planes{% endtrans %}{% else %}{{ 'Próximamente'|t }}{% endif %}
+                      </span>
+                    </span>
+                    <span class="destination-tile__body">
+                      <span class="destination-tile__location">{{ icons.icon('pin') }} {{ destination.municipality }} · {{ destination.department }}</span>
+                      <strong>{{ destination.place }}</strong>
+                      {% if destination.summary %}<span class="destination-tile__summary">{{ destination.summary }}</span>{% endif %}
+                      <span class="destination-tile__more">{{ 'Conocer destino'|t }} {{ icons.icon('arrow') }}</span>
+                    </span>
+                  </a>
+                </li>
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </section>
       {% endfor %}
     </section>
   {% else %}
-    <div class="container"><p class="empty-state">{{ 'Estamos preparando los primeros destinos.'|t }}</p></div>
-  {% endfor %}
+    <div class="container"><p class="destinations-empty">{{ 'Estamos preparando los primeros destinos.'|t }}</p></div>
+  {% endif %}
 </div>

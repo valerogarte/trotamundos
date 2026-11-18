@@ -1,0 +1,14 @@
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+<fieldset class="catalog-filter-group">
+  <legend class="catalog-filter-group__title">{{ 'Ordenar'|t }}</legend>
+  <div class="catalog-sort">
+    {% for sort in options.sorts %}
+      <input class="visually-hidden" type="radio" id="catalog-sort-{{ loop.index }}" name="orden" value="{{ sort.value }}" form="discovery-form"{{ filters.orden == sort.value or (sort.value == '' and filters.orden == 'recomendadas') ? ' checked' : '' }}>
+      <label class="catalog-sort__choice{{ sort.value == 'precio-desc' ? ' catalog-sort__choice--descending' : '' }}" for="catalog-sort-{{ loop.index }}">
+        <span class="catalog-sort__icon">{{ icons.icon(sort.value == '' ? 'sun' : 'down') }}</span>
+        <span>{{ sort.label }}</span>
+        {{ icons.icon('check') }}
+      </label>
+    {% endfor %}
+  </div>
+</fieldset>
