@@ -6,10 +6,45 @@ trotamundos_pages.esencia:
   requirements:
     _permission: 'access content'
 
+trotamundos_pages.compromiso:
+  path: '/compromiso-local'
+  defaults:
+    _controller: '\Drupal\trotamundos_pages\Controller\PagesController::compromiso'
+    _title: 'Compromiso local'
+  requirements:
+    _permission: 'access content'
+
 trotamundos_pages.ayuda:
   path: '/ayuda'
   defaults:
     _controller: '\Drupal\trotamundos_pages\Controller\PagesController::ayuda'
     _title: 'Ayuda'
+  requirements:
+    _permission: 'access content'
+
+trotamundos_pages.privacidad:
+  path: '/politica-de-privacidad'
+  defaults:
+    _controller: '\Drupal\trotamundos_pages\Controller\PagesController::legal'
+    _title: 'Política de privacidad'
+    document: 'privacy'
+  requirements:
+    _permission: 'access content'
+
+trotamundos_pages.aviso_legal:
+  path: '/aviso-legal'
+  defaults:
+    _controller: '\Drupal\trotamundos_pages\Controller\PagesController::legal'
+    _title: 'Aviso legal'
+    document: 'notice'
+  requirements:
+    _permission: 'access content'
+
+trotamundos_pages.cookies:
+  path: '/politica-de-cookies'
+  defaults:
+    _controller: '\Drupal\trotamundos_pages\Controller\PagesController::legal'
+    _title: 'Política de cookies'
+    document: 'cookies'
   requirements:
     _permission: 'access content'

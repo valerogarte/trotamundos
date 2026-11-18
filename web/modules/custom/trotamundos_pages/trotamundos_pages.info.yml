@@ -1,5 +1,5 @@
 name: Trotamundos Pages
 type: module
-description: 'Páginas editoriales del menú principal: Nuestra esencia y Ayuda.'
+description: 'Páginas editoriales y legales de Trotamundos.'
 package: Trotamundos
 core_version_requirement: ^11

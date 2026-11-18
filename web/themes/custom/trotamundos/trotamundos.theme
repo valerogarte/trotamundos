@@ -21,7 +21,11 @@ const TROTAMUNDOS_FULL_ROUTES = [
   'trotamundos_experiences.packages',
   'trotamundos_destinations.list',
   'trotamundos_pages.esencia',
+  'trotamundos_pages.compromiso',
   'trotamundos_pages.ayuda',
+  'trotamundos_pages.privacidad',
+  'trotamundos_pages.aviso_legal',
+  'trotamundos_pages.cookies',
 ];
 
 /**
@@ -173,6 +177,14 @@ function trotamundos_preprocess_trotamundos_esencia(array &$variables): void {
 }
 
 /**
+ * Implements hook_preprocess_HOOK() for the local commitment page.
+ */
+function trotamundos_preprocess_trotamundos_compromiso(array &$variables): void {
+  $variables['trotamundos_path'] = _trotamundos_path();
+  $variables['tm'] = _trotamundos_site_data();
+}
+
+/**
  * Implements hook_preprocess_HOOK() for the help page.
  */
 function trotamundos_preprocess_trotamundos_ayuda(array &$variables): void {
@@ -282,7 +294,13 @@ function _trotamundos_site_data(): array {
       : Url::fromRoute(in_array($route, ProductTypes::ROUTES, TRUE) ? $route : 'trotamundos_experiences.catalog')->toString(),
     'destinations_url' => $exists('trotamundos_destinations.list') ? Url::fromRoute('trotamundos_destinations.list')->toString() : '#',
     'esencia_url' => $exists('trotamundos_pages.esencia') ? Url::fromRoute('trotamundos_pages.esencia')->toString() : '#',
+    'compromiso_url' => $exists('trotamundos_pages.compromiso') ? Url::fromRoute('trotamundos_pages.compromiso')->toString() : '#',
+    'compromiso_current' => $route === 'trotamundos_pages.compromiso',
     'ayuda_url' => $exists('trotamundos_pages.ayuda') ? Url::fromRoute('trotamundos_pages.ayuda')->toString() : '#',
+    'privacy_url' => $exists('trotamundos_pages.privacidad') ? Url::fromRoute('trotamundos_pages.privacidad')->toString() : NULL,
+    'legal_notice_url' => $exists('trotamundos_pages.aviso_legal') ? Url::fromRoute('trotamundos_pages.aviso_legal')->toString() : NULL,
+    'cookies_url' => $exists('trotamundos_pages.cookies') ? Url::fromRoute('trotamundos_pages.cookies')->toString() : NULL,
+    'account_authenticated' => \Drupal::currentUser()->isAuthenticated(),
     'account_label' => \Drupal::currentUser()->isAuthenticated() ? t('Mi cuenta') : t('Iniciar sesión'),
     'registration_available' => \Drupal::config('user.settings')->get('register') !== 'admin_only' && \Drupal::currentUser()->isAnonymous(),
   ];

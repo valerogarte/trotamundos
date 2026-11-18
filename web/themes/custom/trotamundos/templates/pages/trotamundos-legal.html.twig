@@ -1,0 +1,29 @@
+{#
+/**
+ * @file
+ * Provisional privacy, legal notice and cookie information.
+ */
+#}
+<div class="legal-page">
+  <header class="page-intro container">
+    <p class="eyebrow">{{ 'Información legal'|t }}</p>
+    <h1>{{ heading }}</h1>
+    <p class="lead">{{ 'Contenido provisional, pendiente de revisión.'|t }}</p>
+  </header>
+
+  <section class="container legal-page__content" aria-labelledby="legal-details-title">
+    <div class="legal-page__card">
+      <h2 id="legal-details-title">{{ 'Información pendiente'|t }}</h2>
+      {% if document == 'privacy' %}
+        <p>{{ 'La información sobre el responsable, los datos tratados, sus finalidades y el ejercicio de tus derechos está pendiente de revisión y publicación.'|t }}</p>
+        <h2>{{ 'Asistente de viaje'|t }}</h2>
+        <p>{{ 'Las consultas que envías al asistente se procesan para generar una respuesta. No incluyas datos personales, confidenciales o de pago.'|t }}</p>
+      {% elseif document == 'notice' %}
+        <p>{{ 'La información sobre el titular del sitio y sus condiciones de uso está pendiente de revisión y publicación.'|t }}</p>
+      {% elseif document == 'cookies' %}
+        <p>{{ 'La información sobre las cookies y tecnologías similares está pendiente de revisión y publicación.'|t }}</p>
+      {% endif %}
+      <p><a href="{{ path('trotamundos_pages.ayuda') }}#contacto">{{ '¿Tienes dudas? Contacta con nosotros.'|t }}</a></p>
+    </div>
+  </section>
+</div>

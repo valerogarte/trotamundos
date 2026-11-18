@@ -1,0 +1,40 @@
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+<div class="esencia">
+  <header class="esencia-hero container">
+    <div class="esencia-hero__copy">
+      <p class="eyebrow">{{ 'Compromiso local'|t }}</p>
+      <h1>{{ 'Detrás de cada viaje,'|t }}<br><em>{{ 'hay una comunidad.'|t }}</em></h1>
+      <p class="lead">{{ 'Viajar también es conocer a quienes cuidan cada lugar. Trabajamos junto a familias anfitrionas, guías y emprendedores para dar visibilidad a sus proyectos y compartir sus historias con respeto.'|t }}</p>
+      <a class="button button--primary" href="{{ partner_whatsapp_url }}" target="_blank" rel="noopener">{{ icons.icon('whatsapp') }} {{ 'Hablemos de tu proyecto'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
+    </div>
+    <figure class="esencia-hero__image">
+      <img src="{{ trotamundos_path }}/assets/images/comunidad-concepcion.webp" alt="{{ 'Una vecina de Concepción en el corredor de su casa, entre geranios.'|t }}" width="825" height="1100" loading="eager" decoding="async">
+      <figcaption>{{ icons.icon('pin') }} {{ 'Concepción, Antioquia'|t }}</figcaption>
+    </figure>
+  </header>
+
+  <section class="esencia-section esencia-purpose" aria-labelledby="commitment-title">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">{{ 'Nuestra forma de viajar'|t }}</p>
+          <h2 id="commitment-title">{{ 'Juntos hacemos'|t }} <em>{{ 'camino.'|t }}</em></h2>
+        </div>
+      </div>
+      <ol class="esencia-pillars">
+        <li><span class="esencia-pillars__number">01</span>{{ icons.icon('users') }}<h3>{{ 'Protagonismo local'|t }}</h3><p>{{ 'Conectamos a viajeros con las personas que conocen y cuidan su territorio.'|t }}</p></li>
+        <li><span class="esencia-pillars__number">02</span>{{ icons.icon('sprout') }}<h3>{{ 'Oportunidades cercanas'|t }}</h3><p>{{ 'Damos visibilidad a pequeños negocios y proyectos turísticos de las comunidades.'|t }}</p></li>
+        <li><span class="esencia-pillars__number">03</span>{{ icons.icon('heart') }}<h3>{{ 'Encuentros respetuosos'|t }}</h3><p>{{ 'Escuchamos a nuestros anfitriones y compartimos sus historias con cuidado.'|t }}</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="closing container" aria-labelledby="commitment-closing-title">
+    <h2 id="commitment-closing-title">{{ 'Descubrir Colombia'|t }}<br><em>{{ 'es hacerlo en compañía.'|t }}</em></h2>
+    <p class="lead">{{ 'Conoce a las comunidades y aliados que forman parte de nuestra historia.'|t }}</p>
+    <div class="closing__actions">
+      <a class="button button--primary" href="{{ tm.esencia_url }}#comunidades">{{ 'Conocer a nuestros aliados'|t }} {{ icons.icon('arrow') }}</a>
+      <a class="button button--secondary" href="{{ tm.catalog_url }}">{{ 'Explorar planes'|t }}</a>
+    </div>
+  </section>
+</div>

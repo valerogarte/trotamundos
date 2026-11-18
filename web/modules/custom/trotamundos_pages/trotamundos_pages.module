@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Editorial pages of the main menu. Templates live in the Trotamundos theme.
+ * Editorial and legal pages. Templates live in the Trotamundos theme.
  */
 
 /**
@@ -16,9 +16,19 @@ function trotamundos_pages_theme($existing, $type, $theme, $path): array {
       'template' => 'trotamundos-esencia',
       'path' => $theme_path,
     ],
+    'trotamundos_compromiso' => [
+      'variables' => ['partner_whatsapp_url' => NULL],
+      'template' => 'trotamundos-compromiso',
+      'path' => $theme_path,
+    ],
     'trotamundos_ayuda' => [
       'variables' => [],
       'template' => 'trotamundos-ayuda',
+      'path' => $theme_path,
+    ],
+    'trotamundos_legal' => [
+      'variables' => ['document' => NULL, 'heading' => NULL],
+      'template' => 'trotamundos-legal',
       'path' => $theme_path,
     ],
   ];
