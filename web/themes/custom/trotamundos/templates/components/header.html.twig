@@ -6,17 +6,17 @@
 #}
 {% import '@trotamundos/components/icons.html.twig' as icons %}
 {{ tm_cache }}
-<div class="site-header-shell{{ header_overlay|default(false) ? ' site-header-shell--overlay' : '' }}">
-<header class="site-header{{ header_overlay|default(false) ? ' site-header--overlay' : '' }}" data-site-header>
+{% set has_discovery_controls = tm_catalog_controls or tm_assistant %}
+<div class="site-header-shell{{ header_overlay|default(false) ? ' site-header-shell--overlay' : '' }}{{ has_discovery_controls ? ' site-header-shell--controls' : '' }}">
+<header class="site-header{{ header_overlay|default(false) ? ' site-header--overlay' : '' }}{{ has_discovery_controls ? ' site-header--controls' : '' }}{{ tm_catalog_controls ? ' site-header--catalog' : '' }}{{ tm_assistant ? ' site-header--assistant' : '' }}" data-site-header>
   <div class="site-header__inner">
     <a class="wordmark" href="{{ path('<front>') }}" aria-label="{{ 'Trotamundos, inicio'|t }}">
       <span class="wordmark__name" aria-hidden="true">trota<span class="wordmark__italic">mundos</span><span class="wordmark__dot">.</span></span>
-      <span class="wordmark__signature" aria-hidden="true">{{ 'POR JUAN TROTA MUNDOS'|t }}</span>
     </a>
 
     <nav class="explore-navigation" aria-label="{{ 'Navegación principal'|t }}">
       {% for item in tm.explore_navigation %}
-        <a class="explore-navigation__link{{ item.active ? ' is-active' : '' }}" href="{{ item.url }}"{% if item.current %} aria-current="page"{% endif %}>
+        <a class="explore-navigation__link{{ item.active ? ' is-active' : '' }}" href="{{ item.url }}" data-discovery-navigation{% if item.current %} aria-current="page"{% endif %}>
           <span class="explore-navigation__icon">{{ icons.icon(item.icon) }}</span>
           <span>{{ item.label }}</span>
         </a>
@@ -38,14 +38,14 @@
   <nav class="primary-navigation" id="trotamundos-navigation" aria-label="{{ 'Más sobre Trotamundos'|t }}">
     <div class="primary-navigation__explore">
       {% for item in tm.explore_navigation %}
-        <a class="primary-navigation__link{{ item.active ? ' is-active' : '' }}" href="{{ item.url }}"{% if item.current %} aria-current="page"{% endif %}>{{ icons.icon(item.icon) }}<span>{{ item.label }}</span></a>
+        <a class="primary-navigation__link{{ item.active ? ' is-active' : '' }}" href="{{ item.url }}" data-discovery-navigation{% if item.current %} aria-current="page"{% endif %}>{{ icons.icon(item.icon) }}<span>{{ item.label }}</span></a>
       {% endfor %}
     </div>
     {% for item in tm.navigation %}
       {% if item.secondary %}
         <a class="primary-navigation__link{{ item.active ? ' is-active' : '' }}" href="{{ item.url }}"{% if item.current %} aria-current="page"{% endif %}>{{ icons.icon(item.icon) }}<span>{{ item.label }}</span></a>
         {% if item.url == tm.esencia_url %}
-          <a class="primary-navigation__link" href="{{ tm.esencia_url }}#comunidades">{{ icons.icon('sprout') }}<span>{{ 'Compromiso con las comunidades y emprendedores locales'|t }}</span></a>
+          <a class="primary-navigation__link{{ tm.compromiso_current ? ' is-active' : '' }}" href="{{ tm.compromiso_url }}"{% if tm.compromiso_current %} aria-current="page"{% endif %}>{{ icons.icon('sprout') }}<span>{{ 'Compromiso local'|t }}</span></a>
         {% endif %}
       {% endif %}
     {% endfor %}
@@ -54,6 +54,9 @@
         <a class="primary-navigation__link" href="{{ path('commerce_cart.page') }}">{{ icons.icon('bag') }}<span>{{ 'Carrito'|t }}</span></a>
       {% endif %}
       <a class="primary-navigation__link" href="{{ path('user.page') }}">{{ icons.icon('users') }}<span>{{ tm.account_label }}</span></a>
+      {% if tm.account_authenticated %}
+        <a class="primary-navigation__link" href="{{ url('user.logout') }}">{{ icons.icon('logout') }}<span>{{ 'Cerrar sesión'|t }}</span></a>
+      {% endif %}
       {% if tm.registration_available %}
         <a class="primary-navigation__link" href="{{ path('user.register') }}">{{ icons.icon('plus') }}<span>{{ 'Registrarse'|t }}</span></a>
       {% endif %}

@@ -18,6 +18,10 @@
   height: var(--expanded-header-height);
 }
 
+.trotamundos-js .site-header-shell--controls {
+  height: calc(var(--expanded-header-height) + 52px);
+}
+
 .trotamundos-js .site-header-shell--overlay {
   height: 0;
 }
@@ -29,7 +33,8 @@
 
 .site-header {
   --header-side: clamp(20px, 2.4vw, 48px);
-  --header-menu-offset: var(--expanded-header-height);
+  --menu-button-size: 44px;
+  --header-menu-top: calc((var(--header-row-height) + var(--menu-button-size)) / 2 + 8px);
   position: sticky;
   z-index: 30;
   top: var(--drupal-displace-offset-top, 0px);
@@ -39,8 +44,39 @@
 }
 
 .site-header.header-is-scrolled {
-  --header-menu-offset: var(--header-height);
   box-shadow: 0 4px 24px rgb(23 61 50 / 10%);
+}
+
+.trotamundos-js .site-header::before {
+  position: fixed;
+  z-index: 45;
+  inset: 0;
+  height: 100dvh;
+  visibility: hidden;
+  background: linear-gradient(to bottom left, rgb(23 61 50 / 82%), rgb(23 61 50 / 30%) 48%, transparent 100%);
+  opacity: 0;
+  pointer-events: none;
+  content: "";
+  transition: opacity 220ms ease, visibility 0s linear 220ms;
+}
+
+.trotamundos-js .site-header.menu-is-open::before {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.trotamundos-js .menu-is-open .menu-toggle {
+  position: relative;
+  z-index: 50;
+  color: var(--marfil);
+  border-color: rgb(255 252 246 / 45%);
+  background: rgb(23 61 50 / 22%);
+}
+
+.trotamundos-js .menu-is-open .menu-toggle:focus-visible {
+  outline-color: var(--panel);
 }
 
 .site-header__inner {
@@ -85,15 +121,6 @@
 
 .wordmark__dot {
   color: var(--terracota);
-}
-
-.wordmark__signature {
-  margin-top: 8px;
-  padding-left: 2px;
-  font-size: 11px;
-  font-weight: 650;
-  letter-spacing: 0.22em;
-  line-height: 1.2;
 }
 
 .explore-navigation {
@@ -312,30 +339,42 @@
 .menu-toggle__lines {
   position: relative;
   display: block;
-  width: 18px;
-  height: 12px;
-  border-top: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  transition: background-color 200ms;
+}
+
+.menu-toggle__lines::before,
+.menu-toggle__lines::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: currentColor;
+  content: "";
   transition: transform 200ms;
 }
 
+.menu-toggle__lines::before {
+  transform: translateY(-6px);
+}
+
 .menu-toggle__lines::after {
-  position: absolute;
-  top: 4px;
-  right: 0;
-  left: 0;
-  border-top: 1.5px solid currentColor;
-  content: "";
+  transform: translateY(6px);
 }
 
 .menu-is-open .menu-toggle__lines {
+  background: transparent;
+}
+
+.menu-is-open .menu-toggle__lines::before {
   transform: rotate(45deg);
-  border-bottom: 0;
 }
 
 .menu-is-open .menu-toggle__lines::after {
-  top: -1.5px;
-  transform: rotate(90deg);
+  transform: rotate(-45deg);
 }
 
 .primary-navigation {
@@ -353,10 +392,11 @@
 
 .trotamundos-js .primary-navigation {
   position: absolute;
-  top: calc(100% + 8px);
+  z-index: 60;
+  top: var(--header-menu-top);
   right: var(--header-side);
   display: none;
-  max-height: calc(100dvh - var(--header-menu-offset) - var(--drupal-displace-offset-top, 0px) - 24px);
+  max-height: calc(100dvh - var(--header-menu-top) - var(--drupal-displace-offset-top, 0px) - 16px);
   margin: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -404,6 +444,25 @@
   border-bottom: 1px solid var(--line);
 }
 
+.trotamundos-js .menu-is-open.header-is-scrolled .primary-navigation__explore {
+  animation: navigation-explore-reveal 220ms ease both;
+}
+
+@keyframes navigation-explore-reveal {
+  from { transform: translateY(-8px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trotamundos-js .site-header::before {
+    transition: none;
+  }
+
+  .trotamundos-js .menu-is-open.header-is-scrolled .primary-navigation__explore {
+    animation: none;
+  }
+}
+
 .primary-navigation__account {
   margin-top: 8px;
   padding-top: 8px;
@@ -422,16 +481,46 @@
   background: var(--selva);
 }
 
-.trotamundos-js .site-header--overlay {
-  background: linear-gradient(180deg, rgb(23 61 50 / 84%), rgb(23 61 50 / 54%));
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+.trotamundos-js .site-header--overlay:not(.header-is-scrolled) {
+  background: linear-gradient(
+    180deg,
+    rgb(23 61 50 / 90%) 0%,
+    rgb(23 61 50 / 82%) 20%,
+    rgb(23 61 50 / 55%) 48%,
+    rgb(23 61 50 / 23%) 75%,
+    rgb(23 61 50 / 0%) 100%
+  );
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) and ((-webkit-mask-image: linear-gradient(#000, transparent)) or (mask-image: linear-gradient(#000, transparent))) {
+  /* Fade the blurred backdrop independently of the green overlay. */
+  .trotamundos-js .site-header--overlay:not(.header-is-scrolled)::after {
+    --header-blur-mask: linear-gradient(
+      180deg,
+      #000 0%,
+      rgb(0 0 0 / 90%) 18%,
+      rgb(0 0 0 / 56%) 48%,
+      rgb(0 0 0 / 20%) 75%,
+      transparent 100%
+    );
+
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    -webkit-backdrop-filter: blur(22px);
+    backdrop-filter: blur(22px);
+    -webkit-mask-image: var(--header-blur-mask);
+    mask-image: var(--header-blur-mask);
+    pointer-events: none;
+    content: "";
+  }
 }
 
 .trotamundos-js .site-header--overlay.header-is-scrolled {
-  --header-menu-offset: var(--header-height);
   color: var(--selva);
   background: rgb(245 240 230 / 97%);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
 }
 
 .site-header.header-is-scrolled .explore-navigation {
@@ -567,18 +656,17 @@
     --expanded-header-height: 192px;
   }
 
+  .trotamundos-js .site-header-shell--controls:not(.site-header-shell--overlay) {
+    height: var(--expanded-header-height);
+  }
+
   .site-header {
     --header-side: 16px;
+    --menu-button-size: 40px;
   }
 
   .site-header .wordmark__name {
     font-size: 34px;
-  }
-
-  .site-header .wordmark__signature {
-    margin-top: 6px;
-    font-size: 9.5px;
-    letter-spacing: 0.18em;
   }
 
   .header-tools {
@@ -640,11 +728,6 @@
 
   .site-header .wordmark__name {
     font-size: 32px;
-  }
-
-  .site-header .wordmark__signature {
-    font-size: 9px;
-    letter-spacing: 0.08em;
   }
 
   .header-tools {

@@ -13,52 +13,63 @@
 
   {% if page.highlighted %}<div class="container site-messages front-messages">{{ page.highlighted }}</div>{% endif %}
 
-  <section class="home-experiences container" id="experiencias" aria-labelledby="experiences-title">
-    <div class="section-heading">
-      <div>
-        <h2 id="experiences-title">{{ 'Planes en Colombia'|t }}</h2>
-      </div>
-      <p class="section-heading__description">{{ 'Elige una forma de viajar y descubre planes con anfitriones locales.'|t }}</p>
-    </div>
+  <section class="home-experiences container" id="experiencias" aria-label="{{ 'Planes'|t }}">
     {% if tm_styles %}
-      <div class="travel-styles" data-style-slider>
-        <div class="travel-styles__toolbar">
-          <a class="text-link" href="{{ tm.catalog_url }}">{{ 'Ver el catálogo completo'|t }} {{ icons.icon('arrow') }}</a>
-          <div class="travel-styles__controls" data-style-controls hidden>
-            <button class="button button--secondary" type="button" data-style-scroll="-1" aria-controls="travel-styles-track" aria-label="{{ 'Estilos anteriores'|t }}">{{ icons.icon('arrow-left') }}</button>
-            <button class="button button--secondary" type="button" data-style-scroll="1" aria-controls="travel-styles-track" aria-label="{{ 'Más estilos de viaje'|t }}">{{ icons.icon('arrow') }}</button>
+      {% set style_images = {
+        'pueblos-con-alma': 'concepcion-calle.webp',
+        'cafe-y-tradicion': 'concepcion-cafe.webp',
+        'naturaleza': 'termales-aerea.webp',
+        'gastronomia': 'mesa-concepcion.webp',
+        'aventura': 'termales-cascada.webp',
+        'bienestar': 'termales-bienestar.webp',
+        'cultura-viva': 'comunidad-concepcion.webp'
+      } %}
+      <div class="travel-styles" data-trotamundos-slider data-slider-loop>
+        <div class="travel-styles__heading">
+          <h2 class="travel-styles__title" id="travel-styles-title">{{ 'Una Colombia por descubrir'|t }}</h2>
+          <div class="slider-controls travel-styles__controls" data-slider-controls hidden>
+            <button class="button button--secondary" type="button" data-slider-scroll="-1" aria-controls="travel-styles-track" aria-label="{{ 'Estilos anteriores'|t }}">{{ icons.icon('arrow-left') }}</button>
+            <button class="button button--secondary" type="button" data-slider-scroll="1" aria-controls="travel-styles-track" aria-label="{{ 'Más estilos de viaje'|t }}">{{ icons.icon('arrow') }}</button>
           </div>
         </div>
-        <ul class="travel-styles__track" id="travel-styles-track" tabindex="0" aria-label="{{ 'Estilos de viaje'|t }}" data-style-track>
-          {% for style in tm_styles %}
-            <li>
-              <a class="travel-style" href="{{ path('trotamundos_experiences.catalog', {}, {query: {estilo: style.slug}}) }}">
-                <span class="travel-style__icon">{{ icons.icon(style.icon) }}</span>
-                <span class="travel-style__label">{{ style.label }}</span>
-                <span class="travel-style__count">
-                  {% if style.count %}
-                    {% set count = style.count %}
-                    {% trans %}1 plan{% plural count %}{{ count }} planes{% endtrans %}
-                  {% else %}
-                    {{ 'Próximamente'|t }}
-                  {% endif %}
-                </span>
-                {{ icons.icon('arrow') }}
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
+        <div class="travel-styles__viewport" data-slider-viewport>
+          <ul class="travel-styles__track" id="travel-styles-track" tabindex="0" aria-labelledby="travel-styles-title" data-slider-track>
+            {% for style in tm_styles %}
+              <li>
+                <a class="travel-style" href="{{ path('trotamundos_experiences.catalog', {}, {query: {estilo: style.slug}}) }}">
+                  <img class="travel-style__image" src="{{ trotamundos_path }}/assets/images/{{ style_images[style.slug]|default('concepcion-panoramica.webp') }}" alt="" loading="lazy" decoding="async">
+                  <span class="travel-style__icon">{{ icons.icon(style.icon) }}</span>
+                  <span class="travel-style__label">{{ style.label }}</span>
+                  <span class="travel-style__count">
+                    {% if style.count %}
+                      {% set count = style.count %}
+                      {% trans %}1 plan{% plural count %}{{ count }} planes{% endtrans %}
+                    {% else %}
+                      {{ 'Próximamente'|t }}
+                    {% endif %}
+                  </span>
+                  {{ icons.icon('arrow') }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
     {% endif %}
     {% if tm_featured %}
-      <div class="experience-grid{{ tm_featured|length % 4 == 0 ? ' experience-grid--four' : '' }}">
-        {% for card in tm_featured %}
+      <h2 class="home-experiences__title">{{ 'Viajes que dejan algo bueno'|t }}</h2>
+      {# The last slot of the grid invites to the full catalog instead of a plan. #}
+      <div class="experience-grid experience-grid--four">
+        {% for card in tm_featured|length > 7 ? tm_featured|slice(0, 7) : tm_featured %}
           {% include '@trotamundos/components/experience-card.html.twig' with {card: card} %}
         {% endfor %}
+        <a class="experience-more" href="{{ tm.catalog_url }}">
+          <span class="experience-more__eyebrow">{{ 'Hay mucho más por vivir'|t }}</span>
+          <span class="experience-more__title">{{ 'Conocer más planes'|t }}</span>
+          <span class="experience-more__text">{{ 'Alojamientos, experiencias y paquetes con anfitriones locales en toda Colombia.'|t }}</span>
+          <span class="experience-more__arrow" aria-hidden="true">{{ icons.icon('arrow') }}</span>
+        </a>
       </div>
-      {% if tm_has_examples %}
-        <p class="footnote home-experiences__note">{{ icons.icon('info') }} {{ 'Fichas de ejemplo: los precios y las fechas son provisionales mientras cerramos los detalles con nuestros aliados.'|t }}</p>
-      {% endif %}
     {% else %}
       <div class="empty-state">
         <h3>{{ 'Estamos preparando las primeras experiencias'|t }}</h3>
@@ -94,15 +105,21 @@
   </section>
 
   {% if tm_destinations %}
-    <section class="home-destinations container" aria-labelledby="destinations-title">
+    <section class="home-destinations container" aria-labelledby="destinations-title" data-trotamundos-slider>
       <div class="section-heading">
         <div>
           <p class="eyebrow">{{ 'Destinos'|t }}</p>
           <h2 id="destinations-title">{{ 'Explora Colombia'|t }} <em>{{ 'por destino'|t }}</em></h2>
         </div>
-        <a class="text-link" href="{{ tm.destinations_url }}">{{ 'Ver todos los destinos'|t }} {{ icons.icon('arrow') }}</a>
+        <div class="home-destinations__actions">
+          <a class="text-link" href="{{ tm.destinations_url }}">{{ 'Ver todos los destinos'|t }} {{ icons.icon('arrow') }}</a>
+          <div class="slider-controls" data-slider-controls hidden>
+            <button class="button button--secondary" type="button" data-slider-scroll="-1" aria-controls="home-destinations-track" aria-label="{{ 'Destinos anteriores'|t }}">{{ icons.icon('arrow-left') }}</button>
+            <button class="button button--secondary" type="button" data-slider-scroll="1" aria-controls="home-destinations-track" aria-label="{{ 'Más destinos'|t }}">{{ icons.icon('arrow') }}</button>
+          </div>
+        </div>
       </div>
-      <ul class="destination-strip">
+      <ul class="destination-strip" id="home-destinations-track" tabindex="0" aria-labelledby="destinations-title" data-slider-track>
         {% for destination in tm_destinations %}
           <li>
             <a class="destination-chip{{ destination.count ? '' : ' destination-chip--soon' }}" href="{{ destination.url }}">
@@ -136,7 +153,7 @@
         <h2 id="people-title">{{ 'Detrás de cada viaje,'|t }}<br><em>{{ 'hay una comunidad.'|t }}</em></h2>
         <p class="lead">{{ 'Queremos que descubrir Colombia también signifique reconocer a quienes la hacen única: familias anfitrionas, guías, cocineras y emprendedores que comparten su territorio y sus saberes.'|t }}</p>
         <p class="home-people__commitment">{{ 'Nuestro compromiso es dar visibilidad a sus proyectos, promover encuentros respetuosos y acercarte a propuestas con identidad local. Viajar con curiosidad, escuchar y cuidar también forman parte del camino.'|t }}</p>
-        <a class="text-link" href="{{ tm.esencia_url }}">{{ 'Conoce nuestro compromiso'|t }} {{ icons.icon('arrow') }}</a>
+        <a class="text-link" href="{{ tm.compromiso_url }}">{{ 'Conoce nuestro compromiso'|t }} {{ icons.icon('arrow') }}</a>
       </div>
     </div>
     <div class="container">

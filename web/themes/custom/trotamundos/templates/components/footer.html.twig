@@ -48,6 +48,9 @@
   <div class="container footer-bottom">
     <span>© {{ 'now'|date('Y') }} Juan Trota Mundos</span>
     <div class="footer-bottom__links">
+      {% if tm.privacy_url %}<a href="{{ tm.privacy_url }}">{{ 'Política de privacidad'|t }}</a>{% endif %}
+      {% if tm.legal_notice_url %}<a href="{{ tm.legal_notice_url }}">{{ 'Aviso legal'|t }}</a>{% endif %}
+      {% if tm.cookies_url %}<a href="{{ tm.cookies_url }}">{{ 'Política de cookies'|t }}</a>{% endif %}
       <a href="{{ trotamundos_path }}/assets/CREDITS.txt" target="_blank" rel="noopener">{{ 'Créditos de imágenes y vídeo'|t }}<span class="visually-hidden"> ({{ 'se abre en una pestaña nueva'|t }})</span></a>
       {% if trotamundos_brand_guide_url %}<a href="{{ trotamundos_brand_guide_url }}">{{ 'Guía de marca'|t }}</a>{% endif %}
     </div>

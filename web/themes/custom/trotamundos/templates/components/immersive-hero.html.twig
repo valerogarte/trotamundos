@@ -12,13 +12,19 @@
 <section class="immersive-hero" aria-labelledby="immersive-hero-title" data-immersive-hero>
   <div class="immersive-hero__media" aria-hidden="true">
     <video class="immersive-hero__video" muted loop playsinline preload="none"
-      poster="{{ trotamundos_path }}/assets/video/hero-naturaleza-poster.webp"
+      poster="{{ trotamundos_path }}/assets/video/hero-naturaleza-poster.webp?v=2"
       data-hero-video
-      data-video-desktop="{{ trotamundos_path }}/assets/video/hero-naturaleza.mp4"
-      data-video-mobile="{{ trotamundos_path }}/assets/video/hero-naturaleza-mobile.mp4"
-      data-poster-desktop="{{ trotamundos_path }}/assets/video/hero-naturaleza-poster.webp"
-      data-poster-mobile="{{ trotamundos_path }}/assets/video/hero-naturaleza-mobile-poster.webp"
+      data-video-desktop="{{ trotamundos_path }}/assets/video/hero-naturaleza.mp4?v=2"
+      data-video-mobile="{{ trotamundos_path }}/assets/video/hero-naturaleza-mobile.mp4?v=2"
+      data-poster-desktop="{{ trotamundos_path }}/assets/video/hero-naturaleza-poster.webp?v=2"
+      data-poster-mobile="{{ trotamundos_path }}/assets/video/hero-naturaleza-mobile-poster.webp?v=2"
       tabindex="-1"></video>
+    <noscript>
+      <picture class="immersive-hero__fallback">
+        <source media="(max-width: 639px), (orientation: portrait)" srcset="{{ trotamundos_path }}/assets/video/hero-naturaleza-mobile-poster.webp?v=2">
+        <img src="{{ trotamundos_path }}/assets/video/hero-naturaleza-poster.webp?v=2" alt="" width="1280" height="720">
+      </picture>
+    </noscript>
   </div>
   <div class="immersive-hero__inner container">
     <div class="immersive-hero__copy">
@@ -31,4 +37,5 @@
       </div>
     </div>
   </div>
+  <a class="immersive-hero__credits" href="{{ trotamundos_path }}/assets/CREDITS.txt" target="_blank" rel="noopener">{{ 'Imágenes de archivo, no necesariamente del catálogo'|t }} <span class="visually-hidden">({{ 'se abre en una pestaña nueva'|t }})</span></a>
 </section>

@@ -6,8 +6,8 @@
     {% if is_front %}
       <meta name="theme-color" content="#173D32">
       <meta name="description" content="{{ meta_description }}">
-      <link rel="preload" as="image" href="{{ trotamundos_path }}/assets/video/hero-naturaleza-poster.webp" media="(min-width: 640px)" fetchpriority="high">
-      <link rel="preload" as="image" href="{{ trotamundos_path }}/assets/video/hero-naturaleza-mobile-poster.webp" media="(max-width: 639px)" fetchpriority="high">
+      <link rel="preload" as="image" href="{{ trotamundos_path }}/assets/video/hero-naturaleza-poster.webp?v=2" media="(min-width: 640px) and (orientation: landscape)" fetchpriority="high">
+      <link rel="preload" as="image" href="{{ trotamundos_path }}/assets/video/hero-naturaleza-mobile-poster.webp?v=2" media="(max-width: 639px), (orientation: portrait)" fetchpriority="high">
     {% else %}
       <meta name="theme-color" content="#F5F0E6">
     {% endif %}

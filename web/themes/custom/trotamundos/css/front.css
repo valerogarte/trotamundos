@@ -7,45 +7,159 @@
   padding-block: clamp(56px, 6vw, 80px) clamp(64px, 8vw, 104px);
 }
 
-.home-experiences__note {
-  margin-top: 36px;
-}
-
 .travel-styles {
-  margin-block: 28px 36px;
+  margin-block: 0 28px;
 }
 
-.travel-styles__toolbar {
+.home-experiences__title {
+  margin: 0 0 24px;
+  font-size: clamp(34px, 3.6vw, 50px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+/* Last grid slot: invitation to the full catalog. */
+.experience-more {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 12px;
+  justify-content: center;
+  gap: 14px;
+  min-height: 260px;
+  padding: 32px 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--sand);
+  color: var(--selva);
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease;
 }
 
-.travel-styles__controls:not([hidden]) {
+/* From two columns on, it matches the height of the card photos. */
+@media (min-width: 640px) {
+  .experience-more {
+    align-self: start;
+    aspect-ratio: 4 / 5;
+    min-height: 0;
+  }
+}
+
+.experience-more__eyebrow {
+  color: var(--terracota-text);
+  font-size: var(--type-caption);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.experience-more__title {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 2.6vw, 38px);
+  line-height: 1.05;
+}
+
+.experience-more__text {
+  max-width: 24ch;
+  color: var(--muted);
+  font-size: var(--type-small);
+}
+
+.experience-more__arrow {
+  display: inline-grid;
+  width: 52px;
+  height: 52px;
+  margin-top: 6px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--selva);
+  color: var(--marfil);
+  transition: transform 250ms ease, background-color 250ms ease, color 250ms ease;
+}
+
+.experience-more:hover,
+.experience-more:focus-visible {
+  border-color: var(--selva);
+  background: var(--selva);
+  color: var(--marfil);
+}
+
+.experience-more:hover :is(.experience-more__eyebrow, .experience-more__text),
+.experience-more:focus-visible :is(.experience-more__eyebrow, .experience-more__text) {
+  color: var(--marfil);
+}
+
+.experience-more:hover .experience-more__arrow,
+.experience-more:focus-visible .experience-more__arrow {
+  background: var(--marfil);
+  color: var(--selva);
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .experience-more,
+  .experience-more__arrow {
+    transition: none;
+  }
+
+  .experience-more:hover .experience-more__arrow,
+  .experience-more:focus-visible .experience-more__arrow {
+    transform: none;
+  }
+}
+
+/* Title centred between the two arrows, one at each end of the row. */
+.travel-styles__heading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.slider-controls.travel-styles__controls:not([hidden]) {
+  display: contents;
+}
+
+.travel-styles__controls [data-slider-scroll="-1"] {
+  grid-area: 1 / 1;
+}
+
+.travel-styles__controls [data-slider-scroll="1"] {
+  grid-area: 1 / 3;
+}
+
+.travel-styles__title {
+  grid-area: 1 / 2;
+  min-width: 0;
+  text-align: center;
+  font-size: clamp(28px, 3.6vw, 50px);
+  font-weight: 400;
+}
+
+.travel-styles__controls {
+  flex: 0 0 auto;
+}
+
+.slider-controls:not([hidden]) {
   display: flex;
   gap: 8px;
 }
 
-.travel-styles__controls .button {
+.slider-controls .button {
   width: 44px;
   min-height: 44px;
   padding: 10px;
 }
 
-.travel-styles__controls .button:disabled {
+.slider-controls .button:disabled {
   opacity: 0.35;
   cursor: default;
 }
 
-.travel-styles__track {
-  display: flex;
-  gap: 16px;
+.travel-styles__viewport {
   overflow-x: auto;
-  margin: 0;
-  padding: 6px 6px 16px;
-  list-style: none;
   overscroll-behavior-inline: contain;
   scroll-padding-inline: 6px;
   scroll-snap-type: x mandatory;
@@ -53,61 +167,143 @@
   scrollbar-width: thin;
 }
 
+.travel-styles.is-looping .travel-styles__viewport {
+  overflow: hidden;
+  overflow: clip;
+  scrollbar-width: none;
+}
+
+.travel-styles.is-looping .travel-styles__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.travel-styles__track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  min-width: 100%;
+  margin: 0;
+  padding: 6px 6px 16px;
+  list-style: none;
+}
+
 .travel-styles__track > li {
   flex: 0 0 clamp(184px, 20vw, 224px);
   scroll-snap-align: start;
 }
 
+/*
+ * Travel style cards: an arch photo, a round icon badge on its lower edge and
+ * the name below on the page background. The arch matches the plan cards.
+ */
 .travel-style {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 24px;
-  grid-template-rows: auto 1fr auto;
-  gap: 14px 8px;
-  min-height: 180px;
+  grid-template-columns: 1fr auto 1fr;
+  align-content: start;
   height: 100%;
-  padding: 22px;
   color: var(--selva);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  background: var(--panel);
+  text-align: center;
   text-decoration: none;
-  transition: border-color 180ms, background-color 180ms;
+  transition: transform 240ms ease;
 }
 
-.travel-style:hover {
-  border-color: var(--selva);
-  background: var(--marfil);
-}
-
-.travel-style__icon,
-.travel-style__label {
+.travel-style__image {
   grid-column: 1 / -1;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 999px 999px 28px 28px;
+  box-shadow: 0 8px 18px -8px rgb(23 61 50 / 30%);
+  transition: box-shadow 240ms ease;
+}
+
+.travel-style__icon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 52px;
+  height: 52px;
+  margin-top: -26px;
+  place-items: center;
+  color: var(--terracota);
+  border-radius: 50%;
+  background: var(--panel);
+  box-shadow: 0 0 0 5px var(--marfil), 0 4px 14px rgb(23 61 50 / 14%);
+  transition: background-color 240ms ease, color 240ms ease;
 }
 
 .travel-style__icon .icon {
   display: block;
-  width: 32px;
-  height: 32px;
-  color: var(--terracota-text);
+  width: 26px;
+  height: 26px;
 }
 
 .travel-style__label {
+  grid-column: 1 / -1;
+  margin-top: 12px;
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: 27px;
   font-weight: 500;
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
+/* The count is centred and the arrow hangs beside it. */
 .travel-style__count {
-  align-self: center;
+  grid-area: 4 / 2;
+  margin-top: 6px;
   color: var(--muted);
   font-size: 13px;
   font-weight: 600;
 }
 
 .travel-style > .icon {
-  align-self: center;
-  justify-self: end;
+  grid-area: 4 / 3;
+  align-self: end;
+  justify-self: start;
+  width: 16px;
+  height: 16px;
+  margin: 0 0 1px 6px;
+  color: var(--terracota);
+  transition: transform 240ms ease;
+}
+
+.travel-style:hover,
+.travel-style:focus-visible {
+  transform: translateY(-4px);
+}
+
+.travel-style:hover .travel-style__image,
+.travel-style:focus-visible .travel-style__image {
+  box-shadow: 0 12px 20px -8px rgb(23 61 50 / 38%);
+}
+
+.travel-style:hover .travel-style__icon,
+.travel-style:focus-visible .travel-style__icon {
+  color: var(--marfil);
+  background: var(--terracota);
+}
+
+.travel-style:hover > .icon,
+.travel-style:focus-visible > .icon {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .travel-style,
+  .travel-style__image,
+  .travel-style__icon,
+  .travel-style > .icon {
+    transition: none;
+  }
+
+  .travel-style:hover,
+  .travel-style:focus-visible,
+  .travel-style:hover > .icon,
+  .travel-style:focus-visible > .icon {
+    transform: none;
+  }
 }
 
 /* Purpose: the community-centred idea */
@@ -238,13 +434,30 @@
   padding-block: clamp(64px, 8vw, 104px) 0;
 }
 
+.home-destinations__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
 .destination-strip {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  display: flex;
   gap: 18px;
-  margin-top: 32px;
-  padding: 0;
+  overflow-x: auto;
+  margin: 32px 0 0;
+  padding: 6px 6px 16px;
   list-style: none;
+  overscroll-behavior-inline: contain;
+  scroll-padding-inline: 6px;
+  scroll-snap-type: x mandatory;
+  scrollbar-color: var(--line-strong) transparent;
+  scrollbar-width: thin;
+}
+
+.destination-strip > li {
+  flex: 0 0 clamp(220px, 25vw, 290px);
+  scroll-snap-align: start;
 }
 
 .destination-chip {
@@ -374,12 +587,6 @@
   margin-top: 14px;
 }
 
-@media (max-width: 1199px) {
-  .destination-strip {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 1023px) {
   .purpose__inner,
   .home-people__inner {
@@ -400,8 +607,12 @@
     padding-top: 48px;
   }
 
+  .home-destinations__actions {
+    justify-content: space-between;
+    width: 100%;
+  }
+
   .destination-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
   }
 
@@ -423,4 +634,18 @@
     padding: 0 28px 40px 0;
   }
 
+}
+
+@media (max-width: 399px) {
+  .travel-styles__heading {
+    gap: 8px;
+  }
+
+  .travel-styles__title {
+    font-size: 23px;
+  }
+
+  .travel-styles__controls .button {
+    width: 40px;
+  }
 }

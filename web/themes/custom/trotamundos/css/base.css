@@ -460,11 +460,6 @@ select.tm-input {
   color: var(--terracota-text);
 }
 
-.tm-notice--example {
-  border-left-color: var(--sol);
-  background: rgb(211 167 94 / 12%);
-}
-
 /* Drupal pages and forms rendered by the public theme */
 .content-page {
   min-height: 55vh;

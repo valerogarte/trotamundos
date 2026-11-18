@@ -52,12 +52,17 @@ Cambios: Recorte vertical desde el original, redimensionado a 1080 × 1920 y con
 Vídeo del banner principal
 
 hero-naturaleza.mp4 y hero-naturaleza-mobile.mp4
-Montaje de tres vídeos de Pexels, con recortes para escritorio y móvil y transiciones entre escenas:
-- “Slow motion footage of a hummingbird's wings flapping while feeding”, autor 8 K: https://www.pexels.com/video/slow-motion-footage-of-a-hummingbird-s-wings-flapping-while-feeding-2402369/
-- “A waterfall in the jungle surrounded by trees”, autor Davis Arenas: https://www.pexels.com/video/a-waterfall-in-the-jungle-surrounded-by-trees-17039829/
-- “Horses on the ocean beach at sunset”, autora Jessi X: https://www.pexels.com/video/horses-on-the-ocean-beach-at-sunset-20030101/
+Montaje provisional de siete vídeos de archivo de Pexels, con recortes para escritorio y móvil y transiciones entre escenas:
+- “People Walking Towards Villa De Leyva in Columbia”, autor Andres Hurtado: https://www.pexels.com/video/people-walking-towards-villa-de-leyva-in-columbia-6656383/
+- “Traditional Coffee Drying in Colombian Village”, autor Julián Armando Santos: https://www.pexels.com/video/traditional-coffee-drying-in-colombian-village-31053382/
+- “A Woman Harvesting Coffee Beans”, Ucundinamarca Virtual: https://www.pexels.com/video/a-woman-harvesting-coffee-beans-17191112/
+- “Woman Cooking on Traditional Stone Stove Outdoors”, autor FRANK MERIÑO: https://www.pexels.com/video/woman-cooking-on-traditional-stone-stove-outdoors-40414578/
+- “Woman Sitting Outside and Doing Handcraft”, autor FRANK MERIÑO: https://www.pexels.com/video/woman-sitting-outside-and-doing-handcraft-8406720/
+- “A Person Rafting on the River”, autor FRANK MERIÑO: https://www.pexels.com/video/a-person-rafting-on-the-river-8506440/
+- “Río sereno con entorno rocoso y bañistas”, autor Juan Camilo Trujillo Botero: https://www.pexels.com/es-es/video/rio-sereno-con-entorno-rocoso-y-banistas-30775402/
 Licencia: Pexels License, permite usar y editar vídeos en sitios web sin atribución obligatoria: https://www.pexels.com/legal-pages/license/
-Cambios: Recortados, unidos con transiciones y convertidos a MP4 H.264 para la web. El montaje se reproduce siempre silenciado.
+Las escenas no representan necesariamente experiencias ni colaboradores del catálogo; no se ha verificado la ubicación de todos los clips y no implican respaldo de las personas mostradas.
+Cambios: Recortados, ajustados con un matiz cálido, unidos con transiciones y convertidos a MP4 H.264 para la web. El montaje se reproduce siempre silenciado.
 
 hero-naturaleza-poster.webp y hero-naturaleza-mobile-poster.webp
 Fotogramas del montaje anterior, redimensionados y convertidos a WebP para usarse como carteles del vídeo.
@@ -75,7 +80,11 @@ Fotografías propias (archivo de Juan Trotamundos)
 Origen: drive-download-20261108T201330Z-1-001.zip, aportado por Juan Trotamundos para el proyecto.
 Uso cedido para Trotamundos. Se han redimensionado, convertido a WebP y se han eliminado los metadatos EXIF, incluida la ubicación GPS.
 En el tema (assets/images): comunidad-concepcion.webp, juan-trotamundos.webp, juan-concepcion-noche.webp,
-concepcion-panoramica.webp, mesa-concepcion.webp, termales-aerea.webp, termales-cascada.webp, termales-manantial.webp.
+concepcion-panoramica.webp, concepcion-calle.webp, concepcion-cafe.webp, mesa-concepcion.webp,
+termales-aerea.webp, termales-cascada.webp, termales-manantial.webp, termales-bienestar.webp.
+concepcion-calle.webp y concepcion-cafe.webp son versiones redimensionadas de las fotografías propias
+concepcion-calle.webp y concepcion-cafe-balcon.webp, respectivamente, de la galería de experiencias.
+termales-bienestar.webp es un recorte redimensionado de termales-poza-mural.webp de la misma galería.
 En las fichas de experiencia (sites/default/files/experiencias): 40 fotografías de Termales Espíritu Santo (Nariño, Antioquia)
 y de Concepción (Antioquia). La asignación a cada lugar se ha hecho con la ubicación GPS y la fecha de cada archivo.
 Galería anterior de destinos: ocho imágenes del mismo archivo en modules/custom/trotamundos_destinations/assets/images/termales.

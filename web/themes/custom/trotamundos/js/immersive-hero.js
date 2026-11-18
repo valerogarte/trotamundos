@@ -25,12 +25,12 @@
     const controller = new AbortController();
     const signal = controller.signal;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const mobileViewport = window.matchMedia('(max-width: 639px)');
+    const mobileVideo = window.matchMedia('(max-width: 639px), (orientation: portrait)');
     let requestedPlayback = !reducedMotion.matches;
 
     const updateVideoSource = () => {
-      const source = mobileViewport.matches ? video.dataset.videoMobile : video.dataset.videoDesktop;
-      const poster = mobileViewport.matches ? video.dataset.posterMobile : video.dataset.posterDesktop;
+      const source = mobileVideo.matches ? video.dataset.videoMobile : video.dataset.videoDesktop;
+      const poster = mobileVideo.matches ? video.dataset.posterMobile : video.dataset.posterDesktop;
       const currentSource = video.getAttribute('src');
       if (poster) {
         video.poster = poster;
@@ -60,7 +60,7 @@
       video.play().catch(() => {});
     };
 
-    mobileViewport.addEventListener('change', updateVideoSource, { signal });
+    mobileVideo.addEventListener('change', updateVideoSource, { signal });
     reducedMotion.addEventListener('change', (event) => {
       if (event.matches) {
         requestedPlayback = false;
