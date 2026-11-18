@@ -1,0 +1,41 @@
+<article class="trotamundos-assistant-template trotamundos-travel-plans">
+  <header class="trotamundos-assistant-template__header">
+    <p class="trotamundos-assistant-template__eyebrow">{{ 'Planes para descubrir'|t }}</p>
+  </header>
+  {% if plans %}
+    {% if intro %}<p class="trotamundos-assistant-template__intro">{{ intro }}</p>{% endif %}
+    <div class="trotamundos-travel-plans__grid">
+      {% for plan in plans %}
+        {% set card = plan.card %}
+        <article class="trotamundos-travel-plans__card">
+          <div class="trotamundos-travel-plans__media">
+            {% if card.image %}
+              <img src="{{ card.image.src }}" alt="{{ card.image.alt }}" width="{{ card.image.width }}" height="{{ card.image.height }}" loading="lazy" decoding="async">
+            {% endif %}
+            {% if card.favorite %}<div class="trotamundos-travel-plans__favorite">{{ card.favorite }}</div>{% endif %}
+          </div>
+          <div class="trotamundos-travel-plans__body">
+            <p class="trotamundos-travel-plans__meta">
+              {{ card.type.label }}{% if card.location %} · {{ card.location }}{% endif %}
+              {% if card.is_example %} · {{ 'Ficha demo'|t }}{% endif %}
+            </p>
+            <h3><a href="{{ card.url }}">{{ card.title }}</a></h3>
+            {% if card.duration %}<p>{{ card.duration }}</p>{% endif %}
+            {% if plan.reason %}<p>{{ plan.reason }}</p>{% endif %}
+            {% if card.price > 0 %}
+              <p><strong>{{ 'Desde'|t }} {{ card.price_label }} COP</strong> {{ 'por persona'|t }}</p>
+            {% else %}
+              <p>{{ 'Consulta el precio en la ficha.'|t }}</p>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+    {% if outro %}<p class="trotamundos-assistant-template__intro">{{ outro }}</p>{% endif %}
+    <p class="trotamundos-travel-plans__notice">{{ 'Consulta la ficha para confirmar precios, fechas y condiciones.'|t }}</p>
+  {% else %}
+    <div class="trotamundos-assistant-template__empty">
+      <p>{{ 'No he encontrado planes publicados para esta consulta. Prueba con otro destino o estilo de viaje.'|t }}</p>
+    </div>
+  {% endif %}
+</article>

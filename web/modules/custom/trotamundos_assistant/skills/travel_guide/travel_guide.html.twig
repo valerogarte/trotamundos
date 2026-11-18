@@ -1,0 +1,26 @@
+<article class="trotamundos-assistant-template trotamundos-assistant-template--content-answer">
+  <header class="trotamundos-assistant-template__header">
+    <p class="trotamundos-assistant-template__eyebrow">{{ 'Información para tu viaje'|t }}</p>
+  </header>
+  {% if sources %}
+    {% if answer %}<p class="trotamundos-assistant-template__description">{{ answer }}</p>{% endif %}
+    <div class="trotamundos-assistant-content-answer">
+      <p class="trotamundos-assistant-content-answer__label">{{ 'Fuentes'|t }}</p>
+      <div class="trotamundos-assistant-content-answer__sources">
+        {% for source in sources %}
+          <a class="trotamundos-assistant-content-answer__source" href="{{ source.url }}">
+            <span class="trotamundos-assistant-content-answer__source-icon" aria-hidden="true">↗</span>
+            <span class="trotamundos-assistant-content-answer__source-content">
+              <span class="trotamundos-assistant-content-answer__source-title">{{ source.title }}</span>
+              <span class="trotamundos-assistant-content-answer__source-type">{{ source.type }}</span>
+            </span>
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  {% else %}
+    <div class="trotamundos-assistant-template__empty">
+      <p>{{ 'No he encontrado información publicada suficiente para responder.'|t }}</p>
+    </div>
+  {% endif %}
+</article>

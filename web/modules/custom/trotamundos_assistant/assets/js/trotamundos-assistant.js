@@ -6,10 +6,25 @@
   const RESULT_TRANSITION_MS = 220;
   const DESKTOP_MEDIA_QUERY = '(min-width: 901px)';
   const CONTENT_SHIFT_GUTTER = 24;
+  const MAIN_RESULT_FALLBACK_SELECTOR = '#main-content';
+  const MAIN_RESULT_HOST_CLASS = 'has-trotamundos-assistant-main-result';
+  const MAIN_RESULT_HISTORY_KEY = 'trotamundosAssistantResult';
+  // Overlay headers (home video) would sit on top of the result: while it is
+  // shown they behave like the solid header of the other pages.
+  const OVERLAY_HEADER_CLASSES = ['site-header-shell--overlay', 'site-header--overlay'];
   const scheduledPositionRefreshes = new WeakSet();
   const shiftedExtraElements = new Set();
 
   Drupal.trotamundosAssistant = Drupal.trotamundosAssistant || {};
+
+  function isSearchAssistant(element) {
+    return element?.classList.contains('trotamundos-assistant--search');
+  }
+
+  function scrollMessages(messages) {
+    const container = messages.closest('.trotamundos-assistant__conversation') || messages;
+    container.scrollTop = container.scrollHeight;
+  }
 
   function setStickyHeaderOffset(element) {
     const header = getStickyHeaderElement();
@@ -154,6 +169,10 @@
   }
 
   function clearMessages(messages) {
+    const result = messages.querySelector('[data-assistant-search-result]');
+    if (result) {
+      messages.parentElement.appendChild(result);
+    }
     messages.innerHTML = '';
   }
 
@@ -162,14 +181,56 @@
     message.className = `trotamundos-assistant__message trotamundos-assistant__message--${role}`;
     message.textContent = text;
     messages.appendChild(message);
-    messages.scrollTop = messages.scrollHeight;
+    scrollMessages(messages);
 
     return message;
   }
 
+  /**
+   * Shows a search assistant message above the composer.
+   *
+   * The search assistant only displays notices: errors, access messages and
+   * replies that did not paint a result in the main content.
+   */
+  function clearComposer(element) {
+    const input = element.querySelector('.trotamundos-assistant__input');
+    if (input) {
+      input.value = '';
+      // Lets the theme shrink the auto-sized field back.
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  }
+
+  function markNotice(message) {
+    message?.classList.add('trotamundos-assistant__message--notice');
+  }
+
+  /**
+   * Announces the reply to assistive technologies in the search assistant,
+   * whose message list is not displayed.
+   */
+  function announce(element, text) {
+    const form = element.querySelector('.trotamundos-assistant__form');
+    if (!form) {
+      return;
+    }
+    let status = form.querySelector('[data-assistant-status]');
+    if (!status) {
+      status = document.createElement('p');
+      status.className = 'visually-hidden';
+      status.setAttribute('role', 'status');
+      status.setAttribute('data-assistant-status', '');
+      form.appendChild(status);
+    }
+    status.textContent = '';
+    window.setTimeout(() => {
+      status.textContent = text;
+    }, 50);
+  }
+
   function appendResponsiveResultButton(element, message, title) {
     const label = String(title || '').trim();
-    if (!element || !message || !label) {
+    if (!element || isSearchAssistant(element) || !message || !label) {
       return;
     }
 
@@ -209,7 +270,7 @@
     message.appendChild(loader);
     message.appendChild(label);
     messages.appendChild(message);
-    messages.scrollTop = messages.scrollHeight;
+    scrollMessages(messages);
 
     return message;
   }
@@ -234,7 +295,196 @@
     return (element?.dataset.resultTargetSelector || drupalSettings.trotamundosAssistant?.resultTargetSelector || '').trim();
   }
 
+  function getMainResultHost(element) {
+    const selectors = [getResultTargetSelector(element), MAIN_RESULT_FALLBACK_SELECTOR, 'main'];
+
+    for (const selector of selectors.filter(Boolean)) {
+      try {
+        const host = document.querySelector(selector);
+        if (host && !host.contains(element)) {
+          return host;
+        }
+      }
+      catch (error) {
+        // Invalid selectors fall back to the next candidate.
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Gets the main content region used by the search assistant results.
+   *
+   * The original page content stays in the DOM, hidden, so its state and
+   * behaviors survive until the visitor goes back to it.
+   */
+  function getMainResultTarget(element) {
+    const host = getMainResultHost(element);
+    if (!host) {
+      return null;
+    }
+
+    let target = host.querySelector(':scope > [data-assistant-main-result]');
+    if (!target) {
+      target = document.createElement('section');
+      target.className = 'trotamundos-assistant-main-result';
+      if (!host.classList.contains('container')) {
+        target.classList.add('container');
+      }
+      target.setAttribute('data-assistant-main-result', '');
+      target.setAttribute('aria-label', Drupal.t('Respuesta del asistente'));
+      target.tabIndex = -1;
+      target.hidden = true;
+      host.prepend(target);
+    }
+
+    return target;
+  }
+
+  function hasMainResult(element) {
+    const result = getResultTarget(element)?.querySelector(':scope > .trotamundos-assistant__result-inner');
+
+    return Boolean(result && result.innerHTML.trim() !== '');
+  }
+
+  function isMainResultVisible(element) {
+    const target = getResultTarget(element);
+
+    return Boolean(target && !target.hidden);
+  }
+
+  function setOverlayHeaderSuspended(suspended) {
+    if (suspended) {
+      OVERLAY_HEADER_CLASSES.forEach((className) => {
+        document.querySelectorAll(`.${className}`).forEach((header) => {
+          header.classList.remove(className);
+          header.dataset.trotamundosAssistantOverlay = className;
+        });
+      });
+    }
+    else {
+      document.querySelectorAll('[data-trotamundos-assistant-overlay]').forEach((header) => {
+        header.classList.add(header.dataset.trotamundosAssistantOverlay);
+        delete header.dataset.trotamundosAssistantOverlay;
+      });
+    }
+    window.dispatchEvent(new Event('resize'));
+  }
+
+  function setMainResultVisible(element, visible) {
+    const target = getResultTarget(element);
+    const shouldShow = Boolean(visible) && hasMainResult(element);
+    if (!target || target.hidden === !shouldShow) {
+      return;
+    }
+
+    target.hidden = !shouldShow;
+    target.parentElement.classList.toggle(MAIN_RESULT_HOST_CLASS, shouldShow);
+    setOverlayHeaderSuspended(shouldShow);
+  }
+
+  function scrollToMainResult(element, focus = false) {
+    const target = getResultTarget(element);
+    if (!target || target.hidden) {
+      return;
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: shouldAnimateResult() ? 'smooth' : 'auto',
+    });
+    if (focus) {
+      target.focus({ preventScroll: true });
+    }
+  }
+
+  /**
+   * Whether this page load comes from the browser back/forward buttons.
+   *
+   * Browsers keep the history state on reloads and same-URL navigations (the
+   * logo on the home); those must show the page content, never the previous
+   * result, which stays reachable from the chat.
+   */
+  function isHistoryTraversal() {
+    const entry = window.performance?.getEntriesByType?.('navigation')?.[0];
+
+    return entry ? entry.type === 'back_forward' : false;
+  }
+
+  function getHistoryResultThread() {
+    const state = window.history.state;
+
+    return state && typeof state === 'object' ? state[MAIN_RESULT_HISTORY_KEY] || '' : '';
+  }
+
+  /**
+   * Ties the visible result to the current history entry.
+   *
+   * Going back restores the original page, and returning from a plan opened
+   * from the result shows the result again.
+   */
+  function markHistoryResult(threadId) {
+    if (!threadId) {
+      return;
+    }
+
+    const current = window.history.state && typeof window.history.state === 'object' ? window.history.state : {};
+    const state = { ...current, [MAIN_RESULT_HISTORY_KEY]: threadId };
+    try {
+      if (getHistoryResultThread()) {
+        window.history.replaceState(state, '');
+      }
+      else {
+        window.history.pushState(state, '');
+      }
+    }
+    catch (error) {
+      // History can be unavailable in sandboxed frames.
+    }
+  }
+
+  function clearHistoryResult() {
+    if (!getHistoryResultThread()) {
+      return;
+    }
+
+    const state = { ...window.history.state };
+    delete state[MAIN_RESULT_HISTORY_KEY];
+    try {
+      window.history.replaceState(Object.keys(state).length ? state : null, '');
+    }
+    catch (error) {
+      // History can be unavailable in sandboxed frames.
+    }
+  }
+
+  function showMainResult(element, { scroll = true, focus = false } = {}) {
+    if (!hasMainResult(element)) {
+      return;
+    }
+
+    setMainResultVisible(element, true);
+    markHistoryResult(element.dataset.threadId || '');
+    if (scroll) {
+      scrollToMainResult(element, focus);
+    }
+  }
+
+  function dismissMainResult(element, clear = false) {
+    const target = getResultTarget(element);
+    setMainResultVisible(element, false);
+    clearHistoryResult();
+    if (clear && target) {
+      target.innerHTML = '';
+      target.classList.remove('has-trotamundos-assistant-result');
+    }
+  }
+
   function getResultTarget(element) {
+    if (isSearchAssistant(element)) {
+      return getMainResultTarget(element);
+    }
     const selector = getResultTargetSelector(element);
     if (!selector) {
       return null;
@@ -306,7 +556,7 @@
 
   function validateResultTarget(element) {
     const selector = getResultTargetSelector(element);
-    if (!selector) {
+    if (!isSearchAssistant(element) && !selector) {
       setConfigurationError(element, Drupal.t('Falta configurar el selector del panel de resultado del asistente.'));
       setControlsDisabled(element, true);
       return null;
@@ -314,9 +564,11 @@
 
     const target = prepareResultTarget(element);
     if (!target) {
-      setConfigurationError(element, Drupal.t('No se ha encontrado el panel de resultado configurado: @selector', {
-        '@selector': selector,
-      }));
+      setConfigurationError(element, isSearchAssistant(element)
+        ? Drupal.t('No se ha encontrado el panel de respuestas del asistente.')
+        : Drupal.t('No se ha encontrado el panel de resultado configurado: @selector', {
+          '@selector': selector,
+        }));
       setControlsDisabled(element, true);
       return null;
     }
@@ -331,9 +583,24 @@
   }
 
   function setChatOpen(element, open) {
-    const target = getResultTarget(element);
     const shouldOpen = Boolean(open);
+    if (isSearchAssistant(element)) {
+      const disclosure = element.closest('[data-discovery-assistant]');
+      if (disclosure) {
+        if (shouldOpen) {
+          disclosure.dispatchEvent(new CustomEvent('trotamundosAssistantOpen', { bubbles: true }));
+          disclosure.open = true;
+          element.querySelector('.trotamundos-assistant__input')?.focus({ preventScroll: true });
+        }
+        else if (disclosure.dispatchEvent(new CustomEvent('trotamundosAssistantClose', { bubbles: true, cancelable: true }))) {
+          disclosure.open = false;
+          disclosure.querySelector(':scope > summary').focus({ preventScroll: true });
+        }
+      }
+      return;
+    }
 
+    const target = getResultTarget(element);
     element.classList.toggle('is-chat-open', shouldOpen);
     element.querySelector('.trotamundos-assistant__toggle')?.setAttribute('aria-expanded', shouldOpen ? 'true' : 'false');
     element.querySelector('.trotamundos-assistant__close')?.setAttribute('aria-hidden', shouldOpen ? 'false' : 'true');
@@ -344,6 +611,9 @@
   }
 
   function updateContentShift(element, target = getResultTarget(element), shouldOpen = element.classList.contains('is-chat-open')) {
+    if (isSearchAssistant(element)) {
+      return;
+    }
     if (!target || !shouldOpen || !isDesktop()) {
       target?.style.setProperty('--trotamundos-assistant-shift-width', '0px');
       target?.classList.remove('is-trotamundos-assistant-shifted');
@@ -472,12 +742,24 @@
     const input = element.querySelector('.trotamundos-assistant__input');
     const reset = element.querySelector('.trotamundos-assistant__reset');
 
+    if (loading && isSearchAssistant(element) && input && !input.disabled && element.contains(document.activeElement)) {
+      input.focus({ preventScroll: true });
+    }
+
     if (submit) {
       submit.disabled = loading || element.classList.contains('is-disabled');
     }
 
     if (input) {
-      input.disabled = loading || element.classList.contains('is-disabled');
+      input.readOnly = isSearchAssistant(element) && loading;
+      input.disabled = (!isSearchAssistant(element) && loading) || element.classList.contains('is-disabled');
+    }
+
+    // The search assistant turns its send button into a loader.
+    if (isSearchAssistant(element) && submit) {
+      submit.dataset.label ||= submit.getAttribute('aria-label') || Drupal.t('Enviar');
+      submit.setAttribute('aria-label', loading ? Drupal.t('Enviando…') : submit.dataset.label);
+      submit.closest('form')?.setAttribute('aria-busy', loading ? 'true' : 'false');
     }
 
     if (reset) {
@@ -490,8 +772,14 @@
       return drupalSettings.trotamundosAssistant.csrfToken;
     }
 
-    const response = await fetch(`${drupalSettings.path.baseUrl}session/token`, {
+    const tokenEndpoint = drupalSettings.trotamundosAssistant?.csrfTokenEndpoint;
+    if (!tokenEndpoint) {
+      throw new Error(Drupal.t('The security token endpoint is not configured.'));
+    }
+
+    const response = await fetch(tokenEndpoint, {
       credentials: 'same-origin',
+      cache: 'no-store',
     });
 
     if (!response.ok) {
@@ -610,6 +898,12 @@
   }
 
   async function setResultPayload(element, result, data, animate = true) {
+    // The search assistant takes over the main content only when the skill
+    // rendered something; otherwise the page (or previous result) stays.
+    if (isSearchAssistant(element) && String(data.result_html || '').trim() === '') {
+      return;
+    }
+
     await executeAjaxCommands(data.result_ajax_commands, result);
     result = getResultElement(element);
     setResultHtml(result, data.result_html || '', animate);
@@ -662,23 +956,51 @@
       });
       const data = await parseJsonResponse(response);
 
+      // A stored thread from an older format: start a new one silently.
+      if (response.status === 400 && data.error === 'Invalid thread ID.') {
+        setStoredThreadId('');
+        element.dataset.threadId = '';
+        return;
+      }
+      if (!response.ok && isSearchAssistant(element)) {
+        throw new Error(data.error || Drupal.t('No se pudo recuperar la conversación. Vuelve a cargar la página para intentarlo de nuevo.'));
+      }
       if (!response.ok || !Array.isArray(data.messages) || data.messages.length === 0) {
         setStoredThreadId('');
         element.dataset.threadId = '';
         return;
       }
 
-      clearMessages(messages);
-      data.messages.forEach((message) => {
-        appendMessage(messages, message.message || '', message.role || 'assistant');
-      });
+      const history = isSearchAssistant(element)
+        ? data.messages.filter((message) => message.role === 'assistant').slice(-1)
+        : data.messages;
+      if (history.length) {
+        clearMessages(messages);
+        history.forEach((message) => {
+          appendMessage(messages, message.message || '', message.role || 'assistant');
+        });
+      }
 
-      // Keep the page content intact on initial load. Results are only painted
-      // after a new explicit assistant action in the current page view.
+      if (isSearchAssistant(element) && history.length && data.result_html) {
+        // The result is prepared hidden: the page keeps its own content unless
+        // the visitor came back with the browser to an entry showing it.
+        await setResultPayload(element, getResultElement(element), data, false);
+        if (getHistoryResultThread() === threadId) {
+          setMainResultVisible(element, true);
+        }
+      }
+      // Keep the page content intact on initial load in the standalone layout.
     }
     catch (error) {
-      setStoredThreadId('');
-      element.dataset.threadId = '';
+      if (isSearchAssistant(element)) {
+        clearMessages(messages);
+        const message = appendMessage(messages, Drupal.t('No se pudo recuperar la conversación. Vuelve a cargar la página para intentarlo de nuevo.'), 'assistant');
+        message.classList.add('trotamundos-assistant__message--error');
+      }
+      else {
+        setStoredThreadId('');
+        element.dataset.threadId = '';
+      }
     }
   }
 
@@ -711,10 +1033,12 @@
           }),
         });
         const data = await parseJsonResponse(response);
+        if (!response.ok) {
+          throw new Error(data.error || Drupal.t('No se pudo reiniciar la conversación. Inténtalo de nuevo.'));
+        }
         newThreadId = data.thread_id || '';
       }
-    }
-    finally {
+
       element.dataset.threadId = newThreadId;
       setStoredThreadId(newThreadId);
 
@@ -722,14 +1046,30 @@
         clearMessages(messages);
       }
 
-      if (target) {
+      if (isSearchAssistant(element)) {
+        dismissMainResult(element, true);
+      }
+      else if (target) {
         target.innerHTML = element.trotamundosAssistantDefaultResultHtml || '';
+        target.hidden = false;
         target.classList.remove('has-trotamundos-assistant-result');
         Drupal.attachBehaviors(target);
+        attachWelcomePrompts(element, target);
         updateContentShift(element, target);
       }
 
       appendInitialMessage(element);
+    }
+    catch (error) {
+      if (messages) {
+        if (isSearchAssistant(element)) {
+          clearMessages(messages);
+        }
+        const message = appendMessage(messages, error.message, 'assistant');
+        message.classList.add('trotamundos-assistant__message--error');
+      }
+    }
+    finally {
       setLoading(element, false);
     }
   }
@@ -743,11 +1083,23 @@
       throw new Error(Drupal.t('The assistant is not configured.'));
     }
 
-    appendMessage(messages, message, 'user');
+    const searchAssistant = isSearchAssistant(element);
+    if (searchAssistant) {
+      // The main content keeps the page or the previous result while waiting.
+      clearMessages(messages);
+    }
+    else {
+      appendMessage(messages, message, 'user');
+    }
+    if (searchAssistant && !isAccessAllowed()) {
+      markNotice(appendMessage(messages, element.dataset.accessDeniedMessage, 'assistant'));
+      announce(element, element.dataset.accessDeniedMessage);
+      return;
+    }
     const pending = appendLoaderMessage(messages);
     setLoading(element, true);
     let result = getResultElement(element, false);
-    const resultExit = result ? hideResult(result) : Promise.resolve();
+    const resultExit = result && !searchAssistant ? hideResult(result) : Promise.resolve();
 
     try {
       const csrfToken = await getCsrfToken();
@@ -791,16 +1143,34 @@
       setStoredThreadId(element.dataset.threadId);
       pending.classList.remove('trotamundos-assistant__message--loading', 'trotamundos-assistant__message--error');
       pending.textContent = data.reply || Drupal.t('No se ha recibido respuesta.');
-      appendResponsiveResultButton(element, pending, data.btn_responsive_title);
+      if (searchAssistant) {
+        clearComposer(element);
+      }
+      if (!searchAssistant) {
+        appendResponsiveResultButton(element, pending, data.btn_responsive_title);
+      }
       await resultExit;
 
+      const paintsResult = !data.keep_result && String(data.result_html || '').trim() !== '';
       if (data.keep_result) {
         // Off-topic answer: the result panel keeps the previous turn intact.
         showResult(getResultElement(element, false));
       }
-      else {
+      else if (searchAssistant && paintsResult) {
         result = getResultElement(element);
         await setResultPayload(element, result, data);
+        showMainResult(element);
+      }
+      else if (!searchAssistant) {
+        result = getResultElement(element);
+        await setResultPayload(element, result, data);
+      }
+      if (searchAssistant) {
+        // Without a visual result the reply is the only answer: show it.
+        if (!paintsResult) {
+          markNotice(pending);
+        }
+        announce(element, pending.textContent);
       }
     }
     catch (error) {
@@ -811,6 +1181,10 @@
       pending.textContent = error.message;
       if (!error.accessDenied) {
         pending.classList.add('trotamundos-assistant__message--error');
+      }
+      if (searchAssistant) {
+        markNotice(pending);
+        announce(element, error.message);
       }
     }
     finally {
@@ -823,6 +1197,9 @@
       const elements = once('trotamundos-assistant-layout', '.trotamundos-assistant', context);
 
       elements.forEach((element) => {
+        if (isSearchAssistant(element)) {
+          return;
+        }
         refreshLayout(element, true);
         observeStickyHeader(element);
 
@@ -853,10 +1230,11 @@
     once('trotamundos-assistant-welcome-prompt', '[data-trotamundos-assistant-prompt]', context).forEach((button) => {
       button.addEventListener('click', () => {
         const prompt = button.dataset.trotamundosAssistantPrompt || '';
-        if (!prompt || input.disabled) {
+        if (!prompt || input.disabled || element.classList.contains('is-loading')) {
           return;
         }
 
+        setChatOpen(element, true);
         input.value = prompt;
         if (form.requestSubmit) {
           form.requestSubmit();
@@ -895,8 +1273,15 @@
         if (target && typeof element.trotamundosAssistantDefaultResultHtml === 'undefined') {
           element.trotamundosAssistantDefaultResultHtml = target.innerHTML;
         }
+        if (isSearchAssistant(element) && !isHistoryTraversal()) {
+          clearHistoryResult();
+        }
 
-        loadHistory(element);
+        const history = loadHistory(element);
+        if (isSearchAssistant(element) && getStoredThreadId()) {
+          setLoading(element, true);
+          history.finally(() => setLoading(element, false));
+        }
 
         if (toggle) {
           toggle.addEventListener('click', () => {
@@ -914,9 +1299,30 @@
           attachWelcomePrompts(element, event.target);
         });
 
+        if (isSearchAssistant(element)) {
+          window.addEventListener('popstate', () => {
+            const threadId = getHistoryResultThread();
+            setMainResultVisible(element, Boolean(threadId) && threadId === element.dataset.threadId);
+          });
+
+          // A search or filter handled in place (catalog) must show its own
+          // results; forms that leave the page need nothing.
+          document.addEventListener('submit', (event) => {
+            const source = event.target;
+            if (!event.defaultPrevented || !isMainResultVisible(element) || !(source instanceof Element)
+              || source.closest('.trotamundos-assistant, [data-assistant-main-result]')) {
+              return;
+            }
+            dismissMainResult(element);
+          });
+        }
+
         form.addEventListener('submit', (event) => {
           event.preventDefault();
 
+          if (element.classList.contains('is-loading')) {
+            return;
+          }
           if (!validateResultTarget(element)) {
             return;
           }
@@ -926,7 +1332,10 @@
             return;
           }
 
-          input.value = '';
+          // The search assistant keeps the text, locked, until the reply arrives.
+          if (!isSearchAssistant(element)) {
+            input.value = '';
+          }
           submitMessage(element, message);
         });
 

@@ -10,6 +10,8 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Render\AttachmentsResponseProcessorInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\trotamundos_assistant\Plugin\search_api\processor\TravelDocument;
+use Drupal\trotamundos_experiences\Setup\ProductTypes;
 
 /**
  * Orchestrates skill rendering without owning skill business logic.
@@ -182,10 +184,10 @@ final class SkillTemplateRenderer {
       'items' => $items,
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-    return "COLECCIÓN ACTIVA (productos ya ofrecidos en este hilo):\n"
+    return "COLECCIÓN ACTIVA (productos o planes ya ofrecidos en este hilo):\n"
       . $selection . "\n"
       . "Reglas de la colección activa:\n"
-      . "- Si el usuario pide añadir, quitar, sustituir o ajustar algo, parte de esta colección: conserva los `product_id` que sigan siendo válidos y devuelve siempre la colección COMPLETA resultante.\n"
+      . "- Si el usuario pide añadir, quitar, sustituir o ajustar algo, conserva los `product_id` o `node_id` válidos y devuelve siempre la colección COMPLETA resultante.\n"
       . "- No reinicies la selección ni devuelvas solo los productos nuevos.\n"
       . "- Mantén la misma `skill` salvo que la intención del usuario cambie con claridad.\n"
       . "- Para lo que se añada, lanza una consulta RAG por cada categoría nueva y fusiona los resultados con esta colección.\n"
@@ -219,12 +221,12 @@ final class SkillTemplateRenderer {
     foreach ($groups as [$category_name, $group_items]) {
       foreach (is_array($group_items) ? $group_items : [] as $item) {
         $product_id = is_array($item) ? (int) ($item['product_id'] ?? 0) : 0;
-        if ($product_id <= 0 || count($items) >= self::ACTIVE_SELECTION_LIMIT) {
+        $node_id = is_array($item) ? (int) ($item['node_id'] ?? 0) : 0;
+        if (($product_id <= 0 && $node_id <= 0) || count($items) >= self::ACTIVE_SELECTION_LIMIT) {
           continue;
         }
 
-        $selection_item = [
-          'product_id' => $product_id,
+        $selection_item = ($product_id > 0 ? ['product_id' => $product_id] : ['node_id' => $node_id]) + [
           'title' => trim((string) ($item['title'] ?? $item['name'] ?? '')),
           'quantity' => max(1, (int) ($item['quantity'] ?? 1)),
         ];
@@ -294,6 +296,54 @@ final class SkillTemplateRenderer {
     $structured = $this->parseStructuredReply($assistant_reply);
 
     return trim((string) ($structured['chat_reply'] ?? ''));
+  }
+
+  /**
+   * Restricts travel cards and citations to retrieved public translations.
+   *
+   * @param array<int, array<string, bool>> $retrieved_nodes
+   *   Search evidence for this conversation.
+   */
+  public function restrictTravelReferences(?array $skill, string $assistant_reply, array $retrieved_nodes): string {
+    $machine_name = $skill['machine_name'] ?? '';
+    if (!in_array($machine_name, ['travel_plans', 'travel_guide'], TRUE)) {
+      return $assistant_reply;
+    }
+
+    $structured = $this->parseStructuredReply($assistant_reply);
+    if ($structured === [] || !is_array($structured['result'] ?? NULL)) {
+      return $assistant_reply;
+    }
+
+    $field = $machine_name === 'travel_plans' ? 'items' : 'sources';
+    $bundles = $machine_name === 'travel_plans' ? ProductTypes::BUNDLES : TravelDocument::BUNDLES;
+    $requested = is_array($structured['result'][$field] ?? NULL) ? $structured['result'][$field] : [];
+    $verified = $this->skillRuntime->filterRetrievedTravelItems($requested, $retrieved_nodes, $bundles);
+    $allowed_ids = [];
+    foreach ($verified as $item) {
+      $allowed_ids[(int) $item['node_id']] = TRUE;
+    }
+    $rejected = FALSE;
+    foreach ($requested as $item) {
+      $id = is_array($item) ? filter_var($item['node_id'] ?? NULL, FILTER_VALIDATE_INT) : FALSE;
+      if ($id === FALSE || $id <= 0 || !isset($allowed_ids[$id])) {
+        $rejected = TRUE;
+        break;
+      }
+    }
+
+    if ($rejected) {
+      $structured['chat_reply'] = '';
+      if ($machine_name === 'travel_guide') {
+        $verified = [];
+      }
+      else {
+        $structured['result']['intro'] = '';
+        $structured['result']['outro'] = '';
+      }
+    }
+    $structured['result'][$field] = $verified;
+    return json_encode($structured, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
   }
 
   /**
@@ -725,7 +775,7 @@ final class SkillTemplateRenderer {
       . "La respuesta final debe incluir siempre `skill`, `chat_reply` y `result`; mantén `chat_reply` muy conciso.\n"
       . "El valor de `skill` debe ser uno de los valores `skill` del catálogo; Drupal resolverá internamente el template configurado.\n"
       . "No inventes datos. En `result`, respeta la estructura del ejemplo de la skill y usa información real recuperada por RAG.\n"
-      . "Para cualquier producto que deba pintarse como tarjeta, cada item debe incluir `product_id` presente en RAG o en la COLECCIÓN ACTIVA. Si la referencia es a una variación concreta, incluye también `variation_id`. No inventes esos IDs: el título es auxiliar y Drupal nunca lo usa para resolver el producto.\n"
+      . "Para tarjetas de Commerce, cada item debe incluir `product_id` presente en RAG o en la COLECCIÓN ACTIVA; para planes editoriales, usa el `node_id` recuperado. Si la referencia es a una variación concreta, incluye también `variation_id`. No inventes esos IDs: Drupal resuelve los datos reales.\n"
       . "Si existe una COLECCIÓN ACTIVA, conserva sus elementos válidos y devuelve la colección completa, no solo los cambios.\n"
       . "Cuando la petición implique varios tipos de producto, lanza una consulta RAG por cada tipo antes de componer la respuesta, en vez de una sola consulta genérica.\n"
       . "Para `content_create`, elige `result.entity_type` y `result.bundle` exclusivamente desde `creation_targets`, usando sus IDs exactos.";

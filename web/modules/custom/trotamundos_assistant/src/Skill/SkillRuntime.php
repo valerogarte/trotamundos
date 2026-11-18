@@ -14,6 +14,7 @@ use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityFormBuilderInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
@@ -22,7 +23,11 @@ use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
 use Drupal\trotamundos_assistant\Form\EmbeddedAssistantFormAjax;
+use Drupal\trotamundos_assistant\Plugin\search_api\processor\TravelDocument;
+use Drupal\trotamundos_experiences\ExperienceRepository;
+use Drupal\trotamundos_experiences\Setup\ProductTypes;
 
 /**
  * Shared runtime services available to skill handlers.
@@ -57,7 +62,118 @@ final class SkillRuntime {
     private readonly EntityFieldManagerInterface $entityFieldManager,
     private readonly mixed $cartProvider = NULL,
     private readonly mixed $orderTotalSummary = NULL,
+    private readonly ?EntityRepositoryInterface $entityRepository = NULL,
+    private readonly ?ExperienceRepository $experienceRepository = NULL,
   ) {
+  }
+
+  /**
+   * Builds cards from actual public editorial plans, never model-supplied data.
+   *
+   * @return array<int, array{card: array, reason: string}>
+   *   Cards and optional explanations in the provider's order.
+   */
+  public function resolveTravelPlans(mixed $items): array {
+    if ($this->experienceRepository === NULL) {
+      throw new \LogicException('The travel catalog repository is unavailable.');
+    }
+    $nodes = $this->loadPublicTravelNodes($items, ProductTypes::BUNDLES);
+    $plans = [];
+    foreach ($nodes as [$node, $item]) {
+      $plans[] = [
+        'card' => $this->experienceRepository->card($node),
+        'reason' => mb_substr(trim((string) ($item['reason'] ?? '')), 0, 400),
+      ];
+    }
+    return $plans;
+  }
+
+  /**
+   * Resolves cited node IDs to public, currently accessible source links.
+   *
+   * @return array<int, array{title: string, url: string, type: string}>
+   *   Source links in the provider's order.
+   */
+  public function resolveTravelSources(mixed $items): array {
+    $sources = [];
+    foreach ($this->loadPublicTravelNodes($items, TravelDocument::BUNDLES) as [$node]) {
+      $type = $node->get('type')->entity;
+      $sources[] = [
+        'title' => (string) $node->label(),
+        'url' => $node->toUrl()->toString(),
+        'type' => $type ? (string) $type->label() : $node->bundle(),
+      ];
+    }
+    return $sources;
+  }
+
+  /**
+   * Retains items retrieved for the public translation currently displayed.
+   *
+   * @param array<int, array<string, bool>> $retrieved_nodes
+   *   Node IDs and language codes obtained from the search tool.
+   * @param string[] $bundles
+   *   Permitted content bundles.
+   *
+   * @return array<int, array<string, mixed>>
+   *   Verified input items in their original order.
+   */
+  public function filterRetrievedTravelItems(mixed $items, array $retrieved_nodes, array $bundles): array {
+    $verified = [];
+    foreach ($this->loadPublicTravelNodes($items, $bundles) as [$node, $item]) {
+      if (!empty($retrieved_nodes[(int) $node->id()][$node->language()->getId()])) {
+        $verified[] = $item;
+      }
+    }
+    return $verified;
+  }
+
+  /**
+   * Loads at most six distinct nodes and checks access in the active language.
+   *
+   * @param mixed $items
+   *   Provider items containing a node_id.
+   * @param string[] $bundles
+   *   Permitted content bundles.
+   *
+   * @return array<int, array{0: \Drupal\node\NodeInterface, 1: array}>
+   *   Accessible nodes paired with their input.
+   */
+  private function loadPublicTravelNodes(mixed $items, array $bundles): array {
+    if (!is_array($items)) {
+      return [];
+    }
+    if ($this->entityRepository === NULL) {
+      throw new \LogicException('The entity translation repository is unavailable.');
+    }
+
+    $requested = [];
+    foreach ($items as $item) {
+      if (!is_array($item)) {
+        continue;
+      }
+      $id = filter_var($item['node_id'] ?? NULL, FILTER_VALIDATE_INT);
+      if ($id !== FALSE && $id > 0 && !isset($requested[$id])) {
+        $requested[$id] = $item;
+      }
+      if (count($requested) === 6) {
+        break;
+      }
+    }
+    $storage = $this->entityTypeManager->getStorage('node');
+    $loaded = $storage->loadMultiple(array_keys($requested));
+    $nodes = [];
+    foreach ($requested as $id => $item) {
+      if (!isset($loaded[$id])) {
+        continue;
+      }
+      $node = $this->entityRepository->getTranslationFromContext($loaded[$id]);
+      if ($node instanceof NodeInterface && in_array($node->bundle(), $bundles, TRUE)
+        && TravelDocument::isPublic($node) && $node->access('view', $this->currentUser)) {
+        $nodes[] = [$node, $item];
+      }
+    }
+    return $nodes;
   }
 
   /**

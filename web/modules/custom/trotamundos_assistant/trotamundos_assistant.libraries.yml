@@ -11,7 +11,7 @@ font:
       assets/css/trotamundos-assistant-font.css: {}
 
 assistant:
-  version: 1.0.2
+  version: 1.0.9
   js:
     assets/js/trotamundos-assistant.js: {}
   css:

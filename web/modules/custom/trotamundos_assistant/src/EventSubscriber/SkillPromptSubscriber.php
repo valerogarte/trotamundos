@@ -6,6 +6,7 @@ namespace Drupal\trotamundos_assistant\EventSubscriber;
 
 use Drupal\ai_assistant_api\Event\AiAssistantSystemRoleEvent;
 use Drupal\trotamundos_assistant\Plugin\AiFunctionCall\SkillAwareRagTool;
+use Drupal\trotamundos_assistant\Setup\TravelAssistantSetup;
 use Drupal\trotamundos_assistant\Skill\SkillMatcher;
 use Drupal\trotamundos_assistant\Skill\SkillTemplateRenderer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -195,6 +196,22 @@ final class SkillPromptSubscriber implements EventSubscriberInterface {
     }
 
     $context['rag_used'] = TRUE;
+    if (method_exists($tool, 'getStructuredOutput')) {
+      $output = $tool->getStructuredOutput();
+      if (is_array($output) && ($output['index'] ?? NULL) === TravelAssistantSetup::INDEX_ID) {
+        $context['retrieved_nodes'] = is_array($context['retrieved_nodes'] ?? NULL) ? $context['retrieved_nodes'] : [];
+        foreach (is_array($output['results'] ?? NULL) ? $output['results'] : [] as $result) {
+          if (!is_array($result) || ($result['entity_type'] ?? NULL) !== 'node') {
+            continue;
+          }
+          $id = filter_var($result['entity_id'] ?? NULL, FILTER_VALIDATE_INT);
+          $langcode = (string) ($result['langcode'] ?? '');
+          if ($id !== FALSE && $id > 0 && $langcode !== '') {
+            $context['retrieved_nodes'][$id][$langcode] = TRUE;
+          }
+        }
+      }
+    }
     if ($function_name === SkillAwareRagTool::FUNCTION_NAME && method_exists($tool, 'getContextValue')) {
       $selected_reference = trim((string) $tool->getContextValue('skill'));
       if ($this->skillMatcher->getByReference($selected_reference, TRUE) !== NULL) {

@@ -6,6 +6,13 @@
  */
 
 /**
+ * Implements hook_install().
+ */
+function trotamundos_assistant_install(): void {
+  \Drupal\trotamundos_assistant\Setup\TravelAssistantSetup::ensure();
+}
+
+/**
  * Implements hook_schema().
  */
 function trotamundos_assistant_schema(): array {
@@ -463,4 +470,11 @@ function trotamundos_assistant_migrate_usage_table(): void {
  */
 function trotamundos_assistant_update_11031(): void {
   trotamundos_assistant_migrate_usage_table();
+}
+
+/**
+ * Creates the travel assistant and its public-content index.
+ */
+function trotamundos_assistant_update_11032(): void {
+  \Drupal\trotamundos_assistant\Setup\TravelAssistantSetup::ensure();
 }

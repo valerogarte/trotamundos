@@ -119,7 +119,7 @@ final class SettingsForm extends ConfigFormBase {
     $form['conversation']['copy']['privacy_notice'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Aviso legal y privacidad'),
-      '#description' => $this->t('Texto mostrado junto al campo de consulta para usuarios finales. Úsalo para indicar tratamiento de datos, límites del asistente y recomendaciones de no enviar información sensible.'),
+      '#description' => $this->t('Texto mostrado junto al campo de consulta en la presentación estándar. En el buscador del tema Trotamundos se muestra un enlace a la política de privacidad si la página está disponible; si no, se conserva este aviso. Úsalo para indicar tratamiento de datos, límites del asistente y recomendaciones de no enviar información sensible.'),
       '#default_value' => $settings->get('privacy_notice') ?: $this->defaults->getPrivacyNotice(),
       '#required' => TRUE,
       '#rows' => 3,

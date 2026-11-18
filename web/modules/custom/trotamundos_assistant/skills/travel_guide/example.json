@@ -1,0 +1,11 @@
+{
+  "chat_reply": "He revisado la información disponible.",
+  "result": {
+    "answer": "Este destino ofrece planes descritos en la guía publicada.",
+    "sources": [
+      {
+        "node_id": 123
+      }
+    ]
+  }
+}

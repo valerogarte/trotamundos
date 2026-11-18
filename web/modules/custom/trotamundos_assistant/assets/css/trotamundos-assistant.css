@@ -21,6 +21,15 @@
   width: 100%;
 }
 
+.trotamundos-assistant,
+.trotamundos-assistant-target {
+  --trotamundos-assistant-border: var(--minsait-color-border);
+  --trotamundos-assistant-surface: var(--minsait-color-surface);
+  --trotamundos-assistant-muted-surface: rgba(var(--minsait-rgb-ceramica), 0.88);
+  --trotamundos-assistant-text: var(--minsait-color-text);
+  --trotamundos-assistant-accent: var(--minsait-color-pruno);
+}
+
 .trotamundos-assistant {
   --trotamundos-assistant-available-height: calc(100vh - 134px);
   --trotamundos-assistant-chat-width: 420px;
@@ -28,11 +37,6 @@
   --trotamundos-assistant-page-offset-top: 0px;
   --trotamundos-assistant-offset-top: var(--trotamundos-assistant-page-offset-top);
   --trotamundos-assistant-offset-left: 0px;
-  --trotamundos-assistant-border: var(--minsait-color-border);
-  --trotamundos-assistant-surface: var(--minsait-color-surface);
-  --trotamundos-assistant-muted-surface: rgba(var(--minsait-rgb-ceramica), 0.88);
-  --trotamundos-assistant-text: var(--minsait-color-text);
-  --trotamundos-assistant-accent: var(--minsait-color-pruno);
 
   position: fixed;
   z-index: 1000;
@@ -392,6 +396,28 @@
 .trotamundos-assistant__result-placeholder {
   margin: 0;
   color: var(--minsait-color-pruno);
+}
+
+/* Search assistant: the result replaces the main content, between the
+ * header and the footer. The page content stays in the DOM, hidden. */
+.has-trotamundos-assistant-main-result > :not([data-assistant-main-result]) {
+  display: none !important;
+}
+
+.trotamundos-assistant-target.trotamundos-assistant-main-result {
+  --trotamundos-assistant-result-padding: clamp(28px, 5vw, 56px) 0 clamp(48px, 7vw, 96px);
+}
+
+.trotamundos-assistant-main-result:focus {
+  outline: none;
+}
+
+.trotamundos-assistant--search .trotamundos-assistant__message-result-toggle {
+  display: block;
+  width: auto;
+  margin-block-start: 10px;
+  border-radius: 999px;
+  padding: 8px 16px;
 }
 
 .trotamundos-assistant-welcome {

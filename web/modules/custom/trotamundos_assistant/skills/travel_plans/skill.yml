@@ -1,0 +1,33 @@
+machine_name: travel_plans
+title: 'Buscar y recomendar planes'
+btn_responsive_title: 'Ver planes'
+group:
+  id: travel
+  label: Viajes
+theme:
+  variables:
+    intro: ''
+    plans: []
+    outro: ''
+handler:
+  class: 'Drupal\trotamundos_assistant\SkillLocal\TravelPlans\TravelPlansSkillHandler'
+  file: 'src/TravelPlansSkillHandler.php'
+assets:
+  css:
+    - css/travel_plans.css
+  dependencies:
+    - trotamundos_assistant/template.base
+dependencies:
+  modules:
+    - trotamundos_experiences
+chat_reply_fallback: 'Te muestro los planes que he encontrado.'
+description: 'Busca, recomienda o compara alojamientos, experiencias y paquetes publicados.'
+provider:
+  requires_rag: true
+  intent: 'Usar cuando el visitante busque, compare o pida recomendaciones de alojamientos, experiencias o paquetes del sitio.'
+  when_to_use:
+    - 'Busca planes por destino, estilo, compañía, duración o presupuesto y explica brevemente por qué encajan.'
+    - 'Para comparar planes, busca cada opción y muestra sus diferencias solo cuando estén documentadas.'
+    - 'Cada item debe llevar el node_id numérico exacto que aparece como ID de contenido en RAG; nunca inventes IDs, títulos, precios ni disponibilidad.'
+    - 'Si no hay planes que respondan a la petición, devuelve items vacío y explica que no hay resultados suficientes.'
+    - 'Los precios son desde y las fichas demo, fechas y reservas requieren confirmación; nunca afirmes disponibilidad garantizada.'

@@ -8,6 +8,7 @@
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\trotamundos_assistant\Plugin\Block\TrotamundosAssistantBlock;
 use Drupal\trotamundos_experiences\Setup\ProductTypes;
 
 /**
@@ -45,6 +46,12 @@ function trotamundos_preprocess_page(array &$variables): void {
   $variables['trotamundos_brand_guide_url'] = \Drupal::moduleHandler()->moduleExists('trotamundos_brand')
     ? Url::fromRoute('trotamundos_brand.guide')->toString()
     : NULL;
+  if (\Drupal::moduleHandler()->moduleExists('trotamundos_assistant')) {
+    $variables['tm_assistant'] = [
+      '#lazy_builder' => [TrotamundosAssistantBlock::class . '::buildSearch', []],
+      '#create_placeholder' => TRUE,
+    ];
+  }
   $variables['tm_cache'] = _trotamundos_cache(['config:trotamundos.settings', 'config:user.settings'], ['url.path', 'url.query_args', 'languages:language_interface', 'user.roles:authenticated']);
 
   if (\Drupal::hasService('trotamundos_experiences.repository')) {
@@ -170,6 +177,15 @@ function trotamundos_preprocess_trotamundos_esencia(array &$variables): void {
 function trotamundos_preprocess_trotamundos_ayuda(array &$variables): void {
   $variables['trotamundos_path'] = _trotamundos_path();
   $variables['tm'] = _trotamundos_site_data();
+}
+
+/**
+ * Supplies the site privacy link to the assistant embedded in the search.
+ */
+function trotamundos_preprocess_trotamundos_assistant(array &$variables): void {
+  if (!empty($variables['elements']['#search_inline'])) {
+    $variables['privacy_url'] = _trotamundos_site_data()['privacy_url'];
+  }
 }
 
 /**

@@ -1,0 +1,44 @@
+{#
+/**
+ * @file
+ * Assistant composer embedded in the shared search disclosure.
+ *
+ * A "trotaAI." title (site wordmark lettering) with the privacy link (info icon) and the message
+ * field: results are painted in the main content.
+ * The message list is kept for the script and shows only notices (errors,
+ * access messages or replies without a visual result). Escape or a click
+ * outside closes the panel.
+ */
+#}
+{% import '@trotamundos/components/icons.html.twig' as icons %}
+{% set access_allowed = elements['#access_allowed'] is not defined or elements['#access_allowed'] %}
+<div class="trotamundos-assistant trotamundos-assistant--search{% if not access_allowed %} is-access-denied{% endif %}" data-access-denied-message="{{ elements['#access_denied_message'] }}">
+  <div class="trotamundos-assistant__chat">
+    <div class="trotamundos-assistant__heading">
+      {# Same lettering as the site wordmark (trota·mundos.). #}
+      <h2 class="trotamundos-assistant__title" aria-label="Trota AI">trota<span class="trotamundos-assistant__title-italic">AI</span><span class="trotamundos-assistant__title-dot">.</span></h2>
+      {% if privacy_url %}
+        <a class="trotamundos-assistant__info" href="{{ privacy_url }}" title="{{ 'Política de privacidad'|t }}">{{ icons.icon('info') }}<span class="visually-hidden">{{ 'Política de privacidad del asistente'|t }}</span></a>
+      {% endif %}
+    </div>
+    <div class="trotamundos-assistant__configuration-error" role="alert" hidden></div>
+    <div class="trotamundos-assistant__conversation">
+      <div class="trotamundos-assistant__messages">
+        <div class="trotamundos-assistant__message trotamundos-assistant__message--assistant{% if not access_allowed %} trotamundos-assistant__message--notice{% endif %}">
+          {{ access_allowed ? elements['#welcome_message'] : elements['#access_denied_message'] }}
+        </div>
+      </div>
+    </div>
+    <form class="trotamundos-assistant__form">
+      <label class="visually-hidden" for="discovery-assistant-message">{{ 'Mensaje'|t }}</label>
+      <div class="trotamundos-assistant__composer">
+        <textarea class="trotamundos-assistant__input" id="discovery-assistant-message" name="message" rows="2" placeholder="{{ elements['#input_placeholder'] }}" disabled></textarea>
+        <button class="trotamundos-assistant__submit" type="submit" aria-label="{{ 'Enviar'|t }}" disabled>{{ icons.icon('arrow') }}</button>
+      </div>
+      {% if not privacy_url and elements['#privacy_notice'] %}
+        <p class="trotamundos-assistant__privacy-notice">{{ elements['#privacy_notice'] }}</p>
+      {% endif %}
+      <noscript><p class="trotamundos-assistant__privacy-notice">{{ 'Activa JavaScript para hablar con el asistente.'|t }}</p></noscript>
+    </form>
+  </div>
+</div>

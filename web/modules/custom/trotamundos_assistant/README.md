@@ -5,6 +5,25 @@ web. La interfaz usa un chat lateral colapsable y un contenedor de resultado
 externo donde Drupal renderiza respuestas visuales mediante templates, skills y
 acciones controladas.
 
+En el tema `trotamundos`, el buscador compartido presenta el mismo bloque como
+un panel compacto pegado a la parte superior de la página, con solo el campo de
+mensaje, el botón de envío y el enlace de privacidad (sin título, `Nuevo chat`
+ni aspa: se cierra con `Escape` o haciendo clic fuera). El HTML del resultado se
+pinta en el contenido principal (`result_target_selector`, por defecto
+`#main-content`) manteniendo header y footer, de modo que el panel no lo tapa:
+el contenido original de la página se oculta sin eliminarse y el header
+superpuesto de la home pasa a sólido mientras se ve el resultado. Encima del
+campo solo aparecen avisos: errores, mensajes de acceso y respuestas sin
+resultado visual; la respuesta se anuncia además a lectores de pantalla. El
+resultado queda ligado a la entrada del historial: `Atrás` devuelve la página
+original y, al volver con el navegador desde una ficha abierta desde el
+resultado, se restaura. Al recargar o en una visita nueva la página muestra
+siempre su propio contenido. Una búsqueda/filtro resuelto en la propia página
+(catálogo) devuelve el contenido original. El contexto de la conversación se
+conserva en el servidor entre mensajes; `/home-ai` conserva sus sugerencias y
+abre el asistente del buscador. En otros temas se mantiene la presentación
+lateral original.
+
 Idea base:
 
 ```text
@@ -18,7 +37,7 @@ persistencia, coste, auditoría y renderizado final.
 - Página pública `/home-ai` con el bloque `trotamundos_assistant`.
 - Bloque reutilizable en páginas del sitio mediante regiones Drupal.
 - Chat lateral colapsable con pestaña configurable y botón de nuevo chat.
-- Envío de mensajes por botón y por `Ctrl + Enter`.
+- Envío de mensajes por botón o `Enter`; `Ctrl`, `Cmd` o `Shift` + `Enter` añade un salto de línea.
 - Panel de resultado externo, identificado por selector CSS configurable.
 - El contenido original del panel externo se conserva en la carga inicial.
 - Integración con el assistant configurado en `trotamundos_assistant.settings`.
@@ -91,6 +110,7 @@ GET /home-ai
 Endpoints AJAX:
 
 ```text
+GET  /trotamundos-assistant/session-token
 POST /trotamundos-assistant/chat
 GET  /trotamundos-assistant/chat/history?thread_id={thread_id}
 POST /trotamundos-assistant/chat/reset
@@ -99,6 +119,9 @@ POST /trotamundos-assistant/skills/{machine_name}/{action}
 POST /trotamundos-assistant/cart/add
 GET  /trotamundos-assistant/cart/panel
 ```
+
+El endpoint de token inicia la sesión necesaria para visitantes anónimos y
+devuelve un token CSRF no almacenable en caché para las acciones del chat.
 
 Administración del módulo base:
 
@@ -150,7 +173,7 @@ Valores principales:
 | --- | --- | --- |
 | `welcome_message` | Mensaje inicial del asistente. | `Bienvenido a tu nueva manera de navegar. ¿Qué necesitas?` |
 | `input_placeholder` | Placeholder del campo donde el usuario escribe la consulta. | `Escribe tu consulta...` |
-| `privacy_notice` | Aviso legal y privacidad mostrado junto al campo de consulta. | `Al enviar una consulta aceptas que se procese para generar la respuesta del asistente. No incluyas datos personales, confidenciales o de pago.` |
+| `privacy_notice` | Aviso mostrado junto al campo en la presentación estándar; en el buscador del tema Trotamundos se usa un enlace a la política de privacidad, o este aviso si la página no está disponible. | `Al enviar una consulta aceptas que se procese para generar la respuesta del asistente. No incluyas datos personales, confidenciales o de pago.` |
 | `assistant_id` | Assistant de `ai_assistant_api` usado por el chat. | `minsait_buscador_nodes` |
 | `ai_assistant.roles` | Roles configurados en el AI Assistant seleccionado que pueden usar el asistente. Si no hay roles seleccionados, se permite el acceso a todos. | — |
 | `login_required_message` | Mensaje para usuarios anónimos sin acceso. | `Para usar el asistente de catálogo debes estar logado.` |
@@ -372,9 +395,16 @@ obligatorio.
 | Skill | Descripción |
 | --- | --- |
 | `default` | Respuesta general de reserva. |
+| `travel_plans` | Busca, recomienda y compara alojamientos, experiencias y paquetes publicados. |
+| `travel_guide` | Responde sobre destinos y guías con enlaces a los contenidos utilizados. |
 | `content_create` | Abre formularios de creación de entidades de contenido Drupal. |
 | `content_edit` | Busca contenido por título, tipo o ID y muestra formulario de edición si hay permisos. |
 | `user_profile` | Muestra el formulario de edición del perfil del usuario actual. |
+
+La configuración de viajes activa `default`, `travel_plans` y `travel_guide`.
+Las dos últimas requieren búsqueda RAG y solo muestran contenidos recuperados,
+publicados, accesibles de forma anónima y en el idioma activo del sitio. Los
+precios, fechas y reservas deben confirmarse en la ficha original.
 
 ### Ecommerce
 
@@ -586,16 +616,50 @@ sobrescribas mientras el servicio esté en uso. Para conectar Drupal:
 - Crea la key `openai` con proveedor `Environment` y variable
   `OPENAI_API_KEY`, y selecciónala en el proveedor OpenAI.
 - Define una credencial OpenAI nueva en el entorno privado de DDEV, por ejemplo
-  en `.ddev/config.local.yaml`, y reinicia el proyecto para que PHP la lea.
-  No guardes credenciales en el repositorio ni las pegues en documentación.
+  mediante `web_environment` en `.ddev/config.local.yaml`, y reinicia el
+  proyecto para que PHP la lea. Ese archivo está excluido de Git, pero debe
+  mantenerse accesible solo para quien administre el entorno. No guardes
+  credenciales en el repositorio ni las pegues en documentación.
 
 La integración usa `ai_vdb_provider_qdrant` y el módulo independiente
 `ai_search` 1.3.0-alpha6. Ambos deben evaluarse antes de un uso en producción.
-El modelo de embeddings previsto es `text-embedding-3-small` (1536 dimensiones).
-El assistant, el agente y el índice deben configurarse y verificarse por
-separado; disponer de Qdrant no significa que el contenido ya esté indexado.
-Antes de indexar, limita el contenido a datos publicados y autorizados y revisa
-los campos que se enviarán al proveedor externo.
+La instalación y la actualización `11032` crean, si no existen, el assistant,
+el agente y el índice `trotamundos_travel` y el servidor `trotamundos_qdrant`,
+sin sustituir su configuración existente. La colección es
+`juantrotamundos_public_travel_v1`, con `text-embedding-3-small` y 1536
+dimensiones. El modelo de chat configurado es `gpt-6-luna`: confirma que la
+cuenta tiene acceso a él y admite llamadas a herramientas, o selecciona un
+modelo compatible antes de usar el chat.
+
+El processor `trotamundos_assistant_travel_document` limita el índice a nodos
+publicados y visibles para visitantes anónimos de alojamiento, experiencia,
+paquete, destino, guía, página básica y establecimiento. Envía al proveedor
+externo el título, identificador y campos públicos seleccionados, como
+descripciones, destinos, duración, condiciones, fechas y precio orientativo.
+Revisa estos datos y los costes de embeddings antes de indexar.
+
+La indexación automática se instala desactivada (`cron_limit: 0` e
+`index_directly: false`). Una vez configurada la clave y validado el proveedor,
+indexa manualmente y comprueba el resultado:
+
+```bash
+ddev exec drush search-api:status trotamundos_travel
+ddev exec drush search-api:index trotamundos_travel --batch-size=20
+ddev exec drush search-api:status trotamundos_travel
+```
+
+Confirma que no quedan elementos pendientes y prueba en `/home-ai` búsquedas de
+planes, guías, consultas sin resultados y continuidad de conversación. Solo
+después, si se desea indexación periódica, activa el procesamiento por cron
+con un tamaño de lote apropiado y asegúrate de que Drupal cron esté programado:
+
+```bash
+ddev exec drush config:set --input-format=yaml search_api.index.trotamundos_travel options.cron_limit 20 -y
+```
+
+Guardar directamente los cambios de contenido sigue sin indexarlos
+inmediatamente. La mera disponibilidad de Qdrant no implica que el contenido
+esté indexado ni que el chat haya sido probado con el proveedor real.
 
 ### Despliegues heredados con pgvector
 
@@ -741,8 +805,8 @@ ddev drush cr
 Verificar la disponibilidad de las keys sin mostrar sus valores:
 
 ```bash
-ddev drush ev '$key = \Drupal::service("key.repository")->getKey("openai"); echo $key && $key->getKeyValue() ? "openai ok" : "openai missing";'
-ddev drush ev '$key = \Drupal::service("key.repository")->getKey("qdrant_local"); echo $key && $key->getKeyValue() ? "qdrant ok" : "qdrant missing";'
+ddev exec drush ev 'echo \Drupal::service("key.repository")->getKey("openai")?->getKeyValue() ? "openai ok" : "openai missing";'
+ddev exec drush ev 'echo \Drupal::service("key.repository")->getKey("qdrant_local")?->getKeyValue() ? "qdrant ok" : "qdrant missing";'
 ```
 
 Validación de calidad del proyecto:
@@ -757,13 +821,21 @@ Tests incluidos:
 
 ```text
 tests/dependency-status.php
+tests/travel-skills.php
+tests/travel-indexing.php
 ```
 
-Ejecutar la comprobación de estado con Qdrant local configurado:
+Ejecutar las comprobaciones con Qdrant local configurado:
 
 ```bash
-ddev drush php:script modules/custom/trotamundos_assistant/tests/dependency-status.php
+ddev exec drush php:script web/modules/custom/trotamundos_assistant/tests/dependency-status.php
+ddev exec drush php:script web/modules/custom/trotamundos_assistant/tests/travel-skills.php
+ddev exec drush php:script web/modules/custom/trotamundos_assistant/tests/travel-indexing.php
 ```
+
+La última prueba usa un proveedor OpenAI simulado en loopback y una colección
+temporal de Qdrant; no indexa contenido en la colección real. Los errores 503
+del proveedor simulado durante la prueba son deliberados.
 
 ## Evolución Recomendada
 

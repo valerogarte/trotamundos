@@ -49,6 +49,8 @@ services:
       - '@entity_field.manager'
       - '@?commerce_cart.cart_provider'
       - '@?commerce_order.order_total_summary'
+      - '@entity.repository'
+      - '@?trotamundos_experiences.repository'
 
   trotamundos_assistant.skill_class_loader:
     class: Drupal\trotamundos_assistant\Skill\SkillClassLoader

@@ -1,0 +1,13 @@
+{
+  "chat_reply": "Te muestro algunas opciones para tu viaje.",
+  "result": {
+    "intro": "Estas opciones podrían encajar con lo que buscas.",
+    "items": [
+      {
+        "node_id": 123,
+        "reason": "La ficha describe una experiencia de naturaleza."
+      }
+    ],
+    "outro": "Consulta la ficha para confirmar precio, fechas y condiciones."
+  }
+}

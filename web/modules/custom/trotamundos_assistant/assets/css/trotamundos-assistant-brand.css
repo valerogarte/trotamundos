@@ -1,21 +1,21 @@
 :root {
   /* Host theme colours (--color-primary, --foreground, --border) win when the
    * active theme exposes them; the Minsait palette stays as fallback. */
-  --minsait-color-pruno: var(--color-primary, #480e2a);
-  --minsait-color-pruno-dark: color-mix(in srgb, var(--color-primary, #480e2a) 78%, #000000);
+  --minsait-color-pruno: var(--color-primary, var(--selva, #480e2a));
+  --minsait-color-pruno-dark: color-mix(in srgb, var(--color-primary, var(--selva, #480e2a)) 78%, #000000);
   --minsait-color-ceramica: var(--border, #e3e2da);
-  --minsait-color-fucsia: var(--color-primary, #ff0054);
+  --minsait-color-fucsia: var(--color-primary, var(--selva, #ff0054));
   --minsait-color-white: #ffffff;
   --minsait-rgb-pruno: 72, 14, 42;
   --minsait-rgb-pruno-dark: 38, 7, 23;
   --minsait-rgb-ceramica: 227, 226, 218;
   --minsait-rgb-fucsia: 255, 0, 84;
   --minsait-rgb-white: 255, 255, 255;
-  --minsait-color-text: var(--foreground, #260717);
+  --minsait-color-text: var(--foreground, var(--carbon, #260717));
   --minsait-color-text-soft: var(--minsait-color-pruno);
   --minsait-color-border: var(--minsait-color-ceramica);
   --minsait-color-surface: var(--minsait-color-white);
   --minsait-color-surface-soft: rgba(var(--minsait-rgb-ceramica), 0.38);
-  --minsait-color-surface-accent: rgba(var(--minsait-rgb-fucsia), 0.06);
+  --minsait-color-surface-accent: color-mix(in srgb, var(--minsait-color-fucsia) 6%, transparent);
   --minsait-color-shadow: rgba(var(--minsait-rgb-pruno-dark), 0.12);
 }

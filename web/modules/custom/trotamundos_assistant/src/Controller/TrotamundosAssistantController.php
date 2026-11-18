@@ -24,16 +24,19 @@ use Drupal\ai\OperationType\Chat\ChatMessage;
 use Drupal\ai_assistant_api\AiAssistantApiRunner;
 use Drupal\ai_assistant_api\Data\UserMessage;
 use Drupal\ai_assistant_api\Entity\AiAssistant;
+use Drupal\key\KeyRepositoryInterface;
 use Drupal\trotamundos_assistant\Access\AssistantAccessManager;
 use Drupal\trotamundos_assistant\Agent\AgentResponseGuard;
 use Drupal\trotamundos_assistant\Config\TrotamundosAssistantDefaults;
 use Drupal\trotamundos_assistant\EventSubscriber\SkillPromptSubscriber;
+use Drupal\trotamundos_assistant\Setup\TravelAssistantSetup;
 use Drupal\trotamundos_assistant\Skill\SkillMatcher;
 use Drupal\trotamundos_assistant\Skill\SkillTemplateRenderer;
 use Drupal\trotamundos_assistant\Usage\UsageLogger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Handles the embedded Trotamundos Assistant frontend endpoints.
@@ -88,6 +91,7 @@ final class TrotamundosAssistantController extends ControllerBase {
     private readonly FloodInterface $flood,
     private readonly AssistantAccessManager $accessManager,
     private readonly TrotamundosAssistantDefaults $defaults,
+    private readonly KeyRepositoryInterface $keyRepository,
   ) {
   }
 
@@ -109,6 +113,7 @@ final class TrotamundosAssistantController extends ControllerBase {
       $container->get('flood'),
       $container->get('trotamundos_assistant.access_manager'),
       $container->get('trotamundos_assistant.defaults'),
+      $container->get('key.repository'),
     );
   }
 
@@ -116,9 +121,11 @@ final class TrotamundosAssistantController extends ControllerBase {
    * Builds the Home AI page.
    */
   public function home(): array {
-    $block = $this->blockManager->createInstance('trotamundos_assistant');
+    $search_assistant = \Drupal::theme()->getActiveTheme()->getName() === 'trotamundos';
+    $block = $this->blockManager->createInstance('trotamundos_assistant', $search_assistant ? ['search_inline' => TRUE] : []);
+    $assistant = $block->build();
 
-    return [
+    $build = [
       '#attributes' => [
         'class' => [
           'trotamundos-assistant-page',
@@ -128,10 +135,34 @@ final class TrotamundosAssistantController extends ControllerBase {
         '#type' => 'container',
         '#attributes' => [
           'id' => 'trotamundos-assistant-result-panel',
+          'class' => ['trotamundos-assistant-target'],
         ],
+        'welcome' => $assistant['result'],
       ],
-      'trotamundos_assistant' => $block->build(),
     ];
+    if (!$search_assistant) {
+      $build['trotamundos_assistant'] = $assistant;
+    }
+
+    return $build;
+  }
+
+  /**
+   * Creates a session-bound token even for a newly arrived anonymous visitor.
+   */
+  public function sessionToken(Request $request): Response {
+    if (!$this->isAssistantAccessAllowed()) {
+      return new Response('', 403, ['Cache-Control' => 'private, no-store']);
+    }
+
+    if ($this->currentUser()->isAnonymous()) {
+      $request->getSession()->set('trotamundos_assistant_anonymous', TRUE);
+    }
+
+    return new Response($this->csrfToken->get(CsrfRequestHeaderAccessCheck::TOKEN_KEY), 200, [
+      'Content-Type' => 'text/plain; charset=UTF-8',
+      'Cache-Control' => 'private, no-store',
+    ]);
   }
 
   /**
@@ -186,6 +217,17 @@ final class TrotamundosAssistantController extends ControllerBase {
       ], 500);
     }
 
+    $assistant = $this->assistantRunner->getAssistant();
+    if ($assistant?->id() === TravelAssistantSetup::ASSISTANT_ID && $assistant->get('llm_provider') === 'openai') {
+      $key_id = trim((string) $this->configFactoryService->get('ai_provider_openai.settings')->get('api_key'));
+      $key = $key_id !== '' ? $this->keyRepository->getKey($key_id) : NULL;
+      if (!$key || trim((string) $key->getKeyValue()) === '') {
+        $this->getLogger('trotamundos_assistant')->error('The configured OpenAI key is unavailable; the chat request was not sent.');
+        $error_message = $this->buildConfiguredAssistantErrorMessage(new AiSetupFailureException('The OpenAI key is unavailable.'));
+        return new JsonResponse(['error' => $error_message, 'reply' => $error_message], 503);
+      }
+    }
+
     $this->registerChatRequest($request);
 
     $this->assistantRunner->setThrowException(TRUE);
@@ -211,6 +253,12 @@ final class TrotamundosAssistantController extends ControllerBase {
       is_array($session['trotamundos_assistant_results'] ?? NULL) ? $session['trotamundos_assistant_results'] : [],
       $last_result_reply,
     );
+    $previous_evidence = $this->getTravelEvidence($session, $provider_context_reply);
+    $provider_context_reply = $this->skillTemplateRenderer->restrictTravelReferences(
+      $this->skillMatcher->matchProviderSelection($provider_context_reply),
+      $provider_context_reply,
+      $previous_evidence,
+    );
     $provider_message = $this->skillTemplateRenderer->buildProviderMessage(
       $skills,
       $message,
@@ -226,6 +274,7 @@ final class TrotamundosAssistantController extends ControllerBase {
       'selection_conflict' => FALSE,
       'rag_used' => FALSE,
       'force_rag' => FALSE,
+      'retrieved_nodes' => $previous_evidence,
     ]);
 
     $this->clearAgentExecutionState($this->assistantRunner->getThreadsKey());
@@ -281,6 +330,13 @@ final class TrotamundosAssistantController extends ControllerBase {
         $assistant_reply = '';
       }
 
+      $prompt_context = $request->attributes->get(SkillPromptSubscriber::REQUEST_ATTRIBUTE);
+      $travel_evidence = is_array($prompt_context['retrieved_nodes'] ?? NULL) ? $prompt_context['retrieved_nodes'] : [];
+      $assistant_reply = $this->skillTemplateRenderer->restrictTravelReferences(
+        $this->skillMatcher->matchProviderSelection($assistant_reply),
+        $assistant_reply,
+        $travel_evidence,
+      );
       $this->assistantRunner->setAssistantMessage($assistant_reply);
       $this->usageLogger->storeResponseText($assistant_reply);
       $usage = $this->usageLogger->endCall();
@@ -290,8 +346,8 @@ final class TrotamundosAssistantController extends ControllerBase {
         $fallback_payload = $this->buildAssistantLimitFallbackPayload($fallback_reply);
         $skill = $this->skillMatcher->matchProviderSelection($fallback_payload);
         $rendered_result = $this->skillTemplateRenderer->renderWithAttachments($skill, $fallback_payload);
-        $this->replaceLastUserMessage($this->assistantRunner->getThreadsKey(), $message);
-        $this->replaceLastAssistantMessage($this->assistantRunner->getThreadsKey(), $fallback_reply);
+        $this->replaceLastMessage($this->assistantRunner->getThreadsKey(), 'user', $message);
+        $this->replaceLastMessage($this->assistantRunner->getThreadsKey(), 'assistant', $fallback_reply);
         $this->storeResultReply($this->assistantRunner->getThreadsKey(), $fallback_payload);
 
         $this->getLogger('trotamundos_assistant')->warning('The assistant returned an empty response. This usually means the agent exhausted its reasoning or tool loop budget.');
@@ -328,8 +384,8 @@ final class TrotamundosAssistantController extends ControllerBase {
           $chat_reply = $this->buildConciseReply($skill, $assistant_reply);
         }
         $chat_reply = $this->limitReply($chat_reply, self::OUT_OF_SCOPE_REPLY_LENGTH);
-        $this->replaceLastUserMessage($this->assistantRunner->getThreadsKey(), $message);
-        $this->replaceLastAssistantMessage($this->assistantRunner->getThreadsKey(), $chat_reply);
+        $this->replaceLastMessage($this->assistantRunner->getThreadsKey(), 'user', $message);
+        $this->replaceLastMessage($this->assistantRunner->getThreadsKey(), 'assistant', $chat_reply);
 
         // The stored result reply is deliberately untouched so the active
         // product collection survives the off-topic turn.
@@ -346,9 +402,9 @@ final class TrotamundosAssistantController extends ControllerBase {
 
       $rendered_result = $this->skillTemplateRenderer->renderWithAttachments($skill, $assistant_reply);
       $chat_reply = $this->buildConciseReply($skill, $assistant_reply);
-      $this->replaceLastUserMessage($this->assistantRunner->getThreadsKey(), $message);
-      $this->replaceLastAssistantMessage($this->assistantRunner->getThreadsKey(), $chat_reply);
-      $this->storeResultReply($this->assistantRunner->getThreadsKey(), $assistant_reply);
+      $this->replaceLastMessage($this->assistantRunner->getThreadsKey(), 'user', $message);
+      $this->replaceLastMessage($this->assistantRunner->getThreadsKey(), 'assistant', $chat_reply);
+      $this->storeResultReply($this->assistantRunner->getThreadsKey(), $assistant_reply, $travel_evidence);
 
       return new JsonResponse([
         'reply' => $chat_reply,
@@ -363,7 +419,7 @@ final class TrotamundosAssistantController extends ControllerBase {
       ]);
     }
     catch (\Throwable $throwable) {
-      $this->replaceLastUserMessage($this->assistantRunner->getThreadsKey(), $message);
+      $this->replaceLastMessage($this->assistantRunner->getThreadsKey(), 'user', $message);
       $this->getLogger('trotamundos_assistant')->error('The embedded assistant failed: @message', [
         '@message' => $throwable->getMessage(),
       ]);
@@ -499,12 +555,17 @@ final class TrotamundosAssistantController extends ControllerBase {
 
     $this->sanitizeThreadHistory($thread_id);
     $session = $this->assistantRunner->getTempStore()->get($thread_id) ?? [];
-    $messages = $this->normalizeHistoryMessages($session['messages'] ?? []);
+    $messages = $this->normalizeHistoryMessages($this->assistantRunner->getMessageHistory());
     $last_assistant_message = $this->getLastMessageByRole($messages, 'assistant');
     $last_result_reply = $this->getLastResultReply($session);
     $skill = $last_result_reply
       ? $this->skillMatcher->matchProviderSelection($last_result_reply)
       : NULL;
+    $last_result_reply = $this->skillTemplateRenderer->restrictTravelReferences(
+      $skill,
+      $last_result_reply,
+      $this->getTravelEvidence($session, $last_result_reply),
+    );
     $rendered_result = $last_assistant_message
       ? $this->skillTemplateRenderer->renderWithAttachments($skill, $last_result_reply ?: $last_assistant_message['message'])
       : ['html' => '', 'ajax_commands' => []];
@@ -559,11 +620,16 @@ final class TrotamundosAssistantController extends ControllerBase {
 
     if ($thread_id !== '') {
       try {
+        $memory = $this->assistantRunner->getAssistant()?->getChatMemory();
+        if ($memory !== NULL && $memory->hasThread($thread_id)) {
+          $memory->deleteThread($thread_id);
+        }
         $this->assistantRunner->getTempStore()->delete($thread_id);
         $this->clearAgentExecutionState($thread_id);
       }
-      catch (\Throwable) {
-        // Reset is best-effort: the frontend can safely start a new thread.
+      catch (\Throwable $throwable) {
+        $this->getLogger('trotamundos_assistant')->error('Could not reset the conversation: @message', ['@message' => $throwable->getMessage()]);
+        return new JsonResponse(['error' => $this->t('No se pudo reiniciar la conversación. Inténtalo de nuevo.')], 500);
       }
     }
 
@@ -578,19 +644,33 @@ final class TrotamundosAssistantController extends ControllerBase {
 
   /**
    * Generates a non-reusable thread id for a new embedded conversation.
+   *
+   * Kept short on purpose: ai_agents stores the agent status in the private
+   * tempstore under "{owner}:ai_agents_status_updates_{thread}", and for
+   * anonymous visitors the owner is the 43-character session id. The
+   * key_value_expire.name column holds 128 characters, so the thread id must
+   * stay under 59 ("trota_{uid}_{32 hex}" is about 40).
    */
   private function generateThreadId(): string {
     $uid = (int) $this->currentUser()->id();
     $uuid = str_replace('-', '', (new Php())->generate());
 
-    return sprintf('trotamundos_assistant_thread_%d_%s', $uid, $uuid);
+    return sprintf('trota_%d_%s', $uid, $uuid);
   }
 
   /**
    * Validates that a thread ID matches the expected module format.
+   *
+   * The former long format is still accepted for authenticated users, whose
+   * owner key is short enough; anonymous visitors get a new thread instead.
    */
   private function isValidThreadId(string $thread_id): bool {
-    return (bool) preg_match('/^trotamundos_assistant_thread_\d+_[a-f0-9]{32}$/', $thread_id);
+    if (preg_match('/^trota_\d{1,12}_[a-f0-9]{32}$/', $thread_id)) {
+      return TRUE;
+    }
+
+    return $this->currentUser()->isAuthenticated()
+      && (bool) preg_match('/^trotamundos_assistant_thread_\d+_[a-f0-9]{32}$/', $thread_id);
   }
 
   /**
@@ -793,29 +873,29 @@ final class TrotamundosAssistantController extends ControllerBase {
    */
   private function sanitizeThreadHistory(string $thread_id): void {
     $session = $this->assistantRunner->getTempStore()->get($thread_id) ?? [];
-    $changed = FALSE;
-    $messages = is_array($session['messages'] ?? NULL) ? $session['messages'] : [];
-    foreach ($messages as $index => $stored_message) {
-      if (!is_array($stored_message)) {
-        continue;
-      }
-
-      $role = (string) ($stored_message['role'] ?? '');
-      $text = (string) ($stored_message['message'] ?? '');
+    $memory = $this->assistantRunner->getAssistant()?->getChatMemory();
+    $messages = $memory?->loadMessages($thread_id) ?? [];
+    $messages_changed = FALSE;
+    foreach ($messages as $stored_message) {
+      $role = $stored_message->getRole();
+      $text = $stored_message->getText();
       if (!$this->containsInternalSkillInstructions($text)) {
         continue;
       }
 
       if ($role === 'user') {
-        $session['messages'][$index]['message'] = $this->stripInternalSkillInstructions($text);
+        $stored_message->setText($this->stripInternalSkillInstructions($text));
       }
       elseif ($role === 'assistant') {
-        $session['messages'][$index]['message'] = (string) $this->t('No se pudo procesar la respuesta anterior. Vuelve a enviar la consulta.');
+        $stored_message->setText((string) $this->t('No se pudo procesar la respuesta anterior. Vuelve a enviar la consulta.'));
       }
       else {
         continue;
       }
-      $changed = TRUE;
+      $messages_changed = TRUE;
+    }
+    if ($messages_changed) {
+      $memory->saveMessages($thread_id, $messages);
     }
 
     if (is_array($session['trotamundos_assistant_results'] ?? NULL)) {
@@ -826,12 +906,8 @@ final class TrotamundosAssistantController extends ControllerBase {
       ));
       if ($clean_results !== $session['trotamundos_assistant_results']) {
         $session['trotamundos_assistant_results'] = $clean_results;
-        $changed = TRUE;
+        $this->assistantRunner->getTempStore()->set($thread_id, $session);
       }
-    }
-
-    if ($changed) {
-      $this->assistantRunner->getTempStore()->set($thread_id, $session);
     }
   }
 
@@ -866,36 +942,19 @@ final class TrotamundosAssistantController extends ControllerBase {
   }
 
   /**
-   * Replaces the last stored user message with the visible chat text.
+   * Replaces the last stored message of a role with the visible chat text.
    */
-  private function replaceLastUserMessage(string $thread_id, string $message): void {
-    $session = $this->assistantRunner->getTempStore()->get($thread_id) ?? [];
-    if (empty($session['messages']) || !is_array($session['messages'])) {
+  private function replaceLastMessage(string $thread_id, string $role, string $text): void {
+    $memory = $this->assistantRunner->getAssistant()?->getChatMemory();
+    if ($memory === NULL) {
       return;
     }
 
-    for ($index = count($session['messages']) - 1; $index >= 0; $index--) {
-      if (($session['messages'][$index]['role'] ?? '') === 'user') {
-        $session['messages'][$index]['message'] = $message;
-        $this->assistantRunner->getTempStore()->set($thread_id, $session);
-        return;
-      }
-    }
-  }
-
-  /**
-   * Replaces the last stored assistant message with the concise chat answer.
-   */
-  private function replaceLastAssistantMessage(string $thread_id, string $chat_reply): void {
-    $session = $this->assistantRunner->getTempStore()->get($thread_id) ?? [];
-    if (empty($session['messages']) || !is_array($session['messages'])) {
-      return;
-    }
-
-    for ($index = count($session['messages']) - 1; $index >= 0; $index--) {
-      if (($session['messages'][$index]['role'] ?? '') === 'assistant') {
-        $session['messages'][$index]['message'] = $chat_reply;
-        $this->assistantRunner->getTempStore()->set($thread_id, $session);
+    $messages = $memory->loadMessages($thread_id);
+    for ($index = count($messages) - 1; $index >= 0; $index--) {
+      if ($messages[$index]->getRole() === $role) {
+        $messages[$index]->setText($text);
+        $memory->saveMessages($thread_id, $messages);
         return;
       }
     }
@@ -904,16 +963,33 @@ final class TrotamundosAssistantController extends ControllerBase {
   /**
    * Stores the full assistant answer separately for result reconstruction.
    */
-  private function storeResultReply(string $thread_id, string $assistant_reply): void {
+  private function storeResultReply(string $thread_id, string $assistant_reply, array $travel_evidence = []): void {
     $session = $this->assistantRunner->getTempStore()->get($thread_id) ?? [];
     $session['trotamundos_assistant_results'] ??= [];
     $session['trotamundos_assistant_results'][] = [
       'reply' => $assistant_reply,
       'timestamp' => $this->time->getRequestTime(),
+      'travel_evidence' => $travel_evidence,
     ];
     $session['trotamundos_assistant_results'] = array_slice($session['trotamundos_assistant_results'], -20);
 
     $this->assistantRunner->getTempStore()->set($thread_id, $session);
+  }
+
+  /**
+   * Gets the server-recorded search evidence for a stored result.
+   *
+   * @return array<int, array<string, bool>>
+   *   Retrieved node IDs and language codes.
+   */
+  private function getTravelEvidence(array $session, string $reply): array {
+    $results = is_array($session['trotamundos_assistant_results'] ?? NULL) ? $session['trotamundos_assistant_results'] : [];
+    foreach (array_reverse($results) as $result) {
+      if (is_array($result) && ($result['reply'] ?? NULL) === $reply) {
+        return is_array($result['travel_evidence'] ?? NULL) ? $result['travel_evidence'] : [];
+      }
+    }
+    return [];
   }
 
   /**

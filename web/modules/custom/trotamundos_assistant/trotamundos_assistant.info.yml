@@ -8,7 +8,11 @@ configure: trotamundos_assistant.overview
 dependencies:
   - ai:ai_assistant_api
   - ai:ai_search
+  - ai_agents:ai_agents
+  - ai_provider_openai:ai_provider_openai
+  - ai_vdb_provider_qdrant:ai_vdb_provider_qdrant
   - drupal:text
   - drupal:user
   - key:key
   - search_api:search_api
+  - trotamundos_experiences:trotamundos_experiences

@@ -9,6 +9,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\trotamundos_assistant\Access\AssistantAccessManager;
@@ -25,7 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
   admin_label: new TranslatableMarkup('Trotamundos Assistant'),
   category: new TranslatableMarkup('Minsait')
 )]
-final class TrotamundosAssistantBlock extends BlockBase implements ContainerFactoryPluginInterface {
+final class TrotamundosAssistantBlock extends BlockBase implements ContainerFactoryPluginInterface, TrustedCallbackInterface {
 
   /**
    * Constructs a TrotamundosAssistantBlock instance.
@@ -62,14 +63,31 @@ final class TrotamundosAssistantBlock extends BlockBase implements ContainerFact
   }
 
   /**
+   * Builds the search assistant outside the shared page cache.
+   */
+  public static function buildSearch(): array {
+    return \Drupal::service('plugin.manager.block')
+      ->createInstance('trotamundos_assistant', ['search_inline' => TRUE])
+      ->build();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function trustedCallbacks(): array {
+    return ['buildSearch'];
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function build(): array {
+    $search_inline = !empty($this->configuration['search_inline']);
     $endpoint = Url::fromRoute('trotamundos_assistant.chat')->toString();
     $history_endpoint = Url::fromRoute('trotamundos_assistant.chat_history')->toString();
     $reset_endpoint = Url::fromRoute('trotamundos_assistant.chat_reset')->toString();
     $access_allowed = $this->isAssistantAccessAllowed();
-    if ($access_allowed && $this->currentUser->isAnonymous()) {
+    if (!$search_inline && $access_allowed && $this->currentUser->isAnonymous()) {
       $request = $this->requestStack->getCurrentRequest();
       if ($request && $request->hasSession()) {
         $request->getSession()->set('trotamundos_assistant_anonymous', TRUE);
@@ -96,7 +114,8 @@ final class TrotamundosAssistantBlock extends BlockBase implements ContainerFact
     $libraries = array_values(array_unique($libraries));
 
     return [
-      '#theme' => 'trotamundos_assistant',
+      '#theme' => $search_inline ? 'trotamundos_assistant__search' : 'trotamundos_assistant',
+      '#search_inline' => $search_inline,
       '#welcome_message' => $welcome_message,
       '#input_placeholder' => $input_placeholder,
       '#privacy_notice' => $privacy_notice,
@@ -105,33 +124,33 @@ final class TrotamundosAssistantBlock extends BlockBase implements ContainerFact
       '#desktop_always_open' => $desktop_always_open,
       '#toggle_label' => $toggle_label,
       '#chat_logo_path' => $chat_logo_path,
-      '#configuration_error' => $result_target_selector === ''
+      '#configuration_error' => !$search_inline && $result_target_selector === ''
         ? $this->t('Falta configurar el selector del panel de resultado del asistente.')
         : '',
       'result' => [
         '#theme' => 'trotamundos_assistant_welcome',
-        '#title' => $this->t('Asistente de catálogo'),
+        '#title' => $this->t('Tu asistente de viaje'),
         '#intro' => $access_allowed
-          ? $this->t('Busca productos, compara opciones y prepara tu compra desde una conversación sencilla.')
+          ? $this->t('Descubre lugares y planes de Colombia de la mano de comunidades locales.')
           : $access_denied_message,
         '#features' => $access_allowed ? [
           [
-            'label' => $this->t('Buscar'),
-            'text' => $this->t('Encuentra productos por categoría, marca, precio o características.'),
+            'label' => $this->t('Descubrir'),
+            'text' => $this->t('Encuentra alojamientos, experiencias y paquetes según tus intereses.'),
           ],
           [
-            'label' => $this->t('Comparar'),
-            'text' => $this->t('Contrasta alternativas del catálogo antes de decidir.'),
+            'label' => $this->t('Orientarte'),
+            'text' => $this->t('Consulta destinos y guías publicados en el sitio.'),
           ],
           [
-            'label' => $this->t('Comprar'),
-            'text' => $this->t('Revisa productos y prepara acciones de carrito cuando quieras avanzar.'),
+            'label' => $this->t('Preparar'),
+            'text' => $this->t('Revisa cada ficha para confirmar precios, fechas y condiciones.'),
           ],
         ] : [],
         '#suggestions' => $access_allowed ? [
-          $this->t('Recomiéndame móviles por menos de 500 euros'),
-          $this->t('Compara el iPhone 15 con una alternativa similar'),
-          $this->t('Enséñame productos con buena batería'),
+          $this->t('Recomiéndame experiencias de naturaleza en Antioquia'),
+          $this->t('¿Qué alojamientos hay para viajar en pareja?'),
+          $this->t('Cuéntame sobre los destinos de café y tradición'),
         ] : [],
       ],
       '#access_allowed' => $access_allowed,
@@ -143,6 +162,7 @@ final class TrotamundosAssistantBlock extends BlockBase implements ContainerFact
             'endpoint' => $endpoint,
             'historyEndpoint' => $history_endpoint,
             'resetEndpoint' => $reset_endpoint,
+            'csrfTokenEndpoint' => Url::fromRoute('trotamundos_assistant.session_token')->toString(),
             'welcomeMessage' => $welcome_message,
             'accessAllowed' => $access_allowed,
             'resultTargetSelector' => $result_target_selector,

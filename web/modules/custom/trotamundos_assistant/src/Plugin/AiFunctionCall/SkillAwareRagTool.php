@@ -8,6 +8,7 @@ use Drupal\Core\Plugin\Context\ContextDefinition;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\ai\Attribute\FunctionCall;
 use Drupal\ai_search\Plugin\AiFunctionCall\RagTool;
+use Drupal\search_api\SearchApiException;
 
 /**
  * RAG search that carries the selected Trotamundos Assistant skill between agent loops.
@@ -70,7 +71,48 @@ final class SkillAwareRagTool extends RagTool {
    */
   public function execute(): void {
     $this->skillReference = trim((string) $this->getContextValue('skill'));
-    parent::execute();
+    $this->index = (string) $this->getContextValue('index');
+    $this->searchString = trim((string) $this->getContextValue('search_string'));
+    $amount = max(1, min(20, (int) $this->getContextValue('amount')));
+    $min_score = (float) $this->getContextValue('min_score');
+    $this->results = [];
+
+    $index = $this->entityTypeManager->getStorage('search_api_index')->load($this->index);
+    if (!$index || !$index->status()) {
+      throw new SearchApiException('The configured search index is unavailable.');
+    }
+    if ($this->searchString === '') {
+      throw new SearchApiException('A search query is required.');
+    }
+
+    $query = $index->query(['limit' => $amount]);
+    $query->setOption('search_api_ai_get_chunks_result', TRUE);
+    $query->keys($this->searchString);
+    $results = $query->execute();
+    if (in_array($results->getExtraData('reason_for_finish'), ['client_error', 'search_error'], TRUE)) {
+      throw new SearchApiException('The vector search backend could not complete the query.');
+    }
+
+    $formatted = [];
+    foreach ($results->getResultItems() as $result) {
+      if ($min_score > $result->getScore()) {
+        continue;
+      }
+      $content = (string) $result->getExtraData('content');
+      [$entity_type, $entity_id, $langcode] = $this->parseDrupalEntityId((string) $result->getExtraData('drupal_entity_id'));
+      $this->results[] = [
+        'entity_type' => $entity_type,
+        'entity_id' => $entity_id,
+        'langcode' => $langcode,
+        'score' => $result->getScore(),
+        'content' => $content,
+      ];
+      $formatted[] = 'Search result: #' . count($this->results) . ":\n```\n" . $content . "\n```\n\n";
+    }
+
+    $this->setOutput($formatted
+      ? 'Results from searching in the rag index ' . $this->index . ":\n" . implode("\n", $formatted)
+      : 'No results were found when searching in the rag index ' . $this->index . '.');
   }
 
   /**

@@ -2,7 +2,7 @@ trotamundos_assistant.home:
   path: '/home-ai'
   defaults:
     _controller: '\Drupal\trotamundos_assistant\Controller\TrotamundosAssistantController::home'
-    _title: 'Home AI'
+    _title: 'Tu asistente de viaje'
   requirements:
     _permission: 'access content'
 
@@ -44,6 +44,14 @@ trotamundos_assistant.chat:
     _permission: 'access content'
     _csrf_request_header_token: 'TRUE'
   methods: [POST]
+
+trotamundos_assistant.session_token:
+  path: '/trotamundos-assistant/session-token'
+  defaults:
+    _controller: '\Drupal\trotamundos_assistant\Controller\TrotamundosAssistantController::sessionToken'
+  requirements:
+    _permission: 'access content'
+  methods: [GET]
 
 trotamundos_assistant.chat_history:
   path: '/trotamundos-assistant/chat/history'

@@ -1,0 +1,26 @@
+machine_name: travel_guide
+title: 'Consultar destinos y guías'
+btn_responsive_title: 'Ver respuesta y fuentes'
+group:
+  id: travel
+  label: Viajes
+theme:
+  variables:
+    answer: ''
+    sources: []
+handler:
+  class: 'Drupal\trotamundos_assistant\SkillLocal\TravelGuide\TravelGuideSkillHandler'
+  file: 'src/TravelGuideSkillHandler.php'
+assets:
+  dependencies:
+    - trotamundos_assistant/skill.content_answer
+chat_reply_fallback: 'He consultado los contenidos publicados.'
+description: 'Responde preguntas sobre destinos, planes y guías con enlaces a las fuentes publicadas.'
+provider:
+  requires_rag: true
+  intent: 'Usar cuando el visitante pregunte por información concreta de destinos, guías, condiciones o detalles de un plan publicado.'
+  when_to_use:
+    - 'Responde únicamente con información recuperada del sitio y cita los contenidos realmente utilizados.'
+    - 'Cada fuente debe incluir el node_id numérico exacto que figura como ID de contenido en RAG.'
+    - 'Si no hay información o fuentes suficientes, deja sources vacío e indica que no puedes confirmarlo.'
+    - 'No garantices fechas, precios ni disponibilidad; aclara cuándo una ficha es demo o su información es provisional.'
