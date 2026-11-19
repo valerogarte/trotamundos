@@ -264,6 +264,8 @@
 @property --halo-breathe { syntax: "<number>"; inherits: false; initial-value: 0; }
 @property --halo-energy { syntax: "<number>"; inherits: false; initial-value: 0; }
 @property --halo-alpha { syntax: "<number>"; inherits: false; initial-value: 0; }
+@property --assistant-edge-x { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+@property --assistant-edge-y { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
 
 .discovery:has([data-discovery-assistant][open]) {
   z-index: 40;
@@ -310,10 +312,10 @@ html::before {
   opacity: 0;
   visibility: hidden;
   background:
-    linear-gradient(90deg, rgb(92 146 116 / 24%), transparent 10%, transparent 90%, rgb(191 104 70 / 24%)),
-    linear-gradient(180deg, rgb(211 167 94 / 22%), transparent 10%, transparent 90%, rgb(92 146 116 / 22%));
+    linear-gradient(90deg, rgb(23 61 50 / 18%), transparent 10%, transparent 90%, rgb(191 104 70 / 18%)),
+    linear-gradient(180deg, rgb(211 167 94 / 18%), transparent 10%, transparent 90%, rgb(23 61 50 / 18%));
   box-shadow:
-    inset 0 0 56px 8px rgb(92 146 116 / 18%),
+    inset 0 0 56px 8px rgb(23 61 50 / 14%),
     inset 0 0 100px 12px rgb(211 167 94 / 10%);
   transition: opacity 450ms ease, visibility 0s linear 450ms;
 }
@@ -322,6 +324,42 @@ html:has(.trotamundos-assistant--search.is-loading)::before {
   opacity: 1;
   visibility: visible;
   transition: opacity 450ms ease;
+}
+
+/* A brand-colour highlight travels around the viewport while the AI responds. */
+html::after {
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0;
+  visibility: hidden;
+  background: radial-gradient(
+    circle 150px at var(--assistant-edge-x) var(--assistant-edge-y),
+    rgb(211 167 94 / 42%) 0%,
+    rgb(191 104 70 / 34%) 34%,
+    rgb(23 61 50 / 22%) 64%,
+    transparent 100%
+  );
+  filter: blur(18px);
+  animation: assistant-edge-travel 8s linear infinite paused;
+  transition: opacity 450ms ease, visibility 0s linear 450ms;
+}
+
+html:has(.trotamundos-assistant--search.is-loading)::after {
+  opacity: 1;
+  visibility: visible;
+  animation-play-state: running;
+  transition: opacity 450ms ease;
+}
+
+@keyframes assistant-edge-travel {
+  0% { --assistant-edge-x: 0%; --assistant-edge-y: 0%; }
+  25% { --assistant-edge-x: 100%; --assistant-edge-y: 0%; }
+  50% { --assistant-edge-x: 100%; --assistant-edge-y: 100%; }
+  75% { --assistant-edge-x: 0%; --assistant-edge-y: 100%; }
+  100% { --assistant-edge-x: 0%; --assistant-edge-y: 0%; }
 }
 
 @keyframes assistant-halo-spin {
@@ -709,10 +747,15 @@ html:has(.trotamundos-assistant--search.is-loading)::before {
     animation: none;
   }
 
+  html::after {
+    display: none;
+  }
+
   /* Avoid delayed visibility transitions when focusing the newly opened input. */
   .discovery-assistant__panel,
   .discovery-assistant__panel *,
-  html::before {
+  html::before,
+  html::after {
     transition-duration: 0s !important;
   }
 
