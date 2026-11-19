@@ -5,7 +5,7 @@ header-layout:
     js/header-layout.js: {}
 
 global:
-  version: 2.2.45
+  version: 2.2.46
   css:
     theme:
       css/tokens.css: { weight: -10 }

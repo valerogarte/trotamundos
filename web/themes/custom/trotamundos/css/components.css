@@ -288,6 +288,8 @@
 .experience-card__title a {
   color: inherit;
   text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 22px;
 }
 
 .experience-card__title a::after {
