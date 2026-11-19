@@ -255,10 +255,9 @@
 
 /*
  * Assistant halo: a small glow in the brand colours (selva, terracota, sol)
- * circles the four edges of the Trota AI panel and breathes gently. While the
- * assistant is thinking a brighter sol light orbits faster and the halo grows
- * a little, so the visitor sees the AI at work. The glow appears while a
- * request is pending and fades when the assistant finishes responding.
+ * circles the four edges of the Trota AI panel and breathes gently whenever
+ * the chat is open. While the assistant is thinking, a separate glow appears
+ * around the viewport edges and the panel halo grows a little.
  */
 @property --halo-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
 @property --halo-scan { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
@@ -286,16 +285,43 @@
     calc(cos(var(--halo-scan)) * (var(--halo-radius) + 3px)) calc(sin(var(--halo-scan)) * (var(--halo-radius) + 3px)) calc(var(--halo-blur) * .8) 0 rgb(211 167 94 / calc(var(--halo-alpha) * var(--halo-energy) * .6)),
     0 12px 32px rgb(8 24 20 / 10%);
   transition: --halo-energy 600ms ease, --halo-alpha 300ms ease;
-}
-
-.discovery-assistant__panel:has(.trotamundos-assistant--search.is-loading) {
-  --halo-alpha: 1;
-  --halo-energy: 1;
-  transition: --halo-energy 600ms ease, --halo-alpha 450ms ease;
   animation:
     assistant-halo-spin 12s linear infinite,
     assistant-halo-scan 2.6s linear infinite,
     assistant-halo-breathe 7s ease-in-out infinite alternate;
+}
+
+.trotamundos-js .discovery-controls.is-assistant-open:not(.is-assistant-closing) .discovery-assistant__panel {
+  --halo-alpha: 1;
+  transition: --halo-energy 600ms ease, --halo-alpha 500ms ease 250ms;
+}
+
+.discovery-assistant__panel:has(.trotamundos-assistant--search.is-loading) {
+  --halo-energy: 1;
+}
+
+/* A second glow frames the page only while a response is being generated. */
+html::before {
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0;
+  visibility: hidden;
+  background:
+    linear-gradient(90deg, rgb(92 146 116 / 24%), transparent 10%, transparent 90%, rgb(191 104 70 / 24%)),
+    linear-gradient(180deg, rgb(211 167 94 / 22%), transparent 10%, transparent 90%, rgb(92 146 116 / 22%));
+  box-shadow:
+    inset 0 0 56px 8px rgb(92 146 116 / 18%),
+    inset 0 0 100px 12px rgb(211 167 94 / 10%);
+  transition: opacity 450ms ease, visibility 0s linear 450ms;
+}
+
+html:has(.trotamundos-assistant--search.is-loading)::before {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 450ms ease;
 }
 
 @keyframes assistant-halo-spin {
@@ -685,7 +711,8 @@
 
   /* Avoid delayed visibility transitions when focusing the newly opened input. */
   .discovery-assistant__panel,
-  .discovery-assistant__panel * {
+  .discovery-assistant__panel *,
+  html::before {
     transition-duration: 0s !important;
   }
 
