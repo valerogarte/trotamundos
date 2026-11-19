@@ -159,6 +159,8 @@
 }
 
 .travel-styles__viewport {
+  container-name: travel-styles;
+  container-type: inline-size;
   overflow-x: auto;
   overscroll-behavior-inline: contain;
   scroll-padding-inline: 6px;
@@ -189,7 +191,39 @@
 
 .travel-styles__track > li {
   flex: 0 0 clamp(184px, 20vw, 224px);
+  flex-basis: calc(100cqi - 12px);
   scroll-snap-align: start;
+}
+
+/* Size each card against the viewport so the resting row ends on a full card. */
+@container travel-styles (min-width: 396px) {
+  .travel-styles__track > li {
+    flex-basis: calc((100cqi - 28px) / 2);
+  }
+}
+
+@container travel-styles (min-width: 596px) {
+  .travel-styles__track > li {
+    flex-basis: calc((100cqi - 44px) / 3);
+  }
+}
+
+@container travel-styles (min-width: 796px) {
+  .travel-styles__track > li {
+    flex-basis: calc((100cqi - 60px) / 4);
+  }
+}
+
+@container travel-styles (min-width: 996px) {
+  .travel-styles__track > li {
+    flex-basis: calc((100cqi - 76px) / 5);
+  }
+}
+
+@container travel-styles (min-width: 1196px) {
+  .travel-styles__track > li {
+    flex-basis: calc((100cqi - 92px) / 6);
+  }
 }
 
 /*
