@@ -441,18 +441,34 @@
   gap: 16px;
 }
 
-.destination-strip {
-  display: flex;
-  gap: 18px;
+.home-destinations__viewport {
   overflow-x: auto;
-  margin: 32px 0 0;
-  padding: 6px 6px 16px;
-  list-style: none;
+  margin-top: 32px;
   overscroll-behavior-inline: contain;
   scroll-padding-inline: 6px;
   scroll-snap-type: x mandatory;
   scrollbar-color: var(--line-strong) transparent;
   scrollbar-width: thin;
+}
+
+.home-destinations.is-looping .home-destinations__viewport {
+  overflow: hidden;
+  overflow: clip;
+  scrollbar-width: none;
+}
+
+.home-destinations.is-looping .home-destinations__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.destination-strip {
+  display: flex;
+  gap: 18px;
+  width: max-content;
+  min-width: 100%;
+  margin: 0;
+  padding: 6px 6px 16px;
+  list-style: none;
 }
 
 .destination-strip > li {

@@ -105,7 +105,7 @@
   </section>
 
   {% if tm_destinations %}
-    <section class="home-destinations container" aria-labelledby="destinations-title" data-trotamundos-slider>
+    <section class="home-destinations container" aria-labelledby="destinations-title" data-trotamundos-slider data-slider-loop>
       <div class="section-heading">
         <div>
           <p class="eyebrow">{{ 'Destinos'|t }}</p>
@@ -119,27 +119,29 @@
           </div>
         </div>
       </div>
-      <ul class="destination-strip" id="home-destinations-track" tabindex="0" aria-labelledby="destinations-title" data-slider-track>
-        {% for destination in tm_destinations %}
-          <li>
-            <a class="destination-chip{{ destination.count ? '' : ' destination-chip--soon' }}" href="{{ destination.url }}">
-              {% if destination.image %}<img src="{{ destination.image.src }}" alt="" width="{{ destination.image.width }}" height="{{ destination.image.height }}" loading="lazy" decoding="async">{% endif %}
-              <span class="destination-chip__copy">
-                <span class="destination-chip__name">{{ destination.place }}</span>
-                <span class="destination-chip__department">{{ destination.department }}</span>
-                <span class="destination-chip__count">
-                  {% if destination.count %}
-                    {% set count = destination.count %}
-                    {% trans %}1 plan{% plural count %}{{ count }} planes{% endtrans %}
-                  {% else %}
-                    {{ 'Próximamente'|t }}
-                  {% endif %}
+      <div class="home-destinations__viewport" data-slider-viewport>
+        <ul class="destination-strip" id="home-destinations-track" tabindex="0" aria-labelledby="destinations-title" data-slider-track>
+          {% for destination in tm_destinations %}
+            <li>
+              <a class="destination-chip{{ destination.count ? '' : ' destination-chip--soon' }}" href="{{ destination.url }}">
+                {% if destination.image %}<img src="{{ destination.image.src }}" alt="" width="{{ destination.image.width }}" height="{{ destination.image.height }}" loading="lazy" decoding="async">{% endif %}
+                <span class="destination-chip__copy">
+                  <span class="destination-chip__name">{{ destination.place }}</span>
+                  <span class="destination-chip__department">{{ destination.department }}</span>
+                  <span class="destination-chip__count">
+                    {% if destination.count %}
+                      {% set count = destination.count %}
+                      {% trans %}1 plan{% plural count %}{{ count }} planes{% endtrans %}
+                    {% else %}
+                      {{ 'Próximamente'|t }}
+                    {% endif %}
+                  </span>
                 </span>
-              </span>
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
     </section>
   {% endif %}
 
