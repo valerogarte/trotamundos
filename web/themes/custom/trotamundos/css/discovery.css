@@ -623,8 +623,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 48px;
   gap: 12px;
-  padding: 12px 14px 0 18px;
+  padding: 0 14px 0 18px;
 }
 
 /* Same lettering as the site wordmark (.wordmark__name). */
@@ -1221,7 +1222,8 @@
   }
 
   .trotamundos-assistant--search .trotamundos-assistant__heading {
-    padding: 10px 10px 0 14px;
+    min-height: 46px;
+    padding: 0 10px 0 14px;
   }
 
   .trotamundos-assistant--search .trotamundos-assistant__conversation:has(:is(.trotamundos-assistant__message--error, .trotamundos-assistant__message--notice)) {
