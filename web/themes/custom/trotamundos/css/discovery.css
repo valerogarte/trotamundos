@@ -257,8 +257,8 @@
  * Assistant halo: a small glow in the brand colours (selva, terracota, sol)
  * circles the four edges of the Trota AI panel and breathes gently. While the
  * assistant is thinking a brighter sol light orbits faster and the halo grows
- * a little, so the visitor sees the AI at work. It fades in after the panel
- * opens and out as it folds back.
+ * a little, so the visitor sees the AI at work. The glow appears while a
+ * request is pending and fades when the assistant finishes responding.
  */
 @property --halo-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
 @property --halo-scan { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
@@ -286,19 +286,16 @@
     calc(cos(var(--halo-scan)) * (var(--halo-radius) + 3px)) calc(sin(var(--halo-scan)) * (var(--halo-radius) + 3px)) calc(var(--halo-blur) * .8) 0 rgb(211 167 94 / calc(var(--halo-alpha) * var(--halo-energy) * .6)),
     0 12px 32px rgb(8 24 20 / 10%);
   transition: --halo-energy 600ms ease, --halo-alpha 300ms ease;
+}
+
+.discovery-assistant__panel:has(.trotamundos-assistant--search.is-loading) {
+  --halo-alpha: 1;
+  --halo-energy: 1;
+  transition: --halo-energy 600ms ease, --halo-alpha 450ms ease;
   animation:
     assistant-halo-spin 12s linear infinite,
     assistant-halo-scan 2.6s linear infinite,
     assistant-halo-breathe 7s ease-in-out infinite alternate;
-}
-
-.trotamundos-js .discovery-controls.is-assistant-open:not(.is-assistant-closing) .discovery-assistant__panel {
-  --halo-alpha: 1;
-  transition: --halo-energy 600ms ease, --halo-alpha 500ms ease 250ms;
-}
-
-.discovery-assistant__panel:has(.trotamundos-assistant--search.is-loading) {
-  --halo-energy: 1;
 }
 
 @keyframes assistant-halo-spin {
